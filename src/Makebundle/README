@@ -1,0 +1,432 @@
+------------------------------------------------------------------------
+--- MAKEBUNDLE - a collection of useful generic makefiles --------------
+------------------------------------------------------------------------
+
+--- Table Of Content ---------------------------------------------------
+
+  0. Motivation
+  1. Introduction
+  1.1 Advantages (What it does...)
+  1.2 Disadvantages (... and what not)
+  2. System Variables
+  2.1 The MAKEBUNDLE variable
+  2.2 The OS_TYPE variable
+  3. How to write your own makefile?
+  3.1 pre.make
+  3.2 lib.make
+  3.3 tool.make
+  3.4 subdir.make
+  3.5 Using lib.make, tool.make, and subdir.make in the same makefile
+  4. Makefile variables
+  4.1 subdir
+  4.2 SUBDIR
+  4.3 OS 
+  5. How to call make
+  6. Some Preprocessor Macro Definitions
+  7. Epilog
+
+--- Content ------------------------------------------------------------
+
+0. Motivation
+
+  This "MAKEfile BUNDLE" is not only supposed to work for the vuVolume
+  building process. It can be used for nearly every project you want to
+  write. Therefore I strongly recommend that you use it whenever you
+  feel you have to write a makefile (as long as compiling of tools or
+  libraries is involved ;-).
+
+  It's my first time I wrote such a generic makefile package, so it's
+  possible that you will run into some unexpected problems. Feel free to
+  write me an email in situations like that. My email adress is
+  mspindle@cs.sfu.ca.
+
+  BTW: I definitively like to hear about your problems at least for one
+  reason: I would know for sure that somebody is actually using this
+  package ;-)
+
+        -- Martin Spindler (2nd November 2002)
+
+-----------------------------------------------------------------------
+
+1. Introduction
+
+  With this MAKEBUNDLE you can easily manage the building process of
+  your own tools and libraries. It mainly consists of the following
+  files, which you can typically use just by including them into your
+  own makefile.
+
+  These files are meant to be included into your makefile directly:
+
+        pre.make
+        lib.make
+        subdir.make
+        tool.make
+
+        e.g.: include $(MAKEBUNDLE)/lib.make
+
+  These files are for configuration. They are included "automagically"
+  if they exists.
+
+        config.make
+        WINDOWS.config.make
+        LINUX.config.make
+        IRIX.config.make
+
+  You can write your own *.config.make files and put them into your
+  own project.
+
+  REMEMBER: You have to set the environment variable MAKEBUNDLE in
+            order to use this package
+            (see section 2. Environment Variables).
+
+
+1.1 Advantages (What it does...)
+
+  - It's easy to use.
+
+      That depends on how you define easy ;-)
+
+  - Support of making static LIBRARIES
+
+      At the moment there is only support for static libraries
+      available. But it's easy to extend it to support shared
+      libraries as well, due to the fact that everything is
+      concentrated in one place (lib.make)
+
+      (See section 3.2 lib.make)
+
+      REMEMBER: include $(MAKEBUNDLE)/lib.make 
+
+  - Support of making TOOLS
+
+      (See section 3.3 tool.make)
+
+      REMEMBER: include $(MAKEBUNDLE)/tool.make
+
+  - Support of making SUBDIRECTORIES
+
+      (See section 3.4 subdir.make)
+
+      REMEMBER: include $(MAKEBUNDLE)/subdir.make
+
+  - Support of CROSS-PLATTFORM COMPILING
+
+      Even if you use the same source directory for differnt plattforms,
+      e.g. IRIX and LINUX, the MAKEBUNDLE will put the compiled object
+      and library files into OS depended directories, e.g. obj/IRIX or
+      obj/LINUX
+
+      REMEMBER: This is not true for the tools. They are copied into
+                same directory and will definitively conflict, if you
+                don't remove them. There is not even a special bin
+                directory for all tools.
+
+               (This is in the TODO list and should be fixed soon!!!)
+
+  - It "AUTOMAGICALLY" CREATES DEPENDENCIES
+
+      You don't have to care about file dependencies anymore.
+
+      REMEMBER: Only #include "test.h" are taken in account while
+                computing the dependencies.
+                All #include <test.h> are considered to be installed
+                headers and are ignored while computing the
+                dependencies.
+
+                Please keep this in mind if you define your #include's!
+
+1.2 Disadvantages (... and what not) 
+
+  - I am not sure about bugs.
+
+    There might be still some bugs in this package because there
+    haven't been a lot testings so far. Hopefully this changes very
+    soon ;-)
+
+  - Configure is not used.
+
+    ... at least at the moment. This should be on a TODO list ;-)
+
+-----------------------------------------------------------------------
+
+2. Environment Variables
+
+  Following environment variables have a strong influence on the
+  MAKEBUNDLE package:
+
+       MAKEBUNDLE (see section 2.1 The MAKEBUNDLE variable)
+       OS_TYPE    (see section 2.2 The OS_TYPE variable)
+
+
+2.1 The MAKEBUNDLE variable
+
+  In order that make is able to find the *.make files, you have to
+  set the environment variable MAKEBUNDLE to the place where your
+  MAKEBUNDLE resides.
+
+  In the tsh shell you can do that by typing:
+
+    setenv MAKEFILE $HOME/Projects/proj/Makefiles
+
+  In css-net: make an entry in your ~/.mylogin containing the line
+  above.
+
+
+2.2 The OS_TYPE variable
+
+  REMEMBER: In most cases the OS-type is discovered automatically.
+            So unless you have problems, you can ignore this section.
+
+  If you have problems:
+
+   Make sure that the environment variable OS_TYPE is properly set.
+   Valid values are:
+
+        WINDOWS
+        LINUX
+        IRIX
+
+  In css-net:    you don't have to care about it, because it's done for
+                 you already.
+
+  Under Win2000: At least Windows 2000 defines a system varible called
+                 %OS%=Windows_NT. The MAKEBUNDLE is able to understand
+                 that, so you don't have to care about it at all.
+
+  Under Linux:   In most cases the $OSTYPE is set to "linux" and
+                 MAKEBUNDLE is able to interpretate this information
+                 correctly. (If not, set OS_TYPE=LINUX).
+
+-----------------------------------------------------------------------
+
+3. How to write your own makefile?
+
+  This section describes how you can easily write your own makefiles by
+  using the MAKEBUNDLE.
+
+    building libraries     (See section 3.2 lib.make)
+    compiling tools        (See section 3.3 tool.make)
+    making sub directories (See section 3.4 subdir.make)
+
+
+3.1 pre.make
+
+  This file generates all the default variable settings needed for a
+  proper make process. You have to include it into your makefile BEFORE
+  you are doing anything else. Therefore the best way to start your
+  makefile is to do it like that:
+
+        # some optional comment
+        srcdir = ../../..
+        include $(MAKEBUNDLE)/pre.make
+
+  REMEMBER: You must ALWAYS include the pre.make at first!!!
+
+
+3.2 lib.make
+
+  If you want to write a library, lib.make will be your best friend.
+  Just define the library name and the SOURCE and HEADER files you
+  want to have in your library and lib.make does the rest of the job
+  for you.
+
+  Here is an example:
+
+        # remember: you ALWAYS have to include pre.make:
+        srcdir = ../../..
+        include $(MAKEBUNDLE)/pre.make
+
+        LIB_NAME   = test      # the name of the lib
+        HEADERS    = class1.h   \
+                     class2.h   \
+                     class3.h ...
+        SOURCES    = class1.cpp \
+                     class2.cpp \
+                     class3.cpp
+
+        include $(MAKEBUNDEL)/lib.make
+
+
+3.3 tool.make
+
+  It's always good to have a friend, but in some situations another
+  one wouldn't be that bad. Here he is, our new friend: Mr. tool.make.
+  And believe me, compiling a tool is now as easy as building a library.
+
+  Before we take a look at the example, a few words about the tool
+  making process have to be said: Usually we want to build more than
+  one tool in a makefile. For this reason you can define a bunch of
+  tool names by simply setting the variable TOOL_NAME to the desired
+  values, e.g. TOOL_NAME = toolName1 toolName2 toolName3.
+
+  Now you can easily define the SOURCE and HEADER files needed by each
+  tool, just by using a variable, which name is made of a toolName
+  appended by  "_SOURCES" resp. "_HEADERS".
+
+  And here we go:
+
+        # remember: you ALWAYS have to include the pre.make:
+        srcdir = ../../..
+        include $(MAKEBUNDLE)/pre.make
+        
+        TOOL_NAME     = tool1 tool2 tool3 ...
+ 
+        tool1_HEADERS = file1_1.h file1_2.h ...
+        tool1_SOURCES = file1_1.c file1_2.cpp ...
+
+        tool2_HEADERS = file2_1.h file2_2.h ...
+        tool2_SOURCES = file2_1.c file2_2.cpp ...
+
+        tool3_HEADERS = file3_1.h file3_2.h ...
+        tool3_SOURCES = file3_1.c file3_2.cpp ...
+
+        include $(MAKEBUNDLE)/tool.make
+
+
+3.4 subdir.make
+
+  Our third friend is a guy called subdir.make. It's only responsibility
+  is calling makefiles in sub directories.
+
+  Here is an example:
+
+        # remember: you ALWAYS have to include the pre.make:
+        srcdir = ../../..
+        include $(MAKEBUNDLE)/pre.make
+
+        SUBDIRS = subdir1 subdir2 subdir3 ...
+
+        include $(MAKEBUNDLE)/subdir.make
+
+
+3.5 Using lib.make, tool.make, and subdir.make in the same makefile
+
+  This is possible of course and quite often used. You just have to
+  make sure, that you include every *.make only once.
+
+  Here is an example:
+
+        srcdir = ../../..
+        include $(MAKEBUNDLE)/pre.make
+
+        # making he subdirectories first
+        SUBDIRS = subdir1 subdir2 ...
+        include $(MAKEBUNDLE)/subdir.make
+
+        # making a library
+        LIB_NAME = test
+        SOURCES  = class1.cpp class2.cpp ...
+        HEADERS  = class1.h   class2.h   ...
+        include $(MAKEBUNDLE)/lib.make
+
+        # making a tool
+        TOOL_NAME = myTool
+        myTool_SOURCES = test.cpp ToolClass.cpp ...
+        myTool_HEADERS = ToolClass.h ...
+        include $(MAKEBUNDLE)/tool.make
+
+
+  Furthermore it's important that you define the variables used by
+  one *.make BEFORE you include this very *.make file.
+
+  For example this will not work:
+
+        include $(MAKEBUNDLE)/subdir.make
+        SUBDIRS = subdir1 subdir2 subdir3 ...
+
+  because the SUBDIRS variable is set AFTER the subdir.make is
+  included.
+
+-----------------------------------------------------------------------
+
+4. Makefile variables
+
+4.1 subdir
+
+  e.g. subdir = ../../..
+
+4.2  SUBDIR
+
+  e.g. SUBDIR = 
+
+4.3 - OS 
+
+  Do not try to set this variable. It's set automatically by the
+  MAKEBUNDLE.
+
+----------------------------------------------------------------------
+
+5. How to call make
+
+  Currently there are 4 different goals supported by MAKEBUNDLE:
+
+        all
+        depend
+        clean
+        distclean
+
+  Usually you invoke make by typing: "make goal-name"
+
+5.2 make
+
+  If you just type make the default goal: all is choosen.
+  (see section 5.3 make all)
+
+5.3 make all
+
+  This goal 
+
+5.4 make depend
+
+5.5 make clean
+
+5.6 make distclean
+
+
+- debug
+
+  you can set it by calling make debug=yes
+
+
+make all
+make clean
+make depend
+
+make debug=yes all
+
+-----------------------------------------------------------------------
+
+6. Some Preprocessor Macro Definitions
+
+  To support OS_TYPE dependend code, the MAKEBUNDLE defines an unique
+  preprocessor macro for every operatin system, using the -D option of
+  your preprocessor, e.g. gcc -DWIN32.
+
+  Following macros are set, dependend of the OS:
+
+        linux   -> LINUX
+        irix    -> IRIX
+        windows -> WIN32
+
+  You can use this in your code, by exploiting the #ifndef or #ifdef
+  macro.
+
+  Example:
+
+        #ifdef LINUX
+           cerr << "some linux dependend code" << endl;
+        #else
+           cerr << "this is not a linux system" << endl;
+        #end
+
+----------------------------------------------------------------------
+
+7. Epilog
+
+  If you still have some questions or even better: suggestions please
+  feel free to contact me. My email adress is mspindle@cs.sfu.ca.
+
+        -- Martin Spindler (2nd November 2002)
+
+
+  That's it. (Das ist das Ende :-)

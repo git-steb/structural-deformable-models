@@ -1,0 +1,250 @@
+/* Sensor -*- C++ -*- */
+#ifndef _SENSORSET_H_
+#define _SENSORSET_H_
+
+#include <math.h>
+#include "Sensor.h"
+
+//usable Sensor implementations
+
+/** Intensity sensor (identity operator) */
+class IntensitySensor : public Sensor {
+public:
+    IntensitySensor(const Sensor *_source=NULL) : Sensor(_source) {};
+protected:
+    /** Returns the Intensity */
+    float calcValue(int x, int y) const {
+	return source->getValue(x,y);
+    }
+};
+
+/** Intensity sensor (identity operator) */
+class PPIntensitySensor : public PPSensor {
+public:
+    PPIntensitySensor(const Sensor *_source=NULL) : PPSensor(_source) {};
+protected:
+    /** Returns the Intensity */
+    float calcValue(int x, int y) const {
+	return source->getValue(x,y);
+    }
+};
+
+/** Multi-channel intensity Sensor */
+class MCIntensitySensor : public PPSensor {
+ public:
+    MCIntensitySensor(const Sensor *_source=NULL) : PPSensor(_source) {}
+protected:
+    //! Computes a scalar product between the multi-channel intensitis and the cweights vector.
+    float calcValue(int x, int y) const {
+	float result = 0.0f;
+	const vector<float> mv = source->getMValue(x,y);
+	assert(mv.size() == cweights.size());
+	for(int i=0; i<source->getNChannels(); i++) {
+	    float weight = cweights[i];
+	    if(weight!=0.0f) result += mv[i]*weight;
+	}
+	return result;
+    }
+};
+
+#define __SQRT2PI 2.5066283
+/** Smoothed intensity sensor (using gaussian) */
+class SmoothIntensitySensor : public PPSensor {
+public:
+    SmoothIntensitySensor(const Sensor *_source=NULL, float _scale=0);
+    bool performUpdate();
+    static float gauss(float x, float stdev) {
+	return exp(-x*x/(2*stdev*stdev)) / (stdev*__SQRT2PI);
+    }
+    static float gauss2(float x2, float stdev) {
+	return exp(-x2/(2*stdev*stdev)) / (stdev*__SQRT2PI);
+    }
+    dword getFilterSize() const {return smoothflt.getSizeX();}
+
+protected:
+    void calcAllValues() {
+	PPSensor::calcAllValues();
+	if(smoothflt.getSizeX()>1 && values.getSizeX()>1) {
+	    values = values.convolve(smoothflt);
+	}
+    }
+    float calcValue(int x, int y) const {
+	return source->getValue(x,y);
+    }
+    void updateScale();
+protected:
+    Image<float> smoothflt;
+};
+
+/** gradient magnitude sensor */
+class GradMagSensor : public PPSensor {
+public:
+    GradMagSensor(const Sensor* _source=NULL, float _scale=0) 
+        : PPSensor(_source), intSensor(source, _scale)
+	{
+	    PPSensor::changeSource(&intSensor);
+	    enableUpdate(UPD_SCALE|UPD_DATA);
+	    setScale(_scale);
+	    togglePP(PPSensor::PP_FORCE);
+            performUpdate();
+	};
+    void changeSource(const Sensor *_source) {
+	intSensor.changeSource(_source);
+    }
+    bool performUpdate() {
+	if(isModified(UPD_SCALE)) {
+	    unsetModified(UPD_SCALE);
+	    intSensor.setScale(scale);
+	    intSensor.performUpdate();
+	}
+	return PPSensor::performUpdate();
+    }
+protected:
+    SmoothIntensitySensor intSensor;
+    /** Compute gradient magnitude */
+    float calcValue(int x, int y) const {
+	dword skip = (intSensor.getFilterSize()>>1)+2;
+	if(x>=getDim1Size()-skip || x<=skip || 
+	   y>=getDim2Size()-skip || y<=skip)
+            return 0;
+	else
+            return intSensor.getGradient(x,y).norm();
+    }
+};
+
+/** curvature sensor */
+class CornerSensor : public PPSensor {
+public:
+    CornerSensor(const Sensor* _source=NULL, float _scale=0) : PPSensor(_source),
+							       preSensor(source, _scale)
+	{
+	    Sensor::changeSource(&preSensor);
+	    enableUpdate(UPD_SCALE|UPD_DATA);
+	    setScale(_scale);
+	    togglePP(PPSensor::PP_FORCE);
+	};
+    void changeSource(const Sensor *_source) {
+	preSensor.changeSource(_source);
+    }
+    bool performUpdate() {
+	if(isModified(UPD_SCALE)) {
+	    unsetModified(UPD_SCALE);
+	    preSensor.setScale(scale);
+	    preSensor.performUpdate();
+	}
+	return PPSensor::performUpdate();
+    }
+protected:
+    SmoothIntensitySensor preSensor;
+    /** Compute cornerness */
+    float calcValue(int x, int y) const {
+	dword skip = (preSensor.getFilterSize()>>1)+2;
+	if(x>=getDim1Size()-skip || x<=skip || 
+	   y>=getDim2Size()-skip || y<=skip)
+	    return 0;
+	float value = preSensor.getValue(x,y);
+	if(value==0) return 0;
+	Point c=preSensor.getGradient(x,y);
+	Point ddx = preSensor.getGradient(x+1,y)-c;
+	Point ddy = preSensor.getGradient(x,y+1)-c;
+//#define SS_GRADIENT_WEIGHTED_DETERMINANT
+#ifdef SS_GRADIENT_WEIGHTED_DETERMINANT
+	float n1 = ddx.normalize();
+	float n2 = ddy.normalize();
+	float det = ddx.x*ddy.y-ddx.y*ddy.x;
+	det *= min(n1,n2);
+#else
+	float det = ddx.x*ddy.y-ddx.y*ddy.x;
+#endif
+	if(det<0) return 0;	// repelling regions are no good
+	float ret=det*value;
+	return ret;
+/* using eigenvalues
+	//cout << det;
+	//cout << ddx << endl << ddy << endl;
+	float p = (ddx.x+ddy.y)/2;
+	float d = sqrt(p*p-ddx.x*ddy.y+ddx.y*ddy.x);
+	//cout << "p=" << p << " d=" << d<<endl;
+	float e1 = p+d;
+	float e2 = p-d;
+	//cout << "e1="<<e1<<" e2="<<e2<<endl;
+	//cout << "---------------------" << endl;
+	return e1*e2;
+*/
+    }
+};
+
+/** curvature sensor */
+class SCornerSensor : public SmoothIntensitySensor {
+public:
+    SCornerSensor(const Sensor* _source=NULL, float _scale=0) : SmoothIntensitySensor(_source, _scale),
+								preSensor(source, _scale)
+	{
+	    Sensor::changeSource(&preSensor);
+	    togglePP(PPSensor::PP_FORCE);
+	};
+    void changeSource(const Sensor *_source) {
+	preSensor.changeSource(_source);
+    }
+    bool performUpdate() {
+	if(isModified(UPD_SCALE)) {
+	    float prescale = scale;
+	    if(scale>=1) scale-=1;
+	    updateScale();
+	    unsetModified(UPD_SCALE);
+	    preSensor.setScale(prescale);
+	    preSensor.performUpdate();
+	}
+	return SmoothIntensitySensor::performUpdate();
+    }
+protected:
+    CornerSensor preSensor;
+};
+
+/** Multi-Sensor */
+class CombiSensor : public PPSensor {
+ public:
+    CombiSensor(int nchannels=1);
+    virtual ~CombiSensor();
+
+//virtual functions
+    int getNChannels() const { return sources.size(); }
+
+//member functions
+    void setNSources(int n);
+    void setSource(Sensor *_source, float weight, int id);
+    void setSource(Sensor *_source, float weight) 
+        { setSource(_source, weight, sources.size()); }
+
+protected:
+    vector<Sensor*> sources;
+
+    //! Computes a scalar product between the multi-channel intensities and the cweights vector.
+    float calcValue(int x, int y) const {
+	float result = 0.0f;
+        vector<Sensor*>::const_iterator s = sources.begin();
+        vector<float>::const_iterator w = cweights.begin();
+        for(; s != sources.end(); s++,w++) {
+            result += (*s)->getWeightedValue(x,y)*(*w);
+            if(x==100 && y==100) {
+                DEBUG(result);
+                DEBUG(*w);
+            }
+        }
+	return result;
+    }
+
+    virtual const vector<float> calcMValue(int x, int y) const {
+	vector<float> vv(getNChannels());
+        vector<float>::iterator v = vv.begin();
+        vector<Sensor*>::const_iterator s = sources.begin();
+        vector<float>::const_iterator w = cweights.begin();
+        for(; v != vv.end(); v++, s++,w++)
+            *v = (*s)->getValue(x,y)*(*w);
+        return vv;
+    }
+
+};
+
+
+#endif

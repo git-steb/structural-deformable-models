@@ -1,0 +1,7 @@
+- binaries should be installed in special (OS depend) directory
+- support of make install
+- support of shared libraries
+- support of configure
+
+DONE (but not in README)
+- support of debug=no --> e.g. obj/LINUX/ instead of obj/LINUX_debug/

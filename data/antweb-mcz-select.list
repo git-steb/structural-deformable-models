@@ -1,0 +1,780 @@
+species_id 1
+name Pheidole
+flags s15
+
+species_id 1
+name Acanthomyops
+flags s1
+
+species_id 1
+name Acanthostichus
+flags s1
+
+species_id 1
+name Acromyrmex
+flags s1
+
+species_id 1
+name Acropyga
+flags s1
+
+species_id 1
+name Adetomyrma
+flags s1
+
+species_id 1
+name Aenictogiton
+flags s1
+
+species_id 1
+name Aenictus
+flags s1
+
+species_id 1
+name Amblyopone
+flags s1
+
+species_id 1
+name Anergates
+flags s1
+
+species_id 1
+name Ankylomyrma
+flags s1
+
+species_id 1
+name Anochetus
+flags s15
+
+species_id 1
+name Anonychomyrma
+flags s1
+
+species_id 1
+name Anoplolepis
+flags s1
+
+species_id 1
+name Aphaenogaster
+flags s1
+
+species_id 1
+name Apomyrma
+flags s1
+
+species_id 1
+name Asphinctopone
+flags s1
+
+species_id 1
+name Atopomyrmex
+flags s1
+
+species_id 1
+name Atta
+flags s1
+
+species_id 1
+name Axinidris
+flags s1
+
+species_id 1
+name Azteca
+flags s1
+
+species_id 1
+name Baracidris
+flags s1
+
+species_id 1
+name Belonopelta
+flags s1
+
+species_id 1
+name Bothriomyrmex
+flags s1
+
+species_id 1
+name Brachymyrmex
+flags s1
+
+species_id 1
+name Bregmatomyrma
+flags s1
+
+species_id 1
+name Calomyrmex
+flags s1
+
+species_id 1
+name Calyptomyrmex
+flags s1
+
+species_id 1
+name Camponotus
+flags s1
+
+species_id 1
+name Cardiocondyla
+flags s1
+
+species_id 1
+name Cataglyphis
+flags s1
+
+species_id 1
+name Cataglyphsis
+flags s1
+
+species_id 1
+name Cataulacus
+flags s1
+
+species_id 1
+name Centromyrmex
+flags s1
+
+species_id 1
+name Cephalotes
+flags s1
+
+species_id 1
+name Cerapachys
+flags s1
+
+species_id 1
+name Chapmanella
+flags s1
+
+species_id 1
+name Cheliomyrmex
+flags s1
+
+species_id 1
+name Concoctio
+flags s1
+
+species_id 1
+name Crematogaster
+flags s1
+
+species_id 1
+name Croesomymex
+flags s1
+
+species_id 1
+name Croesomyrmex
+flags s1
+
+species_id 1
+name Cryptocerus
+flags s1
+
+species_id 1
+name Cryptopone
+flags s1
+
+species_id 1
+name Cylindromyrmex
+flags s1
+
+species_id 1
+name Cyphoidris
+flags s1
+
+species_id 1
+name Cyphomyrmex
+flags s1
+
+species_id 1
+name Decamorium
+flags s1
+
+species_id 1
+name Dendromyrmex
+flags s1
+
+species_id 1
+name Diacamma
+flags s1
+
+species_id 1
+name Dicroaspis
+flags s1
+
+species_id 1
+name Discothyrea
+flags s1
+
+species_id 1
+name Dolichoderus
+flags s1
+
+species_id 1
+name Dolioponera
+flags s1
+
+species_id 1
+name Doronomyrmex
+flags s1
+
+species_id 1
+name Dorylus
+flags s1
+
+species_id 1
+name Dorymyrmex
+flags s1
+
+species_id 1
+name Eciton
+flags s1
+
+species_id 1
+name Ectatomma
+flags s1
+
+species_id 1
+name Ectomomyrmex
+flags s1
+
+species_id 1
+name Eubothroponera
+flags s1
+
+species_id 1
+name Euponera
+flags s1
+
+species_id 1
+name Eurhopalothrix
+flags s1
+
+species_id 1
+name Eusphinctus
+flags s1
+
+species_id 1
+name Eutetramorium
+flags s1
+
+species_id 1
+name Forelius
+flags s1
+
+species_id 1
+name Formica
+flags s1
+
+species_id 1
+name Formicoxenus
+flags s1
+
+species_id 1
+name Froggattella
+flags s1
+
+species_id 1
+name Genus
+flags s1
+
+species_id 1
+name Genusindet
+flags s1
+
+species_id 1
+name Gigantiops
+flags s1
+
+species_id 1
+name Gnamptogenys
+flags s1
+
+species_id 1
+name Harpagoxenus
+flags s1
+
+species_id 1
+name Harpegnathos
+flags s1
+
+species_id 1
+name Hypocryptocerus
+flags s1
+
+species_id 1
+name Hypoponera
+flags s1
+
+species_id 1
+name Ireneopone
+flags s1
+
+species_id 1
+name Iridomyrmex
+flags s1
+
+species_id 1
+name Labidus
+flags s1
+
+species_id 1
+name Lasiophanes
+flags s1
+
+species_id 1
+name Lasius
+flags s1
+
+species_id 1
+name Lepisiota
+flags s1
+
+species_id 1
+name Leptanilloides
+flags s1
+
+species_id 1
+name Leptogenys
+flags s1
+
+species_id 1
+name Leptomyrmex
+flags s1
+
+species_id 1
+name Leptothorax
+flags s1
+
+species_id 1
+name Linepithema
+flags s1
+
+species_id 1
+name Liometopum
+flags s1
+
+species_id 1
+name Lioponera
+flags s1
+
+species_id 1
+name Loboponera
+flags s1
+
+species_id 1
+name Macromischa
+flags s1
+
+species_id 1
+name Manica
+flags s1
+
+species_id 1
+name Melissotarsus
+flags s1
+
+species_id 1
+name Meranoplus
+flags s1
+
+species_id 1
+name Messor
+flags s1
+
+species_id 1
+name Metapone
+flags s1
+
+species_id 1
+name Microdaceton
+flags s1
+
+species_id 1
+name Monomorium
+flags s1
+
+species_id 1
+name Mycetosoritis
+flags s1
+
+species_id 1
+name Myopias
+flags s1
+
+species_id 1
+name Myrmaphatetus
+flags s1
+
+species_id 1
+name Myrmecia
+flags s1
+
+species_id 1
+name Myrmecina
+flags s1
+
+#species_id 1
+#name Myrmecoc
+#flags s1
+
+#species_id 1
+#name Myrmecocys
+#flags s1
+
+species_id 1
+name Myrmecocystus
+flags s1
+
+species_id 1
+name Myrmelachista
+flags s1
+
+species_id 1
+name Myrmica
+flags s1
+
+species_id 1
+name Myrmicaria
+flags s1
+
+species_id 1
+name Myrmoteras
+flags s1
+
+species_id 1
+name Mystrium
+flags s1
+
+species_id 1
+name Neivamyrmex
+flags s1
+
+species_id 1
+name Neoponera
+flags s1
+
+species_id 1
+name Nomamyrmex
+flags s1
+
+species_id 1
+name Notoncus
+flags s1
+
+species_id 1
+name Notostigma
+flags s1
+
+species_id 1
+name Novomessar
+flags s1
+
+species_id 1
+name Nylanderia
+flags s1
+
+species_id 1
+name Ochetellus
+flags s1
+
+species_id 1
+name Ocymyrmex
+flags s1
+
+species_id 1
+name Odontomachus
+flags s1
+
+species_id 1
+name Oecophylla
+flags s1
+
+species_id 1
+name Oligomyrmex
+flags s1
+
+species_id 1
+name Opisthopsis
+flags s1
+
+species_id 1
+name Opthalmopone
+flags s1
+
+species_id 1
+name Pachycondyla
+flags s1
+
+species_id 1
+name Papyrius
+flags s1
+
+species_id 1
+name Paratrechina
+flags s1
+
+species_id 1
+name Petalomyrmex
+flags s1
+
+species_id 1
+name Phasmomyrmex
+flags s1
+
+species_id 1
+name Philidris
+flags s1
+
+species_id 1
+name Phrynoponera
+flags s1
+
+species_id 1
+name Phyracaces
+flags s1
+
+species_id 1
+name Pilotrochus
+flags s1
+
+species_id 1
+name Plagiolepis
+flags s1
+
+species_id 1
+name Platythyrea
+flags s1
+
+species_id 1
+name Plectroctena
+flags s1
+
+species_id 1
+name Pognomyrmex
+flags s1
+
+species_id 1
+name Pogonomyrmex
+flags s1
+
+species_id 1
+name Polyergus
+flags s1
+
+species_id 1
+name Polyeryus
+flags s1
+
+species_id 1
+name Polyrhachis
+flags s1
+
+species_id 1
+name Ponera
+flags s1
+
+species_id 1
+name Prenolepis
+flags s1
+
+species_id 1
+name Prenolepsis
+flags s1
+
+species_id 1
+name Prionopelta
+flags s1
+
+species_id 1
+name Pristomyrmex
+flags s1
+
+species_id 1
+name Probolomyrmex
+flags s1
+
+species_id 1
+name Proceratium
+flags s1
+
+species_id 1
+name Prolasius
+flags s1
+
+species_id 1
+name Promyrmecia
+flags s1
+
+species_id 1
+name Protalaridris
+flags s1
+
+species_id 1
+name Protomognathus
+flags s1
+
+species_id 1
+name Psalidomyrmex
+flags s1
+
+species_id 1
+name Pseudocryptopone
+flags s1
+
+species_id 1
+name Pseudolasius
+flags s1
+
+species_id 1
+name Pseudomyrma
+flags s1
+
+species_id 1
+name Pseudomyrmex
+flags s1
+
+species_id 1
+name Pyramica
+flags s1
+
+species_id 1
+name Rhopalathrix
+flags s1
+
+species_id 1
+name Rhopalothrix
+flags s1
+
+species_id 1
+name Rhoptromyrmex
+flags s1
+
+species_id 1
+name Rogeria
+flags s1
+
+species_id 1
+name Santschiella
+flags s1
+
+species_id 1
+name Sima
+flags s1
+
+species_id 1
+name Simi
+flags s1
+
+species_id 1
+name Simopelta
+flags s1
+
+species_id 1
+name Simopone
+flags s1
+
+species_id 1
+name Solenopsis
+flags s1
+
+species_id 1
+name Spelazomyrmex
+flags s1
+
+species_id 1
+name Sphinctomyrmex
+flags s1
+
+species_id 1
+name Stenamma
+flags s1
+
+species_id 1
+name Stigmacros
+flags s1
+
+species_id 1
+name Stigmacross
+flags s1
+
+species_id 1
+name Stigmatomma
+flags s1
+
+species_id 1
+name Streblognathus
+flags s1
+
+species_id 1
+name Strumigenys
+flags s1
+
+species_id 1
+name Tapinoma
+flags s1
+
+species_id 1
+name Technomyrmex
+flags s1
+
+species_id 1
+name Terataner
+flags s1
+
+species_id 1
+name Tetramorium
+flags s1
+
+species_id 1
+name Tetraponera
+flags s1
+
+species_id 1
+name Thaumatomyrmex
+flags s1
+
+species_id 1
+name Trachymyrmex
+flags s1
+
+species_id 1
+name Trapeziopelta
+flags s1
+
+species_id 1
+name Turneria
+flags s1
+
+species_id 1
+name Typhlomyrmex
+flags s1
+
+species_id 1
+name Ueaponera
+flags s1
+
+species_id 1
+name Unnamed
+flags s1
+
+species_id 1
+name Viticola
+flags s1
+
+species_id 1
+name Vollenhovia
+flags s1
+
+species_id 1
+name Wadeura
+flags s1
+
+species_id 1
+name Wasmannia
+flags s1
+
+species_id 1
+name Xenomyrmex
+flags s1
+

@@ -1,0 +1,139 @@
+struct frame
+  substruct pheidole-head
+#    mode nospawn
+    rateweight 0.2
+    mode showstats
+  end
+  substruct pheidole-middle
+    mode nospawn
+    rateweight 0
+  end
+  substruct pheidole-middle1
+    mode nospawn
+    rateweight 0
+  end
+
+  substruct anochetus-head
+#    mode nospawn
+    rateweight 0.2
+    mode showstats
+  end
+  substruct anochetus-middle
+    mode nospawn
+    rateweight 0
+  end
+
+  substruct cerapachys-head
+    mode nospawn
+    rateweight 0.2
+  end
+
+  substruct cerapachys-middle
+    mode nospawn
+    rateweight 0
+  end
+
+  substruct cerapachys-middle1
+    mode nospawn
+    rateweight 0
+  end
+
+  substruct cerapachys-end
+    mode nospawn
+    rateweight 0
+  end
+end
+
+############################# pheidole #############################
+struct pheidole-head
+  model pheidole-h.dm
+  weight 2
+  substruct pheidole-middle
+    pivot 7
+    rateweight 0.2
+  end # substruct
+end # struct
+
+struct pheidole-middle
+  model pheidole-m.dm
+  weight 1
+#  substruct pheidole-head
+#    rateweight 0.5
+#  end
+  substruct pheidole-middle1
+    rateweight 0.2
+ end
+end
+
+struct pheidole-middle1
+  weight 0.5
+  model pheidole-m1.dm
+   shapeweight 0.2
+#  substruct pheidole-middle
+#    rateweight 1
+#  end
+end
+
+###################### anochetus #############################
+struct anochetus-head
+  model pheidole-h.dm
+  #size 1.0                  # stdradius in mm
+  weight 2
+  substruct anochetus-middle
+    pivot 20
+    rateweight 0.2
+  end # substruct
+end # struct
+
+struct anochetus-middle
+  model anochetus-m.dm
+  weight 1
+#  substruct anochetus-head
+#    rateweight 0.5
+#  end
+end
+
+######################## cerapachys  ##########################
+struct cerapachys-head
+  model cerapachys-head.dm
+  weight 2
+  substruct cerapachys-middle
+    rateweight 0.2
+  end
+end
+
+struct cerapachys-middle
+  model cerapachys-middle.dm
+  weight 2
+  substruct cerapachys-middle1
+    rateweight 0.2
+  end
+end
+
+struct cerapachys-middle1
+  model cerapachys-middle1.dm
+  weight 1
+  substruct cerapachys-end
+    rateweight 0.2
+  end
+end
+
+struct cerapachys-end
+  model cerapachys-end.dm
+  weight 1
+ substruct cerapachys-end1
+   rateweight 0.2
+ end
+end
+
+struct cerapachys-end1
+  weight 2
+  model cerapachys-end1.dm
+end
+
+######################## interpretations ##########################
+interpretations
+  anochetus frame anochetus-head anochetus-middle
+  pheidole frame pheidole-head pheidole-middle pheidole-middle1
+  cerapachys cerapachys-head cerapachys-middle cerapachys-middle1 cerapachys-end cerapachys-end1
+end
