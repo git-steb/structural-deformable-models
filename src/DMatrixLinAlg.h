@@ -2,25 +2,29 @@
 #define _DMATRIXLINALG_H_
 #include "DMatrix.h"
 #include "DMatrixUtil.h"
-#include "LinAlg/LinAlg.h"
-#include "LinAlg/svd.h"
+#include <Eigen/SVD>
 #include <functional>
 #include <algorithm>
 #include <vector>
 
 #define DMLA_TAU	0.0000001f
 
+namespace linalg {
+  typedef Eigen::MatrixXf Matrix;
+}
+
 namespace dmutil {
     
     template<class T>
     linalg::Matrix convert(const DMatrix<T>& dmat)
     {
-        linalg::Matrix mat(1,dmat.sizeY(), 1,dmat.sizeX());
-        linalg::MatrixDA eth(mat);
+        Eigen::MatrixXf mat((int)dmat.sizeY(), (int)dmat.sizeX());
+        linalg::Matrix eth(mat);
         //typename DMatrix<T>::const_iterator dat = dmat.getData().begin();
-        for(register int i=eth.q_row_lwb(); i<=eth.q_row_upb(); i++)
-            for(register int j=eth.q_col_lwb(); j<=eth.q_col_upb(); j++)
-                eth(i,j) = dmat.at(j-1,i-1);
+	// TODO: translate this code from LinAlg to Eigen
+        //for(register int i=eth.q_row_lwb(); i<=eth.q_row_upb(); i++)
+        //    for(register int j=eth.q_col_lwb(); j<=eth.q_col_upb(); j++)
+        //        eth(i,j) = dmat.at(j-1,i-1);
         return mat;
     }
     
@@ -28,13 +32,13 @@ namespace dmutil {
     DMatrix<T> convert(const linalg::Matrix& mat)
     {
         linalg::Matrix cmat(mat);
-        linalg::MatrixDA eth(cmat);
-        DMatrix<T> dmat(eth.q_col_upb()-eth.q_col_lwb()+1,
-                        eth.q_row_upb()-eth.q_row_lwb()+1);
+        linalg::Matrix eth(cmat);
+        DMatrix<T> dmat; // (eth.q_col_upb()-eth.q_col_lwb()+1, // TODO
+                         // eth.q_row_upb()-eth.q_row_lwb()+1);
         //typename DMatrix<T>::iterator dat = dmat.getData().begin();
-        for(register int i=eth.q_row_lwb(); i<=eth.q_row_upb(); i++)
-            for(register int j=eth.q_col_lwb(); j<=eth.q_col_upb(); j++)
-                dmat.at(j-1,i-1) = eth(i,j);
+        //for(register int i=eth.q_row_lwb(); i<=eth.q_row_upb(); i++)
+        //    for(register int j=eth.q_col_lwb(); j<=eth.q_col_upb(); j++)
+        //        dmat.at(j-1,i-1) = eth(i,j);
         return dmat;
     }
 
@@ -45,7 +49,7 @@ namespace dmutil {
         try {
             //if(!m_Verbose) freopen("/dev/null","a+",stderr);
             linalg::Matrix mat = convert<T>(dmat);
-            dmat = convert<T>(linalg::inverse(mat));
+            //dmat = convert<T>(linalg::inverse(mat)); // TODO
         } catch(void*)
         {
             //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
@@ -65,6 +69,7 @@ namespace dmutil {
     bool SVD(const DMatrix<T>& dmat, 
              DMatrix<T>& mU, DMatrix<T>& mS, DMatrix<T>& mV) 
     {
+        using namespace Eigen;
         bool m_Verbose = false;
         try {
             //if(!m_Verbose) freopen("/dev/null","a+",stderr);
@@ -75,18 +80,19 @@ namespace dmutil {
             linalg::Matrix mat = 
                 convert<T>(DMatrix<T>(dmat.sizeX(), dmat.sizeY()+d,0.0f)
                            .setRange(0,0,dmat));
-            linalg::SVD svd(mat);
-            if(m_Verbose) cout << "condition number of matrix A " << 
-                              svd.q_cond_number() << endl;
+	    JacobiSVD<MatrixXd> svd( mat, ComputeThinU | ComputeThinV);	    
+            //linalg::SVD svd(mat); // TODO
+            //if(m_Verbose) cout << "condition number of matrix A " << 
+            //                  svd.q_cond_number() << endl;
             //if(m_Verbose) cout << svd.q_U().q_nrows() << " rows" << endl;
             
-            DMatrix<T> U = dmutil::convert<T>(svd.q_U());
-            DMatrix<T> V = dmutil::convert<T>(svd.q_V());
-            linalg::Vector sig(svd.q_sig());
+            DMatrix<T> U = dmutil::convert<T>(svd.matrixU());
+            DMatrix<T> V = dmutil::convert<T>(svd.matrixV());
+            VectorXf sig(svd.singularValues());
             DMatrix<T> S;
             S.resize(V.sizeY(),U.sizeX(),T(0));
             dword sxy = min(S.sizeX(),S.sizeY());
-            vector< pair<T,dword> > sdiag(sxy);
+	    std::vector< std::pair<T,dword> > sdiag(sxy);
             for(dword i=0; i<sxy; i++) {
                 S.at(i,i) = sig(i+1);
                 sdiag[i].first = sig(i+1);
@@ -94,7 +100,7 @@ namespace dmutil {
             }
             mS = S; mU = U; mV = V;
             //sort by diagonal of S
-            sort(sdiag.begin(), sdiag.end(), std::greater< pair<float,T> >());
+            sort(sdiag.begin(), sdiag.end(), std::greater< std::pair<float,T> >());
             DMatrix<T> colu(1,U.sizeY());
             DMatrix<T> colv(1,V.sizeY());
             for(dword i=0; i<sxy; i++) {

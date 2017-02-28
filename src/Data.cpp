@@ -158,7 +158,7 @@ void Dataset::clear()
 // Data static methods
 
 bool Dataset::loadImage(vector< Image<byte> > &image, const char* file){
-  FXString ext=FXFile::extension(file);
+  FXString ext=FXPath::extension(file);
   FXImage *img=NULL;
   FXApp *app = FXApp::instance(); //getApp()
 
@@ -189,7 +189,7 @@ bool Dataset::loadImage(vector< Image<byte> > &image, const char* file){
 
   // Perhaps failed
   if(img==NULL){
-      FXMessageBox::error(/*this*/ app->getMainWindow(),MBOX_OK,"Error Loading Image","Unsupported type: %s",ext.text());
+      FXMessageBox::error(/*this*/ app->getRootWindow(),MBOX_OK,"Error Loading Image","Unsupported type: %s",ext.text());
     return FALSE;
     }
 
@@ -285,7 +285,7 @@ static void copyFXImage2Image(vector< Image<byte> > &dimg, const FXImage &img)
 	int width = img.getWidth();
 	int size = width*height;
 	byte *imgdat = (byte*)img.getData();
-	const int nchan = img.getChannels();
+	const int nchan = img.hasAlpha() ? 4 : 3;
         dimg.clear();
         dimg.resize(nchan);//, Image<byte>(width,height));
         for(vector< Image<byte> >::iterator ii = dimg.begin();
@@ -311,7 +311,7 @@ static void copyFXImage2Image(Image<byte> &dimg, const FXImage &img)
 	byte *imgdat = (byte*)img.getData();
         dimg.setSize(width,height);
 	byte *htimg = dimg.getData();
-	int nchan = img.getChannels();
+	int nchan = img.hasAlpha() ? 4 : 3;
 	for(int i=size;i>0;i--,imgdat+=nchan,htimg++)
 	{
 		//int val = int(0.299f*imgdat[0]+0.587f*imgdat[1]+0.114f*imgdat[2]);
@@ -331,7 +331,7 @@ static void copyImage2FXImage(FXImage &img, const Image<byte>& dimg)
 	int size = width*height;
 	byte *imgdat = (byte*)img.getData();
 	const byte *htimg = dimg.getData();
-	int nchan = img.getChannels();
+	int nchan = img.hasAlpha() ? 4 : 3;
 	for(int i=size;i>0;i--,imgdat+=nchan,htimg++)
 	{
 		imgdat[0] = *htimg;

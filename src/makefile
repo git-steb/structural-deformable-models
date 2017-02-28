@@ -8,7 +8,8 @@ srcdir = .
 SRCDIR = $(srcdir)
 include $(MAKEBUNDLE)/pre.make
 
-SUBDIRS = LinAlg camgraph
+SUBDIRS =
+#../external/camgraph
 include $(MAKEBUNDLE)/subdir.make
 
 ifneq ($(foo),yes)

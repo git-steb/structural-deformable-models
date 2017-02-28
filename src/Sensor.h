@@ -3,6 +3,7 @@
 #define _SENSOR_H_
 
 #include <math.h>
+#include <cmath>
 #include <vector>
 #include <set>
 #include "common.h"
@@ -14,7 +15,7 @@
 class SensorCollection;
 class Dataset;
 class ZeroSensor;
-ZeroSensor* getZeroSensor();
+const ZeroSensor* getZeroSensor();
 
 /** Sensor calculates filtervalues from the source. */
 class Sensor {
@@ -163,7 +164,7 @@ public:
 protected:
     //------------------------- data ----------------
     /** Handle of the source */
-    Sensor const *source;
+    const Sensor* source;
     /* parameters */
     /** Scale of filter (log2 scale --> 0 means 'full' resolution) */
     float scale;

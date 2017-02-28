@@ -93,7 +93,7 @@ PropVec ExpectationMap::getPropVec() const
         } else return getIdentityPropTF();
     }
     float rint = frand(m_Integral);
-    map<float, EMDistribution*>::const_iterator 
+    std::map<float, EMDistribution*>::const_iterator 
         ed = m_SortDist.lower_bound(rint);
     if(ed == m_SortDist.end()) ed = m_SortDist.begin();
     ed->second->m_ShootCount++;
@@ -121,7 +121,7 @@ float ExpectationMap::ratePropVec(const PropVec& prop, Winner* winner) const
         {
             float tr = dl->second->ratePropVec(prop);
             if(dl->second->m_Creator.m_WinnerID) {
-                const string& creatorname = dl->second->m_Creator.m_StructName;
+                const std::string& creatorname = dl->second->m_Creator.m_StructName;
                 dword creatorid = dl->second->m_Creator.m_WinnerID;
                 winner->rateBy(creatorname, creatorid, tr);
             } else if(winner->m_BestRating < tr) winner->m_BestRating = tr;
@@ -237,7 +237,7 @@ void EMDGauss::setStdev(const PropVec& stdev)
     m_Stdev = stdev;
     for(dword i = 0; i<stdev.size(); i++) {
         if(stdev[i]>0.0001) m_StdevRate[i] = stdev[i];
-        else m_StdevRate[i] = numeric_limits<float>::max();
+        else m_StdevRate[i] = std::numeric_limits<float>::max();
     }
 }
 
@@ -292,7 +292,7 @@ void Winner::clearRatings()
     m_Ratings.clear();
 }
 
-float Winner::rateBy(const string& creatorname, dword creatorid, float rating)
+float Winner::rateBy(const std::string& creatorname, dword creatorid, float rating)
 {
     m_Ratings[creatorname][creatorid] = rating;
     dword& brid = m_BestRatings[creatorname];
@@ -313,8 +313,8 @@ const std::pair<dword,float> Winner::getBest(const std::string& sname) const
 float Winner::getConnection(const std::string& sname, dword wid) const
 {
     if(!hasConnection(sname)) return -1.f;
-    const map<dword,float>& rl = getRatingList(sname);
-    map<dword,float>::const_iterator rt = rl.find(wid);
+    const std::map<dword,float>& rl = getRatingList(sname);
+    std::map<dword,float>::const_iterator rt = rl.find(wid);
     if(rt != rl.end()) return rt->second;
     else return -1.f;
 }
@@ -328,7 +328,7 @@ float Winner::updateBestRating()
     {
         dword& brid = m_BestRatings[refstruct->first];
         float bestrating = 0.f; //m_Ratings[refstruct->first][brid];
-        for(map<dword,float>::const_iterator wr= refstruct->second.begin();
+        for(std::map<dword,float>::const_iterator wr= refstruct->second.begin();
             wr != refstruct->second.end(); wr++)
         { // for each rating wr
             if(wr->second > bestrating) {

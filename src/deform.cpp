@@ -20,25 +20,24 @@ using namespace std;
 const FXuint TIMER_INTERVAL = 50;
 
 // Patterns
-const FXchar *patterns[]={
-  "All Files",   "*",
-  "GIF Image",   "*.gif",
-  "BMP Image",   "*.bmp",
-  "XPM Image",   "*.xpm",
-  "PCX Image",   "*.pcx",
-  "RGB Image",   "*.rgb",
+const FXString patterns =
+  "All Files (*)\n"
+  "GIF Image (*.gif)\n"
+  "BMP Image (*.bmp)\n"
+  "XPM Image (*.xpm)\n"
+  "PCX Image (*.pcx)\n"
+  "RGB Image (*.rgb)\n"
 //#ifdef HAVE_PNG_H
-  "PNG Image",   "*.png",
+  "PNG Image (*.png)\n"
 //#endif
 //#ifdef HAVE_JPEG_H
-  "JPEG Image",  "*.jpg",
+  "JPEG Image (*.jpg)\n"
 //#endif
-  "TARGA Image", "*.tga",
+  "TARGA Image (*.tga)\n"
 //#ifdef HAVE_JPEG_H
-  "TIFF Image",  "*.tif",
+  "TIFF Image (*.tif)\n"
 //#endif
-  NULL
-  };
+  ;
 
 // Message Map
 FXDEFMAP(ImageWindow) ImageWindowMap[]={
@@ -66,7 +65,7 @@ FXIMPLEMENT(ImageWindow,FXMainWindow,ImageWindowMap,ARRAYNUMBER(ImageWindowMap))
 
 bool setTitle(const std::string& title) {
     ImageWindow *mw = dynamic_cast<ImageWindow*>
-        (FXApp::instance()->getMainWindow());
+        (FXApp::instance()->getRootWindow());
     if(mw) {
         mw->setTitle(title.c_str());
         return true;
@@ -75,7 +74,7 @@ bool setTitle(const std::string& title) {
 
 bool setStatusText(const std::string& stext) {
     ImageWindow *mw = dynamic_cast<ImageWindow*>
-        (FXApp::instance()->getMainWindow());
+        (FXApp::instance()->getRootWindow());
     if(mw) {
         mw->setStatusText(stext.c_str());
         return true;
@@ -93,8 +92,9 @@ ImageWindow::ImageWindow(FXApp* a):FXMainWindow(a,"Deformable Model Segmentation
 
   canvasFrame=new FXVerticalFrame(contents,FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,10,10);
 
+  std::cout << "HAVE_GL_H = " << HAVE_GL_H << std::endl;
   // A Visual to drag OpenGL
-  glvisual=new FXGLVisual(getApp(),VISUAL_DOUBLEBUFFER|VISUAL_STEREO);
+  glvisual=new FXGLVisual(getApp(),VISUAL_DOUBLEBUFFER);
 
   // Drawing glcanvas
   glcanvas=new FXGLCanvas(canvasFrame,glvisual,this,ID_CANVAS,LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT);
@@ -112,8 +112,8 @@ ImageWindow::ImageWindow(FXApp* a):FXMainWindow(a,"Deformable Model Segmentation
 
   // Exit button
   new FXButton(buttonFrame,"E&xit\tQuit ImageApp",NULL,getApp(),FXApp::ID_QUIT,FRAME_THICK|FRAME_RAISED|LAYOUT_FILL_X|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,5,5);
-  FXStatusbar *sbar = new FXStatusbar(canvasFrame,LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X);
-  m_Statusline = sbar->getStatusline();
+  FXStatusBar *sbar = new FXStatusBar(canvasFrame,LAYOUT_SIDE_BOTTOM|LAYOUT_FILL_X);
+  m_Statusline = sbar->getStatusLine();
 
   m_SensorDlg = new SensorDialog(getApp(), this, 
                                  (SensorCollection&)m_Brain.getSensors());
@@ -122,10 +122,7 @@ ImageWindow::ImageWindow(FXApp* a):FXMainWindow(a,"Deformable Model Segmentation
   filename = "untitled";
   directory = ".";
 
-  // Initialize private variables
-  timer = NULL;
-
-  timer=getApp()->addTimeout(TIMER_INTERVAL,this,ID_TIMEOUT);
+  getApp()->addTimeout(this,ID_TIMEOUT,TIMER_INTERVAL);
 //   if(!m_Brain.loadModel("shape.dm"))
 // 	  setStatusText("Error loading geometry.");
   //if(!m_Brain.load("default.brain"))
@@ -136,8 +133,7 @@ ImageWindow::ImageWindow(FXApp* a):FXMainWindow(a,"Deformable Model Segmentation
 
 // Destroy ImageWindow
 ImageWindow::~ImageWindow(){
-
-  if(timer) getApp()->removeTimeout(timer);
+  getApp()->removeTimeout(this,ID_TIMEOUT);
 }
 
 
@@ -458,7 +454,7 @@ long ImageWindow::onMouseMove(FXObject*,FXSelector,void* ptr){
 //  Rotate the boxes when a timer message is received
 long ImageWindow::onTimeout(FXObject*,FXSelector,void*){
   drawScene();
-  timer=getApp()->addTimeout(TIMER_INTERVAL,this,ID_TIMEOUT);
+  getApp()->addTimeout(this,ID_TIMEOUT,TIMER_INTERVAL);
   return 1;
   }
 

@@ -75,7 +75,7 @@ private:
 	FXGLVisual        *glvisual;                // Visual for OpenGL
 
 	float			m_XYScale;
-    FXStatusline    *m_Statusline;
+    FXStatusLine    *m_Statusline;
 protected:
 	ImageWindow() : m_Selector(m_DB) {}
 
@@ -182,7 +182,7 @@ ImageWindow::ImageWindow(FXApp* a):FXMainWindow(a,"Deformable Model Segmentation
   canvasFrame=new FXVerticalFrame(contents,FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,10,10);
 
   // A Visual to drag OpenGL
-  glvisual=new FXGLVisual(getApp(),VISUAL_DOUBLEBUFFER|VISUAL_STEREO);
+  glvisual=new FXGLVisual(getApp(),VISUAL_DOUBLEBUFFER);
 
   // Drawing glcanvas
   glcanvas=new FXGLCanvas(canvasFrame,glvisual,this,ID_CANVAS,LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT);

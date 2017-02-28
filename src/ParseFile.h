@@ -61,7 +61,7 @@ public:
         m_LastLine = m_Line; 
         m_Line.clear(); m_Key.clear(); m_Value.clear();
         while(m_Key.empty() && 
-              (!m_PushedLines.empty() ? true : std::getline(m_IS, m_Line))) {
+              (!m_PushedLines.empty() ? true : (bool)std::getline(m_IS, m_Line))) {
             if(!m_PushedLines.empty()) {
                 m_Line = m_PushedLines.back();
                 m_PushedLines.pop_back();

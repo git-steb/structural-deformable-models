@@ -25,8 +25,9 @@ SensorDialog::SensorDialog(FXApp *a, ImageWindow* iw, SensorCollection& sc)
 {
     FXHorizontalFrame* contents=new FXHorizontalFrame(
         this,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0, 0,0,0,0);
-    m_SList = new FXListBox(contents, 5,this, ID_SENSSEL, 
+    m_SList = new FXListBox(contents, this, ID_SENSSEL, 
                             LISTBOX_NORMAL|LAYOUT_FILL_X);
+    m_SList->setNumVisible(5);
     m_SList->setWidth(400);
     new FXButton(contents, "&Edit",NULL, this, ID_SENSEDIT);
     new FXButton(contents, "&Hide",NULL, this, ID_HIDE);
@@ -46,7 +47,7 @@ long SensorDialog::onEdit(FXObject*,FXSelector sel,void* ptr)
         if(m_ImgWin) m_ImgWin->selectSensor(getSelectedSensor());
     } else {
         FXInputDialog inpd(this, "Edit Sensor", "Sensor string");
-        inpd.setText(m_SList->retrieveItem(m_SList->getCurrentItem()));
+        inpd.setText(m_SList->getItem(m_SList->getCurrentItem()));
         if(inpd.execute()) {
             vuMutex blah;
             vuLock(m_PGeomMutex ? *m_PGeomMutex : blah);

@@ -10,23 +10,7 @@
 # SRCDIR
 #
 
-# -----------------------------------------------------------------------
-# The operating system we're building under. IRIX, LINUX or WINDOWS
-
-# Windows 2000 sets the environment varibale %OS% to Windows_NT by default:
-ifeq ($(OS),Windows_NT)
-  export OS_TYPE = WINDOWS
-endif
-
-# On most linux systems, $OSTYPE is set instead of $OS_TYPE
-ifeq ($(OSTYPE),linux)
-  export OS_TYPE = Linux
-endif
-
-# On most irix systems, $OSTYPE is set instead of $OS_TYPE
-ifeq ($(OSTYPE),irix)
-  export OS_TYPE = IRIX64
-endif
+include $(MAKEBUNDLE)/detect-os-type.make
 
 # ---------------------------------------------------------------------
 
@@ -153,3 +137,6 @@ LIB_DIR   += -L$(_LIB_PATH_)
 
 %.o : %.c $(OS)
 	$(CC) -c $(FLAGS) $(CPPFLAGS) $(INCLS) -o $@ $<
+
+%.o : %.cc
+	$(CC) -c $(CFLAGS) $(CPPFLAGS) $(INCLS) -o $@ $<

@@ -29,7 +29,8 @@ endif
 
 _libTmp     = $(SOURCES:%.cpp=$(_libObjPath)%.o)
 _libTmp2    = $(_libTmp:%.cxx=$(_libObjPath)%.o)
-_libObjects = $(_libTmp2:%.c=$(_libObjPath)%.o)
+_libTmp3    = $(_libTmp2:%.cc=$(_libObjPath)%.o)
+_libObjects = $(_libTmp3:%.c=$(_libObjPath)%.o)
 
 # --- main lib goals ------------------------------------------------
 
@@ -124,5 +125,8 @@ $(_libObjPath)%.o : %.cxx
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) $(INCLS) -o $@ $<
 
 $(_libObjPath)%.o : %.c 
+	$(CC) -c $(FLAGS) $(CPPFLAGS) $(INCLS) -o $@ $<
+
+$(_libObjPath)%.o : %.cc 
 	$(CC) -c $(FLAGS) $(CPPFLAGS) $(INCLS) -o $@ $<
 

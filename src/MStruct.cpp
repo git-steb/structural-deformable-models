@@ -674,7 +674,7 @@ void SubStructure::analyseTF(const DMatrixf& tfmat)
     tfcov *= (1.f/(ntfmat.sizeY())); //normalize by number of samples
     if(show) DUMP(tfcov);
     DMatrixf mU, mS, mV;
-    dmutil::SVD(tfcov, mU, mS, mV);
+    // dmutil::SVD(tfcov, mU, mS, mV); // TODO
     m_Sigma = mS.getDiag();
     float relvar = 1.f/4; //1.f/dmutil::sum(m_Sigma).at(0,0); // has to be 1/4
     for(dword i=0;i<m_Sigma.sizeY(); i++)

@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <functional>
 #include <sstream>
+#include <cstdint>
+
 #include "Brain.h"
 #include "ParseFile.h"
 
@@ -11,7 +13,8 @@
 #include "mathutil.h"
 #include "utils.h"
 #include "glutils.h"
-#include "camgraph/gprocess.h"
+
+//#include "camgraph/gprocess.h"
 
 using namespace std;
 
@@ -376,7 +379,7 @@ void Brain::run(int whatsup, void* data)
 	    break;
         case DO_ANALYSIS:
         {
-            anastate = (int)data;
+            anastate = (int)(intptr_t)data;
             if(m_ThreadActive[DO_ANALYSIS]) break;
             m_ThreadActive[DO_ANALYSIS] = true;
             if(!m_RunMutex[DO_ANALYSIS].trylock()) {      
@@ -966,6 +969,7 @@ bool Brain::triggerTest(int mx, int my, int what) {
             }
             break;
 	}
+/*
         case KEY_o: // postscript output
         {
             string fname = "graph.ps";
@@ -987,6 +991,7 @@ bool Brain::triggerTest(int mx, int my, int what) {
             cout << "wrote file " << fname << endl;
             break;
         }
+*/
 	case KEY_period: //.
 	    m_DesignMode = !m_DesignMode;
 //            *m_Prototypes[m_Geom->getName()] = *m_Geom;
@@ -1232,7 +1237,7 @@ bool Brain::doCommand(const std::string& command, const std::string& value,
         cout << "image resolution is halved beyond a size of " 
              << m_BrowseData.getHalveBeyondSize() << endl;
     } else if(command == "analysis") {
-        int para=0; fromString(value, para);
+        intptr_t para=0; fromString(value, para);
         startThread(DO_ANALYSIS, (void*)para);
     } else if(command == "noise") {
         cout << "going for noise" << endl;

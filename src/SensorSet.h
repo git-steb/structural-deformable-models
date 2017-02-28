@@ -2,7 +2,6 @@
 #ifndef _SENSORSET_H_
 #define _SENSORSET_H_
 
-//#include <limits>
 #include <math.h>
 #include <complex>
 #include "Sensor.h"

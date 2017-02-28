@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include "common.h"
+#include "mathutil.h"
 
 template <class T>
 class Image : public std::vector<T>
@@ -35,12 +36,12 @@ public:
         { return rhs.getSizeX()==sizeX && rhs.getSizeY()==sizeY; }
 
 
-    const T *getData() const {return &(*begin());}
-    T *getData() {return &(*begin());}
+  const T *getData() const {return &(*std::vector<T>::begin());}
+    T *getData() {return &(*std::vector<T>::begin());}
 
     int getSizeX() const { return sizeX;}
     int getSizeY() const { return sizeY;}
-    int getSize() const { return size();}
+    int getSize() const { return std::vector<T>::size();}
 
     Image<T>& operator=(const Image<T>& rhs);
     Image<T>& operator=(const T& rhs);
@@ -56,10 +57,10 @@ public:
     }
     
     const T getPixel(int x, int y) const {
-        return at(getIndex(x,y));
+      return std::vector<T>::at(getIndex(x,y));
     }
     void setPixel(int x, int y, const T &value) {
-        at(getIndex(x,y)) = value;
+        std::vector<T>::at(getIndex(x,y)) = value;
     }
     //! calculate maximum
     const T findMax() const;
@@ -174,7 +175,7 @@ public:
             int stepx = (int)round(1/sx); if(stepx<=0) stepx=1;
             int stepy = (int)round(1/sy); if(stepy<=0) stepy=1;
             Image<T> nimg(getSizeX()/stepx, getSizeY()/stepy);
-            Image<T>::const_iterator src = begin();
+            Image<T>::const_iterator src = std::vector<T>::begin();
             Image<T>::iterator dst = nimg.begin();
             for(int j=0; j<nimg.sizeY; j++) {
                 Image<T>::const_iterator linebegin = src;
@@ -187,17 +188,17 @@ public:
         }
     
     /*! \returns true if image has been initialized (data is not NULL)*/
-    bool initialized() const { return !empty(); }
+    bool initialized() const { return !std::vector<T>::empty(); }
     
     friend std::ostream& operator<<(std::ostream& os, const Image<T>& rhs) {
-        os << rhs.sizeX << " " << rhs.sizeY << endl;
+        os << rhs.sizeX << " " << rhs.sizeY << std::endl;
         int xc = rhs.sizeX;
         for(const_iterator pnt = rhs.begin(); pnt != rhs.end(); pnt++) {
             os<<*pnt;
             if(--xc == 0) {
-                cout << endl;
+	        std::cout << std::endl;
                 xc = rhs.sizeX;
-            } else cout << " ";
+            } else std::cout << " ";
         }
         return os;
     }
@@ -209,8 +210,8 @@ public:
 
     bool writePPMstream(std::ostream& os) const{
         if(!os) return false;
-        os << sizeX << " " << sizeY << endl;
-        os.write((const char*)&front(), sizeX*sizeY);
+        os << sizeX << " " << sizeY << std::endl;
+        os.write((const char*)&std::vector<T>::front(), sizeX*sizeY);
         return true;
     }
 
@@ -223,8 +224,8 @@ public:
         if(!is) return false;
         is >> sizeX;
         is >> sizeY;
-        resize(sizeX*sizeY);
-        is.read((char*)&front(), sizeX*sizeY);
+        std::vector<T>::resize(sizeX*sizeY);
+        is.read((char*)&std::vector<T>::front(), sizeX*sizeY);
         return true;
     }
 
@@ -266,11 +267,11 @@ void Image<T>::freeImage()
 template<class T>
 void Image<T>::setSize(int nx, int ny)
 {
-    if(!empty() && nx==sizeX && ny==sizeY) return;
+    if(!std::vector<T>::empty() && nx==sizeX && ny==sizeY) return;
     sizeX = nx;
     sizeY = ny;
-    clear();
-    if(nx*ny) resize(nx*ny);
+    std::vector<T>::clear();
+    if(nx*ny) std::vector<T>::resize(nx*ny);
 }
 
 template<class T>
@@ -278,7 +279,7 @@ void Image<T>::setSize(int nx, int ny, const T &value)
 {
     sizeX = nx;
     sizeY = ny;
-    clear();
+    std::vector<T>::clear();
     if(nx*ny) resize(nx*ny, value);
 }
 
@@ -295,7 +296,7 @@ Image<T>& Image<T>::copy(const Image<T>& rhs)
 template<class T>
 Image<T>& Image<T>::copy(const T* rhs)
 {
-    for(iterator pnt = begin(); pnt != end(); pnt++, rhs++)
+    for(iterator pnt = std::vector<T>::begin(); pnt != std::vector<T>::end(); pnt++, rhs++)
         *pnt = *rhs;
     return *this;
 }
@@ -309,9 +310,9 @@ Image<T>& Image<T>::operator=(const Image<T>& rhs)
 template<class T>
 Image<T>& Image<T>::operator=(const T& rhs)
 {
-    if(!empty() && sizeX>0 && sizeY>0)
+    if(!std::vector<T>::empty() && sizeX>0 && sizeY>0)
     {
-        for(iterator pnt = begin(); pnt != end(); pnt++)
+        for(iterator pnt = std::vector<T>::begin(); pnt != std::vector<T>::end(); pnt++)
             *pnt = rhs;
     }
     return *this;
@@ -320,7 +321,7 @@ Image<T>& Image<T>::operator=(const T& rhs)
 template<class T>
 const T Image<T>::findMax() const
 {
-    if(empty()) return 0;
+    if(std::vector<T>::empty()) return 0;
     const T* pnt = getData();
     T max = *pnt;
     for(int i=getSize(); i>0; i--, pnt++)
@@ -331,7 +332,7 @@ const T Image<T>::findMax() const
 template<class T>
 const T Image<T>::findMin() const
 {
-    if(empty()) return 0;
+    if(std::vector<T>::empty()) return 0;
     const T* pnt = getData();
     T min = *pnt;
     for(int i=getSize(); i>0; i--, pnt++)
@@ -439,7 +440,7 @@ Image<T>& Image<T>::operator-=(const Image<T>& rhs)
 template<class T>
 void Image<T>::addLine(int x0, int y0, int x1, int y1, const T& value) 
 {
-    if(empty()) return;
+    if(std::vector<T>::empty()) return;
     //left point first?
     if(x0>x1) {
         x0 += x1; x1 = x0-x1; x0 -= x1;		//who needs a dummy?
@@ -572,7 +573,7 @@ void Image<T>::insert(const Image<T> &ii, const int x, const int y)
     {
         for(int j=0; j<iheight; j++) {
             const_iterator src = ii.begin()+ii.getIndex(0,j);
-            iterator dst = begin()+getIndex(x,j+y);
+            iterator dst = std::vector<T>::begin()+getIndex(x,j+y);
             for(int i=0; i<iwidth; i++, src++, dst++)
             {
                 *dst = *src;

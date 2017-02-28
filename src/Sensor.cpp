@@ -10,13 +10,11 @@
 
 using namespace std;
 
-Sensor::Sensor(const Sensor *_source) : source(_source), scale(0.f),
+Sensor::Sensor(const Sensor *_source) : source(_source ? _source : getZeroSensor()),
+					scale(0.f),
 					updateMask((dword)UPD_DATA),
 					m_ID(""), m_Skip(0), m_AddSkip(0)
 {
-    if(!source) {
-	(Sensor*)source = (Sensor*)getZeroSensor();
-    }
     if(source == this)	// class Dataset or ZeroSensor is initialized
 	cweights.resize(1, 1.f);
     else {
@@ -90,9 +88,9 @@ void Sensor::changeSource(const Sensor* _source) {
     assert(source);
     ((Sensor*)source)->unrefSuperSensor(this);
     if(!_source)
-	(Sensor*)source = (Sensor*)getZeroSensor();
+	source = getZeroSensor();
     else 
-	(Sensor*)source = (Sensor*)_source; 
+	source = _source; 
     ((Sensor*)source)->refSuperSensor(this);
     setModified(UPD_DATA);
 }
@@ -174,7 +172,7 @@ void Sensor::unrefSuperSensor(Sensor *super) {
 	superSensors.erase(super);
 }
 void Sensor::invalidateSource() { 
-    (Sensor*)source = (Sensor*)getZeroSensor(); 
+    source = getZeroSensor(); 
     ((Sensor*)source)->refSuperSensor(this);
 }
 
@@ -214,7 +212,7 @@ ostream& Sensor::hprint(ostream &os, SensorCollection *sc) const
 
 //-----------------------------------------------------------------------------
 //class ZeroSensor
-ZeroSensor* getZeroSensor() 
+const ZeroSensor* getZeroSensor() 
 { 
     static ZeroSensor zeros;
     return &zeros;

@@ -3,6 +3,7 @@
 #endif
 #include <iostream>
 #include <fstream>
+#include <typeinfo>
 #include "SensorSet.h"
 #include "SensorColl.h"
 #include "mathutil.h"

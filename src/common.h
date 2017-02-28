@@ -7,6 +7,7 @@
 #endif
 #include <assert.h>
 #include "simpletypes.h"
+#include <limits>
 
 #ifndef NOTRACE
 #define TRACE(msg) cerr << __FILE__ << ":" << __LINE__ << ": " << msg << endl

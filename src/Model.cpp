@@ -16,7 +16,8 @@
 #include "Searcher.h"
 #include "crc.h"
 #include "mathutil.h"
-#include "camgraph/gprocess.h"
+
+//#include "camgraph/gprocess.h"
 
 using namespace std;
 
@@ -565,6 +566,7 @@ void Model::draw(bool drawPoints) const {
     }
 }
 
+/*
 void Model::drawPS(CAMgraphicsProcess& gp, dword mode) const {
     double x[2], y[2];
     double height  = !m_Dataset || !m_Dataset->initialized() ? 0.0 
@@ -579,6 +581,7 @@ void Model::drawPS(CAMgraphicsProcess& gp, dword mode) const {
         gp.plot(x,y,2);
     }
 }
+*/
 
 void Model::attachSensorColl(SensorCollection* sc)
 {

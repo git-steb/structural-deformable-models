@@ -34,7 +34,7 @@ private:
 
     float			m_XYScale;
     bool            m_BrainStarted;
-    FXStatusline    *m_Statusline;
+    FXStatusLine    *m_Statusline;
     SensorDialog*       m_SensorDlg;            //!< sensor dialog
 
  protected:
