@@ -32,9 +32,13 @@ TODO
 INSTALLATION 
 ---------------------------
 
-After adjusting build paths and compiler options in src/Makebundle/pre.make and lib.make
-run ``make`` in the src folder to obtain a build of the deform binary in a
-architecture specific subfolder, e.g. ``src/obj/LINUX_debug/``.
+After adjusting build paths and compiler options in src/Makebundle/pre.make and lib.make run
+
+   ./download-externals.sh
+   cd src
+   make -j4
+
+to obtain a build of the deform binary in a architecture specific subfolder, e.g. ``src/obj/LINUX_debug/``.
 
 Libraries and external source code that is required to build and run the application:
 

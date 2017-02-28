@@ -1,0 +1,3 @@
+searcher searcher.cnf
+data ../data/p2.jpg
+model pappel.dm

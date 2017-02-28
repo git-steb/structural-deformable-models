@@ -1,0 +1,3 @@
+db ../../mcz/db/species-db.dat
+dbsel kinds.list
+model pheidole-body.dm

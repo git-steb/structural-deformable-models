@@ -10,6 +10,8 @@
 #include <string.h>
 #include <iostream>
 #include <time.h>
+#include "glutils.h"
+
 using namespace std;
 
 #ifdef WIN32
@@ -92,7 +94,6 @@ ImageWindow::ImageWindow(FXApp* a):FXMainWindow(a,"Deformable Model Segmentation
 
   canvasFrame=new FXVerticalFrame(contents,FRAME_SUNKEN|LAYOUT_FILL_X|LAYOUT_FILL_Y|LAYOUT_TOP|LAYOUT_LEFT,0,0,0,0,10,10,10,10);
 
-  std::cout << "HAVE_GL_H = " << HAVE_GL_H << std::endl;
   // A Visual to drag OpenGL
   glvisual=new FXGLVisual(getApp(),VISUAL_DOUBLEBUFFER);
 
@@ -491,6 +492,8 @@ int main(int argc,char *argv[]){
   // Make window
   ImageWindow *iw = new ImageWindow(&application);
   iw->cmdline(argc,argv);
+
+  glutInit(&argc,argv);
 
   // Create the application's windows
   application.create();

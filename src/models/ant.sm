@@ -1,0 +1,14 @@
+struct pheidole-head
+  model pheidole-h.dm         # kann auch leer sein (?)
+#  model line2.dm
+  size 1.0                  # stdradius in mm
+  substruct eye
+    transform -13 5 1 0
+  end # substruct
+end # struct
+
+struct pheidole-middle
+  model pheidole-m
+  #size blubb...
+end
+

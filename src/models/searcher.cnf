@@ -1,0 +1,26 @@
+searcher
+  evolvecycle     0.5
+  maxpop          100
+  nspawns         20
+  nspawnsthred    0.95
+  nclusters       3
+  clusterth       0.0
+  clusterdpos     1
+  clusterdscale   1.
+  clusterddir     1.
+  clustermeltdist 0.5
+  relbindist      0.7
+
+  # mutaterate      0.3
+  # mutatehl        30
+  mutatespawns    10
+  mutatethred     0.0
+  # mutatepdir      0.5
+  # mutateppos      0.4
+  # mutatepnoise    0.2
+  # mutatenoiserate 0.1
+  # mutatepprop     0.3
+  # mutateproprate  0.5
+  shapeweight     0.5
+  solver          1
+end

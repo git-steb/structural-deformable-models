@@ -1,0 +1,5 @@
+db ../../mcz/db/species-db.dat
+dbsel kinds.list
+#data data/ant2.jpg
+model line.dm
+structure ant.sm
