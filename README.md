@@ -20,6 +20,8 @@ An overview of the main classes implemented in the ``src`` folder is given in
 Chapter 5 of the thesis ["Structural Deformable Models for Robust Object Recognition"
 on page 61 (p. 81 in the PDF)](https://stevenbergner.github.io/assets/pub/thesis_bergner03.pdf "diploma thesis PDF file").
 
+![alt text][sdm-framework]
+
 TODO
 ----
 
@@ -68,3 +70,4 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 [bergner2003ants]: https://stevenbergner.github.io/research/2003/12/18/deformable-models.html "diploma thesis research page"
+[sdm-framework]: https://stevenbergner.github.io/assets/img/sdm-framework.jpg "Structural Deformable Model Framework"
