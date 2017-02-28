@@ -281,7 +281,7 @@ long ImageWindow::onLoadImage(FXObject*,FXSelector,void*){
 	  m_ScreenImg.setSize(0,0);
 	  setStatusText((FXString("trying to load: ")+filename).text());
 	  if(!m_Brain.loadData(filename.text()))
-		setStatusText("Error loading file.");
+		setStatusText(("Error loading file "+filename).text());
   } 
   return 0;
 }

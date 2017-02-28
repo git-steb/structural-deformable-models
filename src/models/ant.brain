@@ -1,5 +1,0 @@
-db ../../data/antweb-mcz.dat
-dbsel ../../data/antweb-mcz.list
-#data ../../data/photos/ant2.jpg
-model pheidole-h.dm
-structure ant.sm

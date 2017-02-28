@@ -34,9 +34,9 @@ INSTALLATION
 
 After adjusting build paths and compiler options in src/Makebundle/pre.make and lib.make run
 
-   ./download-externals.sh
-   cd src
-   make -j4
+    ./download-externals.sh
+    cd src
+    make -j4
 
 to obtain a build of the deform binary in a architecture specific subfolder, e.g. ``src/obj/LINUX_debug/``.
 
@@ -59,7 +59,7 @@ Some of the package installations to compile using ``cd src; make -j4`` on Ubunt
 INSTALLATION - Data
 -------------------
 
-The algorithms works on image data, e.g., as collected by [MCZ at Harvard Entomology](insects.oeb.harvard.edu/mcz/ "database website").
+The algorithm works on image data, e.g., as collected by [MCZ at Harvard Entomology](insects.oeb.harvard.edu/mcz/ "database website").
 Download of macro-photographic image data for personal use or research, or whichever type of usage permitted by the database website, can be done using a script (TODO) and wget.
 
 LICENSE for the contents of this repository (MIT)

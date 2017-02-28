@@ -186,27 +186,28 @@ bool Dataset::loadImage(vector< Image<byte> > &image, const char* file){
     img=new FXTIFImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
     }
 #endif
-
-  // Perhaps failed
-  if(img==NULL){
-      FXMessageBox::error(/*this*/ app->getRootWindow(),MBOX_OK,"Error Loading Image","Unsupported type: %s",ext.text());
-    return FALSE;
-    }
-
-  // Load it
-  FXFileStream stream;
-  if(stream.open(file,FXStreamLoad)){
-      //app->beginWaitCursor();
-    img->loadPixels(stream);
-    stream.close();
-    img->create();
-    //app->endWaitCursor();
-    //img->mirror(false, true);
-    copyFXImage2Image(image, *img);
-    }
-  delete img;
-  return TRUE;
-
+  bool load_ok = false;
+  if(img!=NULL) {
+      // Load it
+      FXFileStream stream;
+      if(stream.open(file,FXStreamLoad)){
+        //app->beginWaitCursor();
+        load_ok = img->loadPixels(stream);
+        if(load_ok) {
+            img->create();
+            //app->endWaitCursor();
+            //img->mirror(false, true);
+            copyFXImage2Image(image, *img);
+        }
+        stream.close();
+      }
+      delete img;
+  }
+  //note: modal error message causes deadlock on Brain::m_DataMutex
+  //between Brain::loadData and Brain::drawAllModels
+  //if(!load_ok)
+  //    FXMessageBox::error(/*this app->getRootWindow()*/ app,MBOX_OK,"Error Loading Image","Unsupported type: %s",ext.text());
+  return load_ok;
 }
 
 void Dataset::addNoise(float sigma)
@@ -285,18 +286,18 @@ static void copyFXImage2Image(vector< Image<byte> > &dimg, const FXImage &img)
 	int width = img.getWidth();
 	int size = width*height;
 	byte *imgdat = (byte*)img.getData();
-	const int nchan = img.hasAlpha() ? 4 : 4;
-        dimg.clear();
-        dimg.resize(nchan);//, Image<byte>(width,height));
-        for(vector< Image<byte> >::iterator ii = dimg.begin();
-            ii!=dimg.end(); ii++)
-            ii->setSize(width, height);
-        //dimg.setSize(width,height);
-        int sind = 0;
+	const int nchan = 4;
+    dimg.clear();
+    dimg.resize(nchan);//, Image<byte>(width,height));
+    for(vector< Image<byte> >::iterator ii = dimg.begin();
+        ii!=dimg.end(); ii++)
+        ii->setSize(width, height);
+    //dimg.setSize(width,height);
+    int sind = 0;
 	for(int i=size;i>0;i--,imgdat+=nchan,sind++)
 	{
             for(int c=0; c<nchan; c++) {
-		dimg[c][sind] = imgdat[c];
+            	dimg[c][sind] = imgdat[c];
             }
 	}
 }
@@ -311,7 +312,7 @@ static void copyFXImage2Image(Image<byte> &dimg, const FXImage &img)
 	byte *imgdat = (byte*)img.getData();
         dimg.setSize(width,height);
 	byte *htimg = dimg.getData();
-	int nchan = img.hasAlpha() ? 4 : 3;
+	int nchan = 4;
 	for(int i=size;i>0;i--,imgdat+=nchan,htimg++)
 	{
 		//int val = int(0.299f*imgdat[0]+0.587f*imgdat[1]+0.114f*imgdat[2]);
@@ -331,7 +332,7 @@ static void copyImage2FXImage(FXImage &img, const Image<byte>& dimg)
 	int size = width*height;
 	byte *imgdat = (byte*)img.getData();
 	const byte *htimg = dimg.getData();
-	int nchan = img.hasAlpha() ? 4 : 3;
+	int nchan = 4;
 	for(int i=size;i>0;i--,imgdat+=nchan,htimg++)
 	{
 		imgdat[0] = *htimg;
