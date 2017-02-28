@@ -1,0 +1,134 @@
+short help on key combinations:
+-------------------------------
+
+.       switch to design mode
+d       switch to structure control(internal keymode 3)
+s       switch to searcher control (internal keymode 1)
+
+esc     type and execute command
+S-X     type command (but don't execute, this is useless)
+
+sensor control
+--------------
+F5      show full image
+F6      show previous sensor
+F7      refresh current sensor
+F8      show next sensor
+
+species navigation
+------------------
+pgup    switch to previous species in data base
+pgdn    switch to next species in data base
+home    switch to previous genus in data base
+end     switch to next genus in data base
+ins     image resolution
+
+structure control (invoke through d-key)
+-----------------
+t       rebuild expectation maps
+g       evaluate relations
+n       build master model for all structures
+v       find best connection
+c       toggle result visibility/drawing (internal: ST_RESULT flag)
+u       start structure search
+i       stop structure search
+h       pause search (switch of ST_RUN flag) for all searchers
+s       resume search (switch on ST_RUN flag) for all searchers
+
+searcher control (invode though s-key)
+----------------
+r       clear searcher state
+s       run/pause search (toggle MODE_PAUSE mode)
+h       pause search
+w       remove all non-winners
+F4      remove all model instances below relative quality threshold
+
+misc keys
+---------
+first h record ant colour samples
+h       save antcol.dat
+first j record bg colour samples
+j       save antbg.dat
+return  attach sensors
+r       add noise
+space   toggle update for all on/off
+S-S     draw own state
+q       set upper bound for search from current object prop. (x,y,scale,phi)
+a       set lower bound for search from current object prop. (x,y,scale,phi)
+S-A     set spread for search from current object prop. (x,y,scale,phi)
+z       set search
+S-Z     setup search
+S-W     get representative from current search
+
+right   next shape instance
+left    previous shape instance
+
+l       adapt rest lengths between selected nodes (or all)
+p       adapt proportion
+
+S-L     load a structural model
+k       kill current model instance (state)
+S-K     kill all states (model instances)
+S-D     distribute new models
+
+S-R     evaluate relations (among different shapes?)
+g       load a single shape model
+S-G     write current shape model (to 'shape.dm'?)
+v       create a node at mouse position
+vv      create a node and add edge to last node
+S-V     remove node
+u       set flag 5 of current species
+S-U     unset flag 5 of current species
+0       remove bad shapes (how does this relate to F4?)
+
+8       update current structure from manual searcher
+9       update manual searcher from current structure
+F1      double time scale
+F2      halve time scale
+F3      toogle done state (stop/run brain)
+F4      kill model instances below relative quality range
+S-P     pick closest shape instance and show state info
+w       copy winners
+
+m       set current model instance to be reference model
+M       get current reference model properties
+,       switch to next structure
+/       show next interpretation
+\       show best interpretation
+
+model instance manipulation
+---------------------------
+1       rotate pos
+2       rotate neg
+3       scale (selected) node distances up
+4       scale (selected) node distances down
+5       move highlighted node position
+6       attach current sensor to highlighted node
+7       do something very specific to nodes 4,5,6 and edge 18 (???)
+t       create additional edge sensors
+e       connect nodes
+S-E     remove edges
+n       unselect all nodes
+S-N     select all nodes
+c       add node
+cc      add node and edge
+o       write postscript output of current model instance ('graph.ps')
+
+commands (called through ESC xxx)
+--------
+
+savedb  save status of current data base setup
+scale0  set scale lower bound
+scale1  set scale upper bound
+scaleh  halve scale (ppmm)
+scaled  double scale (ppmm)
+flags   show flags of current species
+go      load current species
+calstat calculate all stats (over data base)
+selall  select all species in data base
+process load current species
+setdir  set current node to be direction indicator
+savesearcher <filename> save configuration of current searcher
+hbs <size>              halve beyond given size
+analysis                do analysis
+noise <amount>          add a certain portion of noise

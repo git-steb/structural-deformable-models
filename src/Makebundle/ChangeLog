@@ -1,0 +1,42 @@
+2003-02-07  Martin Spindler <mspindle@cs.sfu.ca>
+
+	* LINUX.config.make: added -L/usr/X11R6/lib to lib-path
+
+2003-01-12  Martin Spindler  <mspindle@cs.sfu.ca>
+
+	* [lib,tool,subdir].make: added cleandepend rule
+
+2002-11-23  Martin Spindler  <mspindle@cs.sfu.ca>
+
+	* pre.make: library path was not created (fixed)
+
+2002-11-22  Martin Spindler  <mspindle@cs.sfu.ca>
+
+	* lib.make, tool.make, pre.make: replaced "mkdir -p" with "mkdir"
+
+2002-11-19  Martin Spindler  <mspindle@cs.sfu.ca>
+
+	* lib.make, tool.make: fixed annoying depend bug 
+
+	* pre.make: pay additional attention to $OSTYPE 
+
+2002-11-06  Martin Spindler  <mspindle@cs.sfu.ca>
+
+	* TODO: added
+
+2002-11-02  Martin Spindler  <mspindle@cs.sfu.ca>
+
+	* README: added 
+
+2002-10-31  Martin Spindler  <mspindle@css.sfu.ca>
+
+	* pre.make: if $(OS)=Windows_NT -> set OS to WINDOWS
+
+2002-10-27  Martin Spindler  <mspindle@mspindle@css.sfu.ca>
+
+	* renamed env.make to pre.make
+
+	* config.make: added
+
+	* lib.make, tool.make, subdir.make, env.make: added
+
