@@ -616,12 +616,15 @@ void MStructure::showStats(const SubStructure& subs, std::ostream& os) const
         DUMP(subs.m_Mean);
         DUMP(subs.m_Stdev);
         delete ed;
+
+	os << "pcomp  : " << PropVec(&subs.m_Sigma.at(0,0)) << endl;
+	os << "average: " << dmutil::avg(ratings).at(0,0) << endl;
+	os << "stdev  : " << dmutil::stdev(ratings).at(0,0) << endl;
+	if(ncomod>0) {
+	  os << "min    : " << ratings.min() << endl;
+	  os << "max    : " << ratings.max() << endl;
+	}
     } else os << "error generating exp.distr." << endl;
-    os << "pcomp  : " << PropVec(&subs.m_Sigma.at(0,0)) << endl;
-    os << "average: " << dmutil::avg(ratings).at(0,0) << endl;
-    os << "stdev  : " << dmutil::stdev(ratings).at(0,0) << endl;
-    os << "min    : " << ratings.min() << endl;
-    os << "max    : " << ratings.max() << endl;
 }
 
 bool MStructure::stepSearch(float dt)
@@ -715,6 +718,7 @@ EMDistribution* SubStructure::generateEMDist(const PropVec& wprop, float ppmm,
     switch(DistrType(dtype)) {
         case EMD_PCA:
         {
+        	if(m_Sigma.empty()) break;
             //generate a transformed gaussian distribution (using PCA xform)
             DMatrixf stddm(m_Sigma);
             stddm *= getSearchPara().m_ScaleStd;

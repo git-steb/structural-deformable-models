@@ -285,7 +285,7 @@ static void copyFXImage2Image(vector< Image<byte> > &dimg, const FXImage &img)
 	int width = img.getWidth();
 	int size = width*height;
 	byte *imgdat = (byte*)img.getData();
-	const int nchan = img.hasAlpha() ? 4 : 3;
+	const int nchan = img.hasAlpha() ? 4 : 4;
         dimg.clear();
         dimg.resize(nchan);//, Image<byte>(width,height));
         for(vector< Image<byte> >::iterator ii = dimg.begin();
