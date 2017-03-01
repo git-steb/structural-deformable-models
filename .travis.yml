@@ -1,0 +1,9 @@
+language: c++
+compiler: g++
+install:
+  - cd src
+  - make -j4
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libfox-1.6-dev fftw-dev libgl1-mesa-glx-lts-xenial
+  - ./download-externals.sh
