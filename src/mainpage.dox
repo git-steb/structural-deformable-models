@@ -1,0 +1,41 @@
+/**
+@brief Structural deformable shape models
+@author Steven Bergner
+@mainpage Structural deformable models - Detection of ant species and other multi-component objects
+
+This is C++ research code implementing the image analysis system
+described in the thesis "Structural deformable models for robust object recognition".
+
+The code <a href="https://github.com/git-steb/structural-deformable-models">is available on GitHub</a>.
+Also see the <a href="https://stevenbergner.github.io/research/2003/12/18/deformable-models.html">project web page</a>
+with a link to the thesis describing the ideas behind the implementation or
+have a look at the <a href="classes.html">Overview of classes</a> as an entry point to browse the code.
+
+Data processing, multi-threaded optimization, and animated display of evolving models via GPU rendering are implemented from the ground up based on linear algebra from Eigen3, FFTW3, pthreads, OpenGL/freeglut, and Fox toolkit. Since there is no dependency on any external image processing code, the code may be fun to look at for learning about numerical software in C++, such as convolution with large filters via FFT (SmoothIntensitySensor::calcAllValues), Hessian determinant corner detection (CornerSensor::calcValue), PCA via SVD, spring-mass model solver, and many more components.
+
+@section brief Brief description of classes
+
+Node - a node in the geometry; has position, mass, velocitiy, attached forces, list of adjacent edges; has a Sensor attached
+
+Edge - connects two nodes; has parameters for spring model, such as rest length, spring constant, damping constant
+
+Model - holds information about geometry (Node, Edge), sensors, performs spring model calculation, and supplies all necessary state information to the controlling Brain
+
+Dataset - handling the data set, its loading, display, and access by the Sensors; derived from class Sensor
+
+Sensor  - virtual class for accessing a source (data set or other sensor) and filtering this input; can preprocess a data sheet for the entire data set; base class for IntensitySensor, SmoothIntensitySensor,
+GradMagSensor, CornerSensor, etc.
+
+Brain - controls a number of models and their states, manages a separate thread for spring model calculation and decision making
+
+Searcher - performs a search for a given Model
+
+ExpectationMap - list of EMDistribution objects that are generating specially distributed samples into the search space Model
+
+MStructure - a node of the model structure containing a shape Model and links to other nodes, additionally it controls a Searcher by providing an ExpectationMap
+
+StructTable - manages the complete structure graph, interpretations are used to find optimal paths selecting winners and appropriate spatial relations
+
+SpeciesDB - is managing database queries selecting entries by given patterns, capabilities of STL template std::map are used to efficiently obtain query results
+
+*/

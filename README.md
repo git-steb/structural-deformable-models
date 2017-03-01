@@ -20,17 +20,13 @@ An overview of the main classes implemented in the ``src`` folder is given in
 Chapter 5 of the thesis ["Structural Deformable Models for Robust Object Recognition"
 on page 61 (p. 81 in the PDF)](https://stevenbergner.github.io/assets/pub/thesis_bergner03.pdf "diploma thesis PDF file").
 
+Also have a look at the ["auto-generated documentation"](https://git-steb.github.io/structural-deformable-models/).
+
 ![alt text][sdm-framework]
 
-TODO
-----
-
-* build source code online documentation using doxygen
-* make automatic installation work, integrate on Travis CI
-  - data/mcz/*.jpg - make a download script, e.g. using pyquery
 
 INSTALLATION 
----------------------------
+------------
 
 After adjusting build paths and compiler options in src/Makebundle/pre.make and lib.make run
 
@@ -48,7 +44,7 @@ Libraries and external source code that is required to build and run the applica
 * currently deactivated EPS export: camgraph
 * System installation of libglut and libGL is required. Also, libfreetype6-dev, etc.
 
-Some of the package installations to compile using ``cd src; make -j4`` on Ubuntu 16.04
+Some of the package installations to compile using ``cd src; make -j4`` on Ubuntu 16.04:
 
     sudo apt install libfox-1.6-dev
     sudo apt install libpng-dev
