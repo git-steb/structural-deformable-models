@@ -1,0 +1,6 @@
+<map id="EMDistribution" name="EMDistribution">
+<area shape="rect" id="node2" href="$classEMDGauss.html" title="EMDGauss" alt="" coords="5,80,96,107"/>
+<area shape="rect" id="node3" href="$classEMDRect.html" title="EMDRect" alt="" coords="120,80,200,107"/>
+<area shape="rect" id="node5" href="$classEMDXformer.html" title="EMDXformer" alt="" coords="224,80,323,107"/>
+<area shape="rect" id="node4" href="$classExpectationMap.html" title="ExpectationMap" alt="" coords="102,155,218,181"/>
+</map>

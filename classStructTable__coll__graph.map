@@ -1,0 +1,28 @@
+<map id="StructTable" name="StructTable">
+<area shape="rect" id="node9" href="$classBrain.html" title="Brain" alt="" coords="2288,805,2340,832"/>
+<area shape="rect" id="node47" href="$classMStructure.html" title="MStructure" alt="" coords="2271,1664,2357,1691"/>
+<area shape="rect" id="node3" href="$classStructPath.html" title="StructPath" alt="" coords="841,455,925,481"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="440,290,587,331"/>
+<area shape="rect" id="node41" href="$classWinner.html" title="Winner" alt="" coords="1458,1476,1521,1503"/>
+<area shape="rect" id="node12" title="STL class. " alt="" coords="440,355,587,397"/>
+<area shape="rect" id="node32" title="STL class. " alt="" coords="420,137,607,164"/>
+<area shape="rect" id="node36" title="STL class. " alt="" coords="440,53,587,94"/>
+<area shape="rect" id="node50" title="STL class. " alt="" coords="452,239,575,265"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="208,1019,288,1045"/>
+<area shape="rect" id="node11" href="$classSensorCollection.html" title="SensorCollection" alt="" coords="823,975,944,1001"/>
+<area shape="rect" id="node15" href="$classModel.html" title="Model" alt="" coords="1153,1165,1210,1192"/>
+<area shape="rect" id="node20" href="$classDataset.html" title="Dataset" alt="" coords="849,1381,917,1408"/>
+<area shape="rect" id="node21" href="$classSensor.html" title="Sensor" alt="" coords="482,1223,545,1249"/>
+<area shape="rect" id="node31" href="$classSpeciesDB.html" title="SpeciesDB" alt="" coords="839,281,927,308"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="5,1011,132,1053"/>
+<area shape="rect" id="node10" href="$classvuThread.html" title="vuThread" alt="" coords="2070,208,2146,235"/>
+<area shape="rect" id="node38" href="$classSearcher.html" title="Searcher" alt="" coords="2071,1341,2145,1368"/>
+<area shape="rect" id="node39" href="$classExpectationMap.html" title="ExpectationMap" alt="" coords="1593,1415,1709,1441"/>
+<area shape="rect" id="node16" href="$classVVector.html" title="VVector\&lt; float, 4 \&gt;" alt="" coords="817,1216,950,1243"/>
+<area shape="rect" id="node19" href="$classParticleParam.html" title="ParticleParam" alt="" coords="831,1115,935,1141"/>
+<area shape="rect" id="node22" href="$classPoint2D.html" title="Point2D" alt="" coords="213,1469,283,1496"/>
+<area shape="rect" id="node25" href="$classvuMutex.html" title="vuMutex" alt="" coords="477,1628,549,1655"/>
+<area shape="rect" id="node26" href="$classGLImage.html" title="GLImage" alt="" coords="476,1336,551,1363"/>
+<area shape="rect" id="node30" href="$classDBSelector.html" title="DBSelector" alt="" coords="1445,249,1534,276"/>
+<area shape="rect" id="node35" href="$classSpecies.html" title="Species" alt="" coords="849,137,918,164"/>
+</map>

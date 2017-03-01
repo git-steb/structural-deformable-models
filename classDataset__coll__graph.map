@@ -1,0 +1,10 @@
+<map id="Dataset" name="Dataset">
+<area shape="rect" id="node2" href="$classSensor.html" title="Sensor" alt="" coords="129,282,191,309"/>
+<area shape="rect" id="node3" href="$classPoint2D.html" title="Point2D" alt="" coords="5,185,75,212"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="263,185,343,212"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="239,95,366,136"/>
+<area shape="rect" id="node8" href="$classImage.html" title="Image\&lt; byte \&gt;" alt="" coords="421,185,528,212"/>
+<area shape="rect" id="node9" title="STL class. " alt="" coords="408,102,541,129"/>
+<area shape="rect" id="node11" href="$classvuMutex.html" title="vuMutex" alt="" coords="565,282,637,309"/>
+<area shape="rect" id="node12" href="$classGLImage.html" title="GLImage" alt="" coords="663,282,737,309"/>
+</map>

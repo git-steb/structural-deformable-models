@@ -1,0 +1,10 @@
+<map id="MCIntensitySensor" name="MCIntensitySensor">
+<area shape="rect" id="node2" href="$classPPSensor.html" title="PPSensor" alt="" coords="270,288,351,315"/>
+<area shape="rect" id="node3" href="$classSensor.html" title="Sensor" alt="" coords="102,199,165,225"/>
+<area shape="rect" id="node4" href="$classPoint2D.html" title="Point2D" alt="" coords="5,109,75,136"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="99,109,179,136"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="75,5,202,47"/>
+<area shape="rect" id="node8" href="$classImage.html" title="Image\&lt; float \&gt;" alt="" coords="257,199,364,225"/>
+<area shape="rect" id="node9" href="$classImage.html" title="Image\&lt; Point2D \&gt;" alt="" coords="389,199,518,225"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="376,109,531,136"/>
+</map>

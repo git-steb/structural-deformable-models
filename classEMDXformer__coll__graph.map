@@ -1,0 +1,22 @@
+<map id="EMDXformer" name="EMDXformer">
+<area shape="rect" id="node2" href="$classEMDistribution.html" title="EMDistribution" alt="" coords="2489,156,2597,183"/>
+<area shape="rect" id="node3" href="$classWinner.html" title="Winner" alt="" coords="2271,107,2333,133"/>
+<area shape="rect" id="node4" href="$classModel.html" title="Model" alt="" coords="2072,373,2129,400"/>
+<area shape="rect" id="node5" href="$classSensorCollection.html" title="SensorCollection" alt="" coords="2483,351,2604,377"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="149,1033,296,1074"/>
+<area shape="rect" id="node27" title="STL class. " alt="" coords="156,981,289,1008"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="372,223,452,249"/>
+<area shape="rect" id="node17" href="$classNode.html" title="Implements a Node used by Model and Edge. " alt="" coords="919,435,973,461"/>
+<area shape="rect" id="node20" href="$classSensor.html" title="Sensor" alt="" coords="619,681,681,708"/>
+<area shape="rect" id="node24" href="$classDataset.html" title="Dataset" alt="" coords="912,732,980,759"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="159,215,286,257"/>
+<area shape="rect" id="node13" href="$classVVector.html" title="VVector\&lt; float, 4 \&gt;" alt="" coords="1793,221,1927,248"/>
+<area shape="rect" id="node15" href="$classEdge.html" title="Implements an Edge with spring functionality. " alt="" coords="1529,373,1581,400"/>
+<area shape="rect" id="node18" href="$classPoint2D.html" title="Point" alt="" coords="624,387,676,413"/>
+<area shape="rect" id="node19" href="$classPoint2D.html" title="Point2D" alt="" coords="377,681,447,708"/>
+<area shape="rect" id="node32" href="$classDMatrix.html" title="DMatrix\&lt; float \&gt;" alt="" coords="1004,951,1121,977"/>
+<area shape="rect" id="node23" href="$classParticleParam.html" title="ParticleParam" alt="" coords="1808,513,1912,540"/>
+<area shape="rect" id="node26" href="$classImage.html" title="Image\&lt; byte \&gt;" alt="" coords="359,981,465,1008"/>
+<area shape="rect" id="node28" href="$classvuMutex.html" title="vuMutex" alt="" coords="614,732,686,759"/>
+<area shape="rect" id="node29" href="$classGLImage.html" title="GLImage" alt="" coords="613,783,687,809"/>
+</map>

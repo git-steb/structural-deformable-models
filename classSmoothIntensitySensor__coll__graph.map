@@ -1,0 +1,15 @@
+<map id="SmoothIntensitySensor" name="SmoothIntensitySensor">
+<area shape="rect" id="node2" href="$classPPSensor.html" title="PPSensor" alt="" coords="836,145,917,172"/>
+<area shape="rect" id="node3" href="$classSensor.html" title="Sensor" alt="" coords="547,68,609,95"/>
+<area shape="rect" id="node4" href="$classPoint2D.html" title="Point2D" alt="" coords="288,5,357,32"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="283,56,363,83"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="5,49,132,90"/>
+<area shape="rect" id="node8" href="$classImage.html" title="Image\&lt; float \&gt;" alt="" coords="525,136,631,163"/>
+<area shape="rect" id="node9" href="$classImage.html" title="Image\&lt; Point2D \&gt;" alt="" coords="513,187,643,213"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="245,181,400,208"/>
+<area shape="rect" id="node14" title="STL class. " alt="" coords="237,233,408,274"/>
+<area shape="rect" id="node16" title="STL class. " alt="" coords="249,299,396,325"/>
+<area shape="rect" id="node12" href="$classFourier2D.html" title="Fourier2D" alt="" coords="837,360,916,387"/>
+<area shape="rect" id="node13" href="$classImage.html" title="Image\&lt; std::complex\l\&lt; double \&gt; \&gt;" alt="" coords="667,231,812,273"/>
+<area shape="rect" id="node15" href="$classImage.html" title="Image\&lt; double \&gt;" alt="" coords="679,299,799,325"/>
+</map>

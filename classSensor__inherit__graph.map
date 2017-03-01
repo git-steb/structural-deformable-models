@@ -1,0 +1,16 @@
+<map id="Sensor" name="Sensor">
+<area shape="rect" id="node2" href="$classDataset.html" title="Dataset" alt="" coords="139,132,207,159"/>
+<area shape="rect" id="node3" href="$classIntensitySensor.html" title="IntensitySensor" alt="" coords="116,183,229,209"/>
+<area shape="rect" id="node4" href="$classPPSensor.html" title="PPSensor" alt="" coords="132,233,213,260"/>
+<area shape="rect" id="node15" href="$classZeroSensor.html" title="ZeroSensor" alt="" coords="128,284,217,311"/>
+<area shape="rect" id="node5" href="$classCombiSensor.html" title="CombiSensor" alt="" coords="306,5,407,32"/>
+<area shape="rect" id="node6" href="$classCornerSensor.html" title="CornerSensor" alt="" coords="305,56,408,83"/>
+<area shape="rect" id="node7" href="$classCRSensor.html" title="CRSensor" alt="" coords="315,107,398,133"/>
+<area shape="rect" id="node8" href="$classGradMagSensor.html" title="GradMagSensor" alt="" coords="299,157,415,184"/>
+<area shape="rect" id="node9" href="$classMahalSensor.html" title="MahalSensor" alt="" coords="307,208,406,235"/>
+<area shape="rect" id="node10" href="$classMappingSensor.html" title="MappingSensor" alt="" coords="301,259,413,285"/>
+<area shape="rect" id="node11" href="$classMCGSensor.html" title="MCGSensor" alt="" coords="309,309,404,336"/>
+<area shape="rect" id="node12" href="$classMCIntensitySensor.html" title="MCIntensitySensor" alt="" coords="289,360,424,387"/>
+<area shape="rect" id="node13" href="$classPPIntensitySensor.html" title="PPIntensitySensor" alt="" coords="291,411,422,437"/>
+<area shape="rect" id="node14" href="$classSmoothIntensitySensor.html" title="SmoothIntensitySensor" alt="" coords="277,461,436,488"/>
+</map>
