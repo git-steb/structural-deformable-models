@@ -1,9 +1,14 @@
 language: c++
 compiler: g++
+os: linux
+dist: precise
 install:
-  - cd src
-  - make -j4
+- cd src
+- make -j4
 before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y libfox-1.6-dev fftw-dev libgl1-mesa-glx-lts-xenial
-  - ./download-externals.sh
+- echo $LANG
+- echo $LC_ALL
+- echo $TRAVIS_OS_NAME
+- sudo apt-get -qq update
+- sudo apt-get install -y libfox-1.6-dev fftw-dev libgl1-mesa-glx
+- bash download-externals.sh
