@@ -2,7 +2,7 @@
 # LINUX defaults for the make process (by Martin Spindler Oct. 2002)
 # -----------------------------------------------------------------------
 
-CPPFLAGS  += -DLINUX -Wall -std=c++11 -DHAVE_GL_H -DHAVE_GLU_H
+CPPFLAGS  += -DLINUX -Wall  -std=c++0x -DHAVE_GL_H -DHAVE_GLU_H
 CC         = g++
 STRIP      = strip
 
