@@ -7,6 +7,8 @@ Implementation of the image analysis system described in
 Steven Bergner's thesis work on ["Deformable structural models"][bergner2003ants],
 also published at IEEE ICIP 2004.
 
+Travis-CI status: ![build status](https://travis-ci.org/git-steb/structural-deformable-models.svg?branch=master)
+
 Algorithm
 ---------
 
@@ -20,7 +22,7 @@ An overview of the main classes implemented in the ``src`` folder is given in
 Chapter 5 of the thesis ["Structural Deformable Models for Robust Object Recognition"
 on page 61 (p. 81 in the PDF)](https://stevenbergner.github.io/assets/pub/thesis_bergner03.pdf "diploma thesis PDF file").
 
-Also have a look at the ["auto-generated documentation"](https://git-steb.github.io/structural-deformable-models/).
+Also have a look at the [auto-generated documentation](https://git-steb.github.io/structural-deformable-models/).
 
 ![alt text][sdm-framework]
 
