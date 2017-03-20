@@ -353,7 +353,7 @@ protected:
     //! Computes saturation or some other colour indicator
     float calcValue(int x, int y) const {
 	std::vector<float> mv = source->getMValue(x,y);
-        DMatrix<float> v(1,mv.size(),&mv.front());
+        DMatrix<float> v(1,std::min(mv.size(),size_t(3)),&mv.front());
         v -= m;
         DMatrix<float> vt(v); vt.transpose();
         float d = (vt.mulRight(icov.mulRight(v))).at(0,0);
