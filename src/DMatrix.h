@@ -5,6 +5,7 @@
 #include <vector>
 #include <math.h>
 #include "common.h"
+#include <Eigen/Core>
 
 /** Small matrix class.
     First index is colum number. Memory arrangement is row-wise. */
@@ -16,6 +17,7 @@ class DMatrix {
     typedef T*                                          TPtr;
     typedef const T*                                    CTPtr;
     typedef DMatrix<T>                                  MT;
+    typedef typename Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> EMT;
 
     DMatrix(dword _sx=0, dword _sy=0, const T& inival = T()) 
         : sx(_sx), sy(_sy), values(_sx*_sy, inival) {}

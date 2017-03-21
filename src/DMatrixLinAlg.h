@@ -11,16 +11,12 @@
 
 #define DMLA_TAU	0.0000001f
 
-namespace linalg {
-  typedef Eigen::MatrixXf Matrix;
-}
-
 namespace dmutil {
     
     template<class T>
-    linalg::Matrix convert(const DMatrix<T>& dmat)
+    typename DMatrix<T>::EMT convert(const DMatrix<T>& dmat)
     {
-        Eigen::Map<const Eigen::MatrixXf> mat(&*dmat.getData().begin(), (int)dmat.sizeY(), (int)dmat.sizeX());
+        Eigen::Map<const typename DMatrix<T>::EMT> mat(&*dmat.getData().begin(), (int)dmat.sizeY(), (int)dmat.sizeX());
         //typename DMatrix<T>::const_iterator dat = dmat.getData().begin();
         //for(int k=dmat.size(); k>0; k--, dat++)
         //    mat << *dat;
@@ -34,10 +30,10 @@ namespace dmutil {
     }
     
     template<class T>
-    DMatrix<T> convert(const linalg::Matrix& mat)
+    DMatrix<T> convert(const typename DMatrix<T>::EMT& mat)
     {
-        linalg::Matrix cmat(mat);
-        linalg::Matrix eth(cmat);
+        typename DMatrix<T>::EMT cmat(mat);
+        typename DMatrix<T>::EMT eth(cmat);
         DMatrix<T> dmat(mat.cols(), mat.rows(), &mat(0));
                          // (eth.q_col_upb()-eth.q_col_lwb()+1, // TODO
                          // eth.q_row_upb()-eth.q_row_lwb()+1);
@@ -55,7 +51,7 @@ namespace dmutil {
         if(!dmat.empty()) {
             try {
                 //if(!m_Verbose) freopen("/dev/null","a+",stderr);
-                linalg::Matrix mat = convert<T>(dmat);
+                typename DMatrix<T>::EMT mat = convert<T>(dmat);
                 //dmat = convert<T>(linalg::inverse(mat)); // TODO
                 dmat = convert<T>(mat.inverse());
             } catch(void*)
@@ -86,10 +82,10 @@ namespace dmutil {
             // (rank doesn't matter for the algorithm)
             int d = dmat.sizeX() - dmat.sizeY();
             if(d<0) d=0;
-            linalg::Matrix mat = 
+            typename DMatrix<T>::EMT mat =
                 convert<T>(DMatrix<T>(dmat.sizeX(), dmat.sizeY()+d,0.0f)
                            .setRange(0,0,dmat));
-            JacobiSVD<MatrixXd> svd( mat, ComputeThinU | ComputeThinV);
+            JacobiSVD<typename DMatrix<T>::EMT> svd( mat, ComputeThinU | ComputeThinV);
             //linalg::SVD svd(mat); // TODO
             //if(m_Verbose) cout << "condition number of matrix A " << 
             //                  svd.q_cond_number() << endl;
@@ -100,11 +96,11 @@ namespace dmutil {
             VectorXf sig(svd.singularValues());
             DMatrix<T> S;
             S.resize(V.sizeY(),U.sizeX(),T(0));
-            dword sxy = min(S.sizeX(),S.sizeY());
+            dword sxy = std::min(S.sizeX(),S.sizeY());
             std::vector< std::pair<T,dword> > sdiag(sxy);
             for(dword i=0; i<sxy; i++) {
-                S.at(i,i) = sig(i+1);
-                sdiag[i].first = sig(i+1);
+                S.at(i,i) = sig(i);
+                sdiag[i].first = sig(i);
                 sdiag[i].second = i;
             }
             mS = S; mU = U; mV = V;
