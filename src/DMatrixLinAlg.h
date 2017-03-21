@@ -3,6 +3,8 @@
 #include "DMatrix.h"
 #include "DMatrixUtil.h"
 #include <Eigen/SVD>
+#include <Eigen/Dense>
+#include <Eigen/Core>
 #include <functional>
 #include <algorithm>
 #include <vector>
@@ -18,13 +20,16 @@ namespace dmutil {
     template<class T>
     linalg::Matrix convert(const DMatrix<T>& dmat)
     {
-        Eigen::MatrixXf mat((int)dmat.sizeY(), (int)dmat.sizeX());
-        linalg::Matrix eth(mat);
+        Eigen::Map<const Eigen::MatrixXf> mat(&*dmat.getData().begin(), (int)dmat.sizeY(), (int)dmat.sizeX());
         //typename DMatrix<T>::const_iterator dat = dmat.getData().begin();
+        //for(int k=dmat.size(); k>0; k--, dat++)
+        //    mat << *dat;
+        //linalg::Matrix eth(mat);
 	// TODO: translate this code from LinAlg to Eigen
         //for(register int i=eth.q_row_lwb(); i<=eth.q_row_upb(); i++)
         //    for(register int j=eth.q_col_lwb(); j<=eth.q_col_upb(); j++)
         //        eth(i,j) = dmat.at(j-1,i-1);
+
         return mat;
     }
     
@@ -33,7 +38,8 @@ namespace dmutil {
     {
         linalg::Matrix cmat(mat);
         linalg::Matrix eth(cmat);
-        DMatrix<T> dmat; // (eth.q_col_upb()-eth.q_col_lwb()+1, // TODO
+        DMatrix<T> dmat(mat.cols(), mat.rows(), &mat(0));
+                         // (eth.q_col_upb()-eth.q_col_lwb()+1, // TODO
                          // eth.q_row_upb()-eth.q_row_lwb()+1);
         //typename DMatrix<T>::iterator dat = dmat.getData().begin();
         //for(register int i=eth.q_row_lwb(); i<=eth.q_row_upb(); i++)
@@ -46,15 +52,18 @@ namespace dmutil {
     DMatrix<T>& invert(DMatrix<T>& dmat) 
     {
         bool m_Verbose = false;
-        try {
-            //if(!m_Verbose) freopen("/dev/null","a+",stderr);
-            linalg::Matrix mat = convert<T>(dmat);
-            //dmat = convert<T>(linalg::inverse(mat)); // TODO
-        } catch(void*)
-        {
+        if(!dmat.empty()) {
+            try {
+                //if(!m_Verbose) freopen("/dev/null","a+",stderr);
+                linalg::Matrix mat = convert<T>(dmat);
+                //dmat = convert<T>(linalg::inverse(mat)); // TODO
+                dmat = convert<T>(mat.inverse());
+            } catch(void*)
+            {
+                //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
+            }
             //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
         }
-        //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
         return dmat;
     }
     
@@ -80,7 +89,7 @@ namespace dmutil {
             linalg::Matrix mat = 
                 convert<T>(DMatrix<T>(dmat.sizeX(), dmat.sizeY()+d,0.0f)
                            .setRange(0,0,dmat));
-	    JacobiSVD<MatrixXd> svd( mat, ComputeThinU | ComputeThinV);	    
+            JacobiSVD<MatrixXd> svd( mat, ComputeThinU | ComputeThinV);
             //linalg::SVD svd(mat); // TODO
             //if(m_Verbose) cout << "condition number of matrix A " << 
             //                  svd.q_cond_number() << endl;
@@ -92,7 +101,7 @@ namespace dmutil {
             DMatrix<T> S;
             S.resize(V.sizeY(),U.sizeX(),T(0));
             dword sxy = min(S.sizeX(),S.sizeY());
-	    std::vector< std::pair<T,dword> > sdiag(sxy);
+            std::vector< std::pair<T,dword> > sdiag(sxy);
             for(dword i=0; i<sxy; i++) {
                 S.at(i,i) = sig(i+1);
                 sdiag[i].first = sig(i+1);
