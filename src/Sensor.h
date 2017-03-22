@@ -20,6 +20,7 @@ sensor_ptr getZeroSensor();
 /** Sensor calculates filter values from the source. */
 class Sensor : public std::enable_shared_from_this<Sensor> {
  protected:
+    Sensor(dword updateMask);
     Sensor();
  public:
     enum  UpdateParam {UPD_NOTHING=0, UPD_DATA=1, 
@@ -27,12 +28,6 @@ class Sensor : public std::enable_shared_from_this<Sensor> {
 		       UPD_MINMAX=16,
 		       UPD_LAST=32, UPD_ALL=0xffffffff 
     };
-    /* default constructor is protected */
-    /* constructor 
-     \param _source if NULL getZeroSensor() will be used
-                   other Sensors or Dataset is possible 
-    */
-    Sensor(sensor_cptr _source);
     /** Destructor */
     virtual ~Sensor();
 
@@ -193,7 +188,7 @@ private:
 template<typename SensorType, typename FirstArgType, typename... Args>
 std::shared_ptr<SensorType> makeSensor(FirstArgType source, Args... args)
 {
-    std::shared_ptr<SensorType> s = std::make_shared<SensorType>(getZeroSensor(), args...);
+    std::shared_ptr<SensorType> s = std::make_shared<SensorType>(args...);
     s->changeSource(source);
     return s;
 }
@@ -207,7 +202,7 @@ std::shared_ptr<SensorType> makeSensor()
 /** a sensor that does nothing except returning zeros */
 class ZeroSensor : public Sensor {
 public:
-    ZeroSensor() : Sensor()
+    ZeroSensor() : Sensor(0)
     {
         updateMask = UPD_NOTHING;
         unsetModified();
@@ -233,7 +228,7 @@ protected:
 class PPSensor : public Sensor {
  public:
     enum PPState { PP_DONT=0, PP_DO, PP_FORCE };
-    PPSensor(sensor_cptr _source);
+    PPSensor();
     /** Return cached value or compute and cache new one. */
     virtual float getValue(int x, int y) const;
     /** Return cached gradient or compute and cache new one. */

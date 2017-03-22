@@ -17,9 +17,7 @@ Image<double>& create2DGaussian(Image<double>& flt, double stdev,
 
 //-----------------------------------------------------------------------------
 //class SmoothIntensitySensor
-SmoothIntensitySensor::SmoothIntensitySensor(sensor_cptr _source, 
-					     float _scale)
-    : PPSensor(_source)
+SmoothIntensitySensor::SmoothIntensitySensor(float _scale)
 {
     enableUpdate(UPD_SCALE|UPD_DATA);
     togglePP(PP_FORCE);
@@ -94,7 +92,7 @@ void SmoothIntensitySensor::updateScale() {
 //--- CombiSensor ------------------------------------------------------
 
 CombiSensor::CombiSensor(int nchannels)
-    : PPSensor(NULL), m_NormalizeInput(true)
+    : m_NormalizeInput(true)
 {
     setNSources(nchannels);
     enableUpdate(UPD_DATA|UPD_CWEIGHTS);

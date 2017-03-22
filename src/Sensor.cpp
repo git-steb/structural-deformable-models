@@ -10,15 +10,17 @@
 
 using namespace std;
 
-Sensor::Sensor()
+Sensor::Sensor(dword _updateMask)
     : source(),
       scale(0.f),
       maxval(), minval(), mean(), stdev(),
-      toupdate(), updateMask((dword)0),
+      toupdate(), updateMask(_updateMask),
       m_ID(""), m_Skip(0), m_AddSkip(0)
-{ }
+{
+    cweights.resize(1, 1.f);
+}
 
-Sensor::Sensor(sensor_cptr _source)
+Sensor::Sensor()
     : source(getZeroSensor()),
 	  scale(0.f),
 	  maxval(), minval(), mean(), stdev(),
@@ -26,10 +28,6 @@ Sensor::Sensor(sensor_cptr _source)
       m_ID(""), m_Skip(0), m_AddSkip(0)
 {
     cweights.resize(1, 1.f);
-    if(_source && _source != getZeroSensor() )	{
-        throw logic_error("Only call the sensor constructor with ZeroSensor source");
-        changeSource(_source);
-    }
     setModified();
 }
 
@@ -241,9 +239,8 @@ sensor_ptr getZeroSensor()
 
 //-----------------------------------------------------------------------------
 //class PPSensor
-PPSensor::PPSensor(sensor_cptr _source) 
-    : Sensor(_source), 
-      values(source->getDim1Size(), source->getDim2Size(), AIR_NAN),
+PPSensor::PPSensor()
+    : values(source->getDim1Size(), source->getDim2Size(), AIR_NAN),
       gradients(source->getDim1Size(), source->getDim2Size(), 
                 Point(AIR_NAN,AIR_NAN)),
       doPP(PPSensor::PP_DONT)

@@ -13,7 +13,6 @@
 /** Intensity sensor (identity operator) */
 class IntensitySensor : public Sensor {
 public:
-    IntensitySensor(sensor_cptr _source=NULL) : Sensor(_source) {};
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os) << "i";
         return os;
@@ -27,9 +26,6 @@ protected:
 
 /** Intensity sensor (identity operator) */
 class PPIntensitySensor : public PPSensor {
-public:
-    PPIntensitySensor(sensor_cptr _source=NULL) : PPSensor(_source) {};
-
 protected:
     /** Returns the Intensity */
     float calcValue(int x, int y) const {
@@ -40,7 +36,6 @@ protected:
 /** Multi-channel intensity Sensor **/
 class MCIntensitySensor : public PPSensor {
  public:
-    MCIntensitySensor(sensor_cptr _source=NULL) : PPSensor(_source) {}
     int getNChannels() const { return 1; }    
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os) << "m ";
@@ -67,7 +62,7 @@ protected:
 /** Multi-channel gradient Sensor **/
 class MCGSensor : public PPSensor {
  public:
-    MCGSensor(sensor_cptr _source=NULL) : PPSensor(_source) 
+    MCGSensor(sensor_cptr _source=NULL)
         { m_AddSkip = 1; }
     int getNChannels() const { return 1; }    
     std::ostream& print(std::ostream& os) const {
@@ -106,7 +101,7 @@ protected:
 /** Multi-chrominance Sensor **/
 class CRSensor : public PPSensor {
  public:
-    CRSensor(sensor_cptr _source=NULL) : PPSensor(_source) 
+    CRSensor()
         { m_AddSkip = 1; }
     int getNChannels() const { return 1; }    
     std::ostream& print(std::ostream& os) const {
@@ -153,7 +148,7 @@ protected:
 /** Smoothed intensity sensor (using gaussian) */
 class SmoothIntensitySensor : public PPSensor {
 public:
-    SmoothIntensitySensor(sensor_cptr _source=NULL, float _scale=0);
+    SmoothIntensitySensor(float _scale=0);
     bool performUpdate();
     //dword getFilterSize() const {return smoothflt.getSizeX();}
     std::ostream& print(std::ostream& os) const {
@@ -177,8 +172,7 @@ protected:
 /** gradient magnitude Sensor **/
 class GradMagSensor : public PPSensor {
 public:
-    GradMagSensor(sensor_cptr _source=NULL) 
-        : PPSensor(_source)
+    GradMagSensor()
 	{
 	    enableUpdate(UPD_DATA);
 	    togglePP(PPSensor::PP_FORCE);
@@ -207,7 +201,7 @@ protected:
 /** curvature Sensor **/
 class CornerSensor : public PPSensor {
 public:
-    CornerSensor(sensor_cptr _source=NULL) : PPSensor(_source)
+    CornerSensor()
 	{
 	    enableUpdate(UPD_DATA);
 	    togglePP(PPSensor::PP_FORCE);
@@ -329,8 +323,7 @@ protected:
 /** Mahalanobis distance Sensor **/
 class MahalSensor : public PPSensor {
  public:
-    MahalSensor(sensor_cptr _source=NULL, const std::string& fname="") 
-        : PPSensor(_source) 
+    MahalSensor(const std::string& fname="")
         { 
             m_AddSkip = 1; 
             loadConfig(fname);
@@ -370,8 +363,8 @@ class MappingSensor : public PPSensor {
                        MS_GAUSSNORM, MS_MGAUSSNORM, MS_MCLAMPU, MS_BIAS,
                        MS_LAST};
 
-    MappingSensor(sensor_cptr _source=NULL, const std::string& mapn="") 
-        : PPSensor(_source) 
+    MappingSensor(const std::string& mapn="")
+        : m_MappingID()
         { 
             m_AddSkip = 1; 
             setMapping(mapn);
