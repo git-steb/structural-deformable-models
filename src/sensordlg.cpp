@@ -54,7 +54,7 @@ long SensorDialog::onEdit(FXObject*,FXSelector sel,void* ptr)
             stringstream ss;
             ss << inpd.getText().text();
             ParseFile pf(ss);
-            Sensor* sensor = m_Sensors.readSensor(pf);
+            sensor_ptr sensor = m_Sensors.readSensor(pf);
             if(sensor) {
                 sensor = m_Sensors.addSensor(sensor);
                 m_Sensors.updateModels();

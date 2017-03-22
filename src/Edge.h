@@ -143,7 +143,7 @@ inline dword Edge::getSensorValue(float& sum, dword& nsamples) const
     if(!edgesensor) return 0;
     const Node& from = fromNode();
     const Node& to = toNode();
-    const Sensor* sensor = edgesensor > 0 ? from.sensor : to.sensor;
+    sensor_cptr sensor = (edgesensor > 0) ? from.sensor : to.sensor;
     if(!sensor) return 0;
     dword ntimes = edgesensor > 0 ? dword(edgesensor) : dword(-edgesensor);
     Point x(from);

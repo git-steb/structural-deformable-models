@@ -28,8 +28,6 @@ typedef struct {
 //---
 
 class CAMgraphicsProcess;
-class Sensor;
-class Dataset;
 class SensorCollection;
 
 class Model {
@@ -45,7 +43,7 @@ public:
     enum ModelState { ST_WINNER=1, ST_LOOSER=2, ST_OLDSTATE=4, ST_DEL=8,
                       ST_MEMBER=16, ST_NODEL=32};
     //! Default constructor.
-    Model(const Dataset *_dataset=NULL, SensorCollection *sensors=NULL); 
+    Model(dataset_cptr _dataset=NULL, SensorCollection *sensors=NULL);
     //! Copy constructor
     Model(const Model& rhs);
     //! Destructor.
@@ -114,7 +112,7 @@ public:
     bool readFile(const char* filename, bool fullread=true);
     /** Write geometry to file. */
     bool writeFile(const char* filename) const;
-    void attachDataset(const Dataset *dataset);
+    void attachDataset(dataset_cptr dataset);
     
     float getQualityOfFit() const;
     float getLiveliness() const;
@@ -264,8 +262,8 @@ public:
     NodeArray nodes;                    //!< indexed list of nodes
     EdgeArray edges;                    //!< indexed list of edges
 
-    const Dataset		*m_Dataset;
-    SensorCollection		*m_Sensors;
+    dataset_cptr                m_Dataset;
+    SensorCollection		    *m_Sensors;
     std::string                 m_SensorFile;
     float                       m_ShapeWeight;
     dword                       m_Flags;

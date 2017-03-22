@@ -15,28 +15,22 @@ using namespace std;
 
 SensorCollection::SensorCollection() 
 {
-    addSensor((Sensor*)getZeroSensor());	// this is our zeroth sensor
+    addSensor(getZeroSensor());	// this is our zeroth sensor
 }
 
-SensorCollection::~SensorCollection() {
-    for(iterator s=begin(); s!=end(); s++) {
-        if (s->second->getID() != "0" &&	// zero sensor
-            s->second->getID() != "d0" &&
-            !s->second->getID().empty()	// uninitialized sensor
-            )
-            delete s->second;
-    }
-}
+SensorCollection::~SensorCollection()
+{ }
     
-Sensor* SensorCollection::addSensor(const std::string& key, Sensor *s) {
+sensor_ptr SensorCollection::addSensor(const std::string& key, sensor_ptr s)
+{
     s->setID(key);
     return addSensor(s);
 }
 
-Sensor* SensorCollection::addSensor(Sensor *s) {
+sensor_ptr SensorCollection::addSensor(sensor_ptr s) {
     if(!s) return NULL;
     if(s->getID().empty()) return NULL; //s->setID(size());
-    Sensor* &spr = operator[](s->getID());
+    sensor_ptr &spr = operator[](s->getID());
     selectSensor(s->getID());
     if(spr == NULL) {
         spr = s;
@@ -46,20 +40,16 @@ Sensor* SensorCollection::addSensor(Sensor *s) {
         if(spr->assignRef(s)) {
             SHOW("assigning");
             s->replaceBy(spr);
-            if(s != getZeroSensor() && typeid(s)!=typeid(Dataset*))
-                delete s;
         } else {
             SHOW("replacing");
             spr->replaceBy(s);
-            if(spr != getZeroSensor() && typeid(spr)!=typeid(Dataset*))
-                delete spr;
             spr = s;
         }
         return spr;
     }
 }
 
-Sensor* SensorCollection::getSensor(const string& id) {
+sensor_ptr SensorCollection::getSensor(const string& id) {
     iterator fs = find(id);
     if(fs != end()) {
         return fs->second;
@@ -67,7 +57,7 @@ Sensor* SensorCollection::getSensor(const string& id) {
 //             char sid[5];
 //             Sensor::getNumberString(sid,id);
 //             cout << "zeroing " << sid << endl;
-        ZeroSensor *zs = new ZeroSensor();
+        sensor_ptr zs = makeSensor<ZeroSensor>();
         zs->setID(id);
         return addSensor(zs);
     }
@@ -95,7 +85,7 @@ void SensorCollection::setPrinted( const string& id )
 ostream& operator<<(ostream& os, const SensorCollection& sc) 
 {
     ((SensorCollection*)&sc)->m_Printlist.clear();
-    for(map<string,Sensor*>::const_iterator s=sc.begin(); s!=sc.end(); s++) {
+    for(map<string,sensor_ptr>::const_iterator s=sc.begin(); s!=sc.end(); s++) {
         if (s->second->getID() != "0"       && // zero sensor
             !s->second->getID().empty()     && // uninitialized sensor
             s->second->getID() != "d0"      &&
@@ -108,12 +98,12 @@ ostream& operator<<(ostream& os, const SensorCollection& sc)
     return os;
 }       
 
-Sensor* SensorCollection::readSensor(ParseFile& is)
+sensor_ptr SensorCollection::readSensor(ParseFile& is)
 {
     if(!is.getNextLine()) return NULL;
     if(is.getKey() != "s") {
-	is.pushLine();
-	return NULL;
+        is.pushLine();
+        return NULL;
     }
     istringstream vs(is.getValue());
     vs >> ws;		// read key
@@ -124,12 +114,12 @@ Sensor* SensorCollection::readSensor(ParseFile& is)
     string para1;
     vs >> para1;
     char stype;
-    const Sensor *source = NULL;
+    sensor_cptr source = NULL;
     if (para1 == "source") {
         string sname;
         vs >> sname;
         source = getSensor(sname);
-        if(dynamic_cast<const ZeroSensor*>(source))
+        if(std::dynamic_pointer_cast<const ZeroSensor>(source))
             cout << "Using zero sensor as source. Source name was: "
                  << sname <<endl;
         else {
@@ -142,25 +132,25 @@ Sensor* SensorCollection::readSensor(ParseFile& is)
     if(source == NULL) {
         source = getSensor(string("d0"));
     }
-    Sensor *s = NULL;
+    sensor_ptr s = NULL;
     switch(stype) {
 	case 'i' : 
-	    s = new IntensitySensor(source);
+	    s = makeSensor<IntensitySensor>(source);
 	    SHOW("created intensity sensor");
 	    break;
 	case 'g' : 
 	{
 	    float scale=0;
 	    vs >> scale;
-	    s = new SmoothIntensitySensor(source, scale);
-	    SHOW("created gaussian sensor of scale " << scale);
+	    s = makeSensor<SmoothIntensitySensor>(source, scale);
+	    SHOW("created Gaussian sensor of scale " << scale);
 	    break;
 	}
 	case 'd' : 
 	{
 	    //float scale=0;
 	    //vs >> scale;
-	    s = new GradMagSensor(source);
+	    s = makeSensor<GradMagSensor>(source);
 	    SHOW("created gm sensor");// of scale " << scale);
 	    break;
 	}
@@ -168,27 +158,27 @@ Sensor* SensorCollection::readSensor(ParseFile& is)
 	{
 // 	    float scale=0;
 // 	    vs >> scale;
-	    s = new CornerSensor(source);
+	    s = makeSensor<CornerSensor>(source);
 	    SHOW("created corner sensor");// of scale " << scale);
 	    break;
 	}
         case 'K' :
-            s = new CombiSensor();
-            ((CombiSensor*)s)->normalizeInput(false);
+            s = makeSensor<CombiSensor>();
+            std::dynamic_pointer_cast<CombiSensor>(s)->normalizeInput(false);
             // is legally constructed in the next case 'k'
 	case 'k' :
 	{
             int nsensors=0;
 	    //vs >> nsensors;
-            if(!s) s = new CombiSensor();       //normalized input
+            if(!s) s = makeSensor<CombiSensor>();       //normalized input
             string sname;
             while(vs >> sname) {
                 float weight=1;
                 vs >> weight;
-                Sensor *ss = getSensor(sname);
+                sensor_ptr ss = getSensor(sname);
                 if(ss == getZeroSensor())
                     cout << "added zero sensor" << endl;
-                ((CombiSensor*)s)->setSource(ss,weight);
+                std::dynamic_pointer_cast<CombiSensor>(s)->setSource(ss,weight);
                 nsensors++;
             }
             SHOW("created combi sensor with " << nsensors<<" sub-sensors.");
@@ -205,21 +195,21 @@ Sensor* SensorCollection::readSensor(ParseFile& is)
                 cout << weight << " ";
             }
             cout << endl;
-            s = new MCIntensitySensor(source);
+            s = makeSensor<MCIntensitySensor>(source);
             s->setCWeights(weights);
-            SHOW("created multi channel sensor.");
+            SHOW("created multi-channel sensor.");
 	    break;
 	}
 	case 'M' :
 	{
-            s = new MCGSensor(source);
-            SHOW("created multi channel gradient sensor.");
+            s = makeSensor<MCGSensor>(source);
+            SHOW("created multi-channel gradient sensor.");
 	    break;
 	}
 	case 'r' :
 	{
-            s = new CRSensor(source);
-            SHOW("created multi channel chrominance sensor.");
+            s = makeSensor<CRSensor>(source);
+            SHOW("created multi-channel chrominance sensor.");
 	    break;
 	}
         case 'C' :
@@ -227,37 +217,37 @@ Sensor* SensorCollection::readSensor(ParseFile& is)
             string fname;
             vs >> fname;
             if(!fname.empty()) {
-                s = new MahalSensor(source, fname);
-                if(!((MahalSensor*)s)->getFilename().empty()) {
+                s = makeSensor<MahalSensor>(source, fname);
+                if(!std::dynamic_pointer_cast<MahalSensor>(s)->getFilename().empty()) {
                     SHOW("created colour classification sensor");
                 } else {
                     SHOW("error loading configuration file for colour sensor "
                          << fname);
-                    delete s; s = NULL;
+                    s = sensor_ptr();
                 }
             }
             break;
         }
-	case 'f' :
-	{
-            string mapping;
-            vs >> mapping;
-            s = new MappingSensor(source, mapping);
-            ((MappingSensor*)s)->readParams(vs);
-            SHOW("created mapping sensor of type " <<
-                 ((MappingSensor*)s)->getMappingName());
-	    break;
-	}
+        case 'f' :
+        {
+                string mapping;
+                vs >> mapping;
+                s = makeSensor<MappingSensor>(source, mapping);
+                std::dynamic_pointer_cast<MappingSensor>(s)->readParams(vs);
+                SHOW("created mapping sensor of type " <<
+                std::dynamic_pointer_cast<MappingSensor>(s)->getMappingName());
+            break;
+        }
         case 'o' :
         {
-	  s = new ZeroSensor();
-	  SHOW("created zero sensor");
-	  break;
+          s = makeSensor<ZeroSensor>();
+          SHOW("created zero sensor");
+          break;
         }
     }
     if(!s) {
-	is.setParseError(string("unknown sensor type ")+stype);
-	throw new IOException("Error reading sensor.");
+        is.setParseError(string("unknown sensor type ")+stype);
+        throw new IOException("Error reading sensor.");
     }
     s->setID(skey);
     return s;
@@ -266,18 +256,20 @@ Sensor* SensorCollection::readSensor(ParseFile& is)
 SensorCollection& SensorCollection::merge(SensorCollection& rhs)
 {
     if(this == &rhs) return *this;
-    for(map<string, Sensor*>::iterator si = rhs.begin();
-        si != rhs.end(); si++) {
+    for(map<string, sensor_ptr >::iterator si = rhs.begin();
+        si != rhs.end(); si++)
+    {
         if(!si->first.empty() && si->first!="0") {
-            Sensor* &spr = operator[](si->first);
-            if(spr == NULL) {
+            sensor_ptr spr = operator[](si->first); // sensor from lhs of collection assignment
+            if(!spr) {
                 spr = si->second;
-            }else {
-                bool lzs = dynamic_cast<ZeroSensor*>(spr) == NULL;
-                bool rzs = dynamic_cast<ZeroSensor*>(si->second) == NULL;
-                if(lzs) {
+            } else {
+                bool lnzs = !std::dynamic_pointer_cast<ZeroSensor>(spr); // lhs sensor not zero
+                bool rnzs = !std::dynamic_pointer_cast<ZeroSensor>(si->second); // rhs sensor not zero
+                // TODO: inverted original logic, test if still valid
+                if(rnzs) {
                     spr->replaceBy(si->second);
-                    spr = si->second;
+                    // spr = si->second;
                 } else {
                     si->second->replaceBy(spr);
                 }

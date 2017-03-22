@@ -7,8 +7,7 @@
 #include "Point.h"
 #include "PartParam.h"
 
-class Model;
-class Sensor;
+#include "types_fwd.h"
 
 //! Implements a Node used by Model and Edge
 class Node : public Point {
@@ -34,14 +33,14 @@ class Node : public Point {
     int getIndex() const { return index; }
     //! output operator
     friend std::ostream& operator<<(std::ostream &os, const Node &n);
-    void attachSensor(const Sensor *_sensor);
+    void attachSensor(sensor_cptr _sensor);
     void addSensorForce();
     void enableState(dword nstate) { state |= nstate; }
     void disableState(dword nstate=0xffffffff) { state &= ~nstate; }
     void toggleState(dword nstate) { state ^= nstate; }
     bool hasState(dword nstate=0xffffffff) const { return state & nstate; }
     void draw() const;
-    Sensor const *sensor;
+    sensor_cptr sensor;
     std::string sensorID;
 
 public:

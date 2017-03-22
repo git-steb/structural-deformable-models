@@ -28,9 +28,11 @@ Brain::Brain() : m_DBSelector(m_DB), m_TimeStep(TIMESTEP), m_TimeScale(1),
                  m_UpdateAllModels(false), m_DrawOwnState(false), 
                  m_SModel(*this)
 {
+    m_Data = std::make_shared<Dataset>();
+    m_BrowseData = std::make_shared<Dataset>();
     m_Done = false;
-    m_Sensors.addSensor("d0", &m_Data);
-    m_Geom = new Model(&m_Data, &m_Sensors);
+    m_Sensors.addSensor("d0", m_Data);
+    m_Geom = new Model(m_Data, &m_Sensors);
     m_CStates = new vector<Model*>; //&m_Instances[m_Geom->getName()];
     m_CurPrototype = m_Geom->getName();
     m_CStates->push_back(m_Geom);
@@ -73,12 +75,12 @@ Brain::~Brain() {
 
 const Dataset& Brain::getData() const 
 {
-    return m_BrowseData;
+    return *m_BrowseData;
 }
 
 Dataset& Brain::getSensorData() 
 {
-    return m_Data;
+    return *m_Data;
 }
 
 bool Brain::load(const char *bfile) {
@@ -286,22 +288,22 @@ bool Brain::loadData(const char *filename, dword ppmm)
 {
     vuLock dlock(m_DataMutex);
     if(!ppmm) ppmm = m_CSpecies.getScale();
-    bool ret = m_BrowseData.load(filename, ppmm);
+    bool ret = m_BrowseData->load(filename, ppmm);
     if(ret) {
         if(m_ImmediateData) attachBrowseData();
-        else if(m_Data.initialized()) m_Data.clear();
+        else if(m_Data->initialized()) m_Data->clear();
     }
     return ret;
 }
 
 void Brain::attachBrowseData()
 {
-    if(m_Data.getFilename() == m_BrowseData.getFilename()) {
+    if(m_Data->getFilename() == m_BrowseData->getFilename()) {
         cout << "dataset already attached" << endl;
         return;
     }
     cout << "attaching data..." << endl;
-    m_Data.copyData(m_BrowseData);
+    m_Data->copyData(*m_BrowseData);
     list<Model*> ml;
     if(getAllModels(back_inserter(ml))) {
         for(list<Model*>::iterator m=ml.begin(); m!=ml.end(); m++)
@@ -350,7 +352,7 @@ void Brain::run(int whatsup, void* data)
 		    vuLock dlock(m_DataMutex);
 		    if(dt>2*m_TimeStep) dt = m_TimeStep;
 		    lastticks=nowticks;
-                    if(m_Data.getDim1Size()) {
+                    if(m_Data->getDim1Size()) {
                         evolve(dt*m_TimeScale);
                     }
 		    if(m_UpdateAllModels) {
@@ -516,7 +518,7 @@ bool Brain::triggerTest(int mx, int my, int what) {
 	case KEY_H: //mouse move
             if(keymode == 128 || keymode == 129) {
                 vuLock dlock(m_DataMutex);
-                vector<float> col(m_BrowseData.getMValue(mx,my));
+                vector<float> col(m_BrowseData->getMValue(mx,my));
                 for(vector<float>::const_iterator c=col.begin();
                     c!=col.end(); c++)
                     cout << " " << *c;
@@ -778,14 +780,14 @@ bool Brain::triggerTest(int mx, int my, int what) {
         case KEY_6:
         {
             vuLock glock(m_GeomMutex);
-            Sensor* s = m_Sensors[m_Sensors.getSelectedSensor()];
+            sensor_ptr s = m_Sensors[m_Sensors.getSelectedSensor()];
             m_Geom->getNode(m_Geom->getHLNode()).attachSensor(s);
             break;
         }
         case KEY_7:
         {
             vuLock glock(m_GeomMutex);
-            Sensor *zs = new ZeroSensor();
+            sensor_ptr zs = std::make_shared<ZeroSensor>();
             zs = m_Geom->getSensorCollection()->addSensor("zero", zs);
             Node n; n.setPos(m_Geom->getNode(5));
             //n.mass *= 0.1;
@@ -978,8 +980,8 @@ bool Brain::triggerTest(int mx, int my, int what) {
             CAMpostScriptDriver Pdriver(fname.c_str());
             Gprocess.attachDriver(Pdriver); // Attach driver to process
             
-            Gprocess.setAxisRange(0,m_BrowseData.getDim1Size(),0,
-                                  m_BrowseData.getDim2Size());
+            Gprocess.setAxisRange(0,m_BrowseData->getDim1Size(),0,
+                                  m_BrowseData->getDim2Size());
             Gprocess.title("Deformable model"); // label the plot
             Gprocess.labelX(" X ");
             Gprocess.labelY(" Y ");
@@ -1023,8 +1025,8 @@ bool Brain::triggerTest(int mx, int my, int what) {
         case KEY_Insert:
         {
             cout << m_DBSelector.getCurSpecies();
-            cout << "image resolution is " << m_BrowseData.getDim1Size()
-                 << ", " << m_BrowseData.getDim2Size() << endl;
+            cout << "image resolution is " << m_BrowseData->getDim1Size()
+                 << ", " << m_BrowseData->getDim2Size() << endl;
             break;
         }
         case KEY_Escape:
@@ -1071,7 +1073,7 @@ bool Brain::triggerTest(int mx, int my, int what) {
             } else {
                 cout << "setting reference frame for species id " 
                      << m_CSpecies.id << endl;
-                PropVec frameprop(m_BrowseData.getPropVecMM());
+                PropVec frameprop(m_BrowseData->getPropVecMM());
                 DUMP(frameprop);
                 st.setRefProp(m_CSpecies.id, frameprop);
             }
@@ -1193,10 +1195,10 @@ bool Brain::doCommand(const std::string& command, const std::string& value,
             dword firstid = 0;
             while(m_CSpecies.id != firstid) {
                 if(!firstid) firstid = m_CSpecies.id;
-                if(m_BrowseData.getPPMM()) {
+                if(m_BrowseData->getPPMM()) {
                     cout << "setting reference frame for species id " 
                          << m_CSpecies.id << endl;
-                    PropVec frameprop(m_BrowseData.getPropVecMM());
+                    PropVec frameprop(m_BrowseData->getPropVecMM());
                     DUMP(frameprop);
                     st.setRefProp(m_CSpecies.id, frameprop);
                 }
@@ -1233,16 +1235,16 @@ bool Brain::doCommand(const std::string& command, const std::string& value,
         getSearchPara().write(os, true);
     } else if(command == "hbs") {
         dword hbs; fromString(value, hbs);
-        m_BrowseData.setHalveBeyondSize(hbs);
+        m_BrowseData->setHalveBeyondSize(hbs);
         cout << "image resolution is halved beyond a size of " 
-             << m_BrowseData.getHalveBeyondSize() << endl;
+             << m_BrowseData->getHalveBeyondSize() << endl;
     } else if(command == "analysis") {
         intptr_t para=0; fromString(value, para);
         startThread(DO_ANALYSIS, (void*)para);
     } else if(command == "noise") {
         cout << "going for noise" << endl;
         float para=255.f; fromString(value, para);
-        m_BrowseData.addNoise(para);
+        m_BrowseData->addNoise(para);
     } else {
         cout << "command not recognized" << endl;
         return false;
@@ -1299,12 +1301,12 @@ int Brain::distributeModel(const Model &model, int n, float qth, bool count)
     int i;
     int cs=0;
     int dist = (int)model.getStdRadius()+1;
-    int sx = m_Data.getDim1Size()/dist;
-    int sy = m_Data.getDim2Size()/dist;
+    int sx = m_Data->getDim1Size()/dist;
+    int sy = m_Data->getDim2Size()/dist;
     if(n==0) {  // jittering
         int j;
-        for(j=0; j<m_Data.getDim2Size(); j+=dist)
-            for(i=0; i<m_Data.getDim1Size(); i+=dist) 
+        for(j=0; j<m_Data->getDim2Size(); j+=dist)
+            for(i=0; i<m_Data->getDim1Size(); i+=dist)
             {
                 duplicateState(&model);
                 Point p(i,j);
@@ -1319,11 +1321,11 @@ int Brain::distributeModel(const Model &model, int n, float qth, bool count)
             }
     } else { // monte carlo
         if(n<0)
-            n = (int)(m_Data.getDim1Size()*m_Data.getDim2Size()/(dist*dist));
+            n = (int)(m_Data->getDim1Size()*m_Data->getDim2Size()/(dist*dist));
         for(i=0; i<n; i++) {
             duplicateState(&model);
-            Point p(frand(m_Data.getDim1Size()),  // monte carlo
-                    frand(m_Data.getDim2Size()));
+            Point p(frand(m_Data->getDim1Size()),  // monte carlo
+                    frand(m_Data->getDim2Size()));
             m_Geom->translate(p-m_Geom->getCenter()); //random position
             m_Geom->rotate(frand(2*M_PI)); //rand. orient.
             m_Geom->scale(max(fgauss01()*0.3f+1.f, 0.1f),true);
@@ -1408,11 +1410,11 @@ void Brain::drawAllModels() const {
             stringstream descr;
             descr << m_SModel.getShownIP() << " ";
             descr << spath->second.getRelGoodness();
-            sglBitmapString(descr.str().c_str(),10,m_Data.getDim2Size()-20);
+            sglBitmapString(descr.str().c_str(),10,m_Data->getDim2Size()-20);
         }
-//    sglBitmapString(m_CurPrototype.c_str(),10,m_Data.getDim2Size()-20);
+//    sglBitmapString(m_CurPrototype.c_str(),10,m_Data->getDim2Size()-20);
     }
-    if(m_Data.getFilename() != m_BrowseData.getFilename()) {
+    if(m_Data->getFilename() != m_BrowseData->getFilename()) {
         glColor3f(1,1,0);
         sglBitmapString("SENSORS NOT ATTACHED!",10,40);
     }
@@ -1420,7 +1422,7 @@ void Brain::drawAllModels() const {
 
 void Brain::evolve(float dt) 
 {
-    if(m_Done || !m_Data.initialized()) return;
+    if(m_Done || !m_Data->initialized()) return;
 
     static float t=0;
     t+=dt;
@@ -1468,8 +1470,8 @@ void Brain::evolve(float dt)
 	    int cstate = m_CurState;
 	    int dist = (int)(1.5*m_Geom->getStdRadius());
 	    int i,j;
-	    for(j=dist/2;j<m_Data.getDim2Size(); j+=dist)
-		for(i=dist/2;i<m_Data.getDim1Size(); i+=dist) {
+	    for(j=dist/2;j<m_Data->getDim2Size(); j+=dist)
+		for(i=dist/2;i<m_Data->getDim1Size(); i+=dist) {
 		    duplicateState();
 		    m_Geom->translate(Point(i,j)-m_Geom->getCenter());
 		}
@@ -1527,8 +1529,8 @@ void Brain::setupSearch(enum SearchWhat what, const PropVec& prop)
             propu = cem.getUB();
             propl = cem.getLB();
         } else {
-            Point2D dims((float)m_Data.getDim1Size(),
-                         (float)m_Data.getDim2Size());
+            Point2D dims((float)m_Data->getDim1Size(),
+                         (float)m_Data->getDim2Size());
             float scale = m_Geom->getStdRadius();
             setPropPos(propu, dims);
             setPropDir(propu, 2*M_PI);

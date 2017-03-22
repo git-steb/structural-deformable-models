@@ -17,9 +17,9 @@ Image<double>& create2DGaussian(Image<double>& flt, double stdev,
 
 //-----------------------------------------------------------------------------
 //class SmoothIntensitySensor
-SmoothIntensitySensor::SmoothIntensitySensor(const Sensor *_source, 
+SmoothIntensitySensor::SmoothIntensitySensor(sensor_cptr _source, 
 					     float _scale)
-    : PPSensor(_source) 
+    : PPSensor(_source)
 {
     enableUpdate(UPD_SCALE|UPD_DATA);
     togglePP(PP_FORCE);
@@ -103,18 +103,18 @@ CombiSensor::CombiSensor(int nchannels)
 
 CombiSensor::~CombiSensor()
 {
-    for(vector<Sensor*>::iterator s=sources.begin();
+    for(vector<sensor_ptr>::iterator s=sources.begin();
         s!=sources.end(); s++)
     {
-        (*s)->unrefSuperSensor(this);
+        (*s)->unrefSuperSensor( shared_from_this() );
     }
 }
 
 void CombiSensor::clearSources() 
 {
-    vector<Sensor*>::iterator s=sources.begin();
+    vector<sensor_ptr>::iterator s=sources.begin();
     while(s!=sources.end()) {
-        (*s)->unrefSuperSensor(this);
+        (*s)->unrefSuperSensor( shared_from_this() );
         s++;
     }
     sources.clear();
@@ -126,13 +126,13 @@ void CombiSensor::setNSources(int n)
 {
     if(n != (int)sources.size()) {
         //clearSources();
-        sources.resize(n,(Sensor*)getZeroSensor());
+        sources.resize(n,(sensor_ptr)getZeroSensor());
         cweights.resize(n, 1);
 	setModified(UPD_CWEIGHTS|UPD_DATA);
     }
 }
 
-void CombiSensor::setSource(Sensor *_source, float weight, int id)
+void CombiSensor::setSource(sensor_ptr _source, float weight, int id)
 {
     assert(id>=0);
     if(id>=(int)sources.size()) {
@@ -140,37 +140,38 @@ void CombiSensor::setSource(Sensor *_source, float weight, int id)
     }
     else if (sources[id] != 0 && sources[id] != getZeroSensor()) 
     {
-        sources[id]->unrefSuperSensor(this);
+        sources[id]->unrefSuperSensor( shared_from_this() );
     }
     sources[id] = _source;
     cweights[id] = weight;
-    _source->refSuperSensor(this);
+    _source->refSuperSensor( shared_from_this() );
     source = _source;
-    if(!((Sensor*)source)->isUpdate(UPD_MINMAX)) {
-	((Sensor*)source)->enableUpdate(UPD_MINMAX);
-	((Sensor*)source)->setModified(UPD_MINMAX);
+    if(!std::const_pointer_cast<Sensor>(source)->isUpdate(UPD_MINMAX)) {
+        std::const_pointer_cast<Sensor>(source)->enableUpdate(UPD_MINMAX);
+        std::const_pointer_cast<Sensor>(source)->setModified(UPD_MINMAX);
     }
     setModified(UPD_CWEIGHTS|UPD_DATA);
 }
 
-void CombiSensor::changeSource(const Sensor* _source)
+void CombiSensor::changeSource(sensor_cptr _source)
 {
     if(!_source) return;
     const string& sid = _source->getID();
-    vector<Sensor*>::iterator s=sources.begin();
-    while(s!=sources.end() && (*s)->getID()!=sid) s++;
+    vector<sensor_ptr>::iterator s = sources.begin();
+    while(s!=sources.end() && (*s)->getID()!=sid)
+        s++;
     if(s!=sources.end()) {      // && sid == (*s)->getID()) { // use assert?
         source = *s;
         PPSensor::changeSource(_source);
-        *s = (Sensor*)source;
-	if(!((Sensor*)source)->isUpdate(UPD_MINMAX)) {
-	    ((Sensor*)source)->enableUpdate(UPD_MINMAX);
-	    ((Sensor*)source)->setModified(UPD_MINMAX);
-	}
+        *s = std::const_pointer_cast<Sensor>(source);
+        if(!std::const_pointer_cast<Sensor>(source)->isUpdate(UPD_MINMAX)) {
+            std::const_pointer_cast<Sensor>(source)->enableUpdate(UPD_MINMAX);
+            std::const_pointer_cast<Sensor>(source)->setModified(UPD_MINMAX);
+        }
     } else {
-        TRACE("error replacing element <"<<sid<<"> in combi sensor - appending instead.");
+        TRACE("error replacing element <" << sid << "> in combi sensor - appending instead.");
         print(cout) << endl;
-        setSource((Sensor*)_source,1.f);
+        setSource(std::const_pointer_cast<Sensor>(_source),1.f);
     }
 }
 
@@ -196,9 +197,9 @@ Sensor& CombiSensor::assign(const Sensor& rhs)
                 setNSources(crhs.sources.size());
                 int sid = 0;
                 const vector<float>& weights = crhs.getCWeights();
-                for(vector<Sensor*>::const_iterator s = crhs.sources.begin();
+                for(vector<sensor_ptr>::const_iterator s = crhs.sources.begin();
                     s != crhs.sources.end(); s++, sid++)
-                    setSource((Sensor*)*s, weights[sid], sid);
+                    setSource(std::const_pointer_cast<Sensor>(*s), weights[sid], sid);
             }
         }
     } 
@@ -212,7 +213,7 @@ ostream& CombiSensor::print(ostream& os) const
     if(m_NormalizeInput) os << "k";
     else os << "K";
     vector<float>::const_iterator w = cweights.begin();
-    for(vector<Sensor*>::const_iterator s=sources.begin();
+    for(vector<sensor_ptr>::const_iterator s=sources.begin();
         s!=sources.end(); s++, w++)
     {
         os << " " << (*s)->getID() << " " << *w;
@@ -223,7 +224,7 @@ ostream& CombiSensor::print(ostream& os) const
 ostream& CombiSensor::hprint(ostream &os, SensorCollection *sc) const
 {
     if(sc->isPrinted(m_ID)) return os;
-    for(vector<Sensor*>::const_iterator s=sources.begin();
+    for(vector<sensor_ptr>::const_iterator s=sources.begin();
         s!=sources.end(); s++)
     {
         (*s)->hprint(os, sc);

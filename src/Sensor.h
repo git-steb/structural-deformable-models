@@ -15,10 +15,12 @@
 class SensorCollection;
 class Dataset;
 class ZeroSensor;
-const ZeroSensor* getZeroSensor();
+sensor_ptr getZeroSensor();
 
-/** Sensor calculates filtervalues from the source. */
-class Sensor {
+/** Sensor calculates filter values from the source. */
+class Sensor : public std::enable_shared_from_this<Sensor> {
+ protected:
+    Sensor();
  public:
     enum  UpdateParam {UPD_NOTHING=0, UPD_DATA=1, 
 		       UPD_SCALE=2, UPD_CWEIGHTS=4, UPD_DIR=8, 
@@ -30,14 +32,14 @@ class Sensor {
      \param _source if NULL getZeroSensor() will be used
                    other Sensors or Dataset is possible 
     */
-    Sensor(const Sensor *_source=NULL); 
+    Sensor(sensor_cptr _source);
     /** Destructor */
     virtual ~Sensor();
 
-    const Sensor* getSource() {return source;}
-    virtual void changeSource(const Sensor* _source);
-    void replaceBy(Sensor* target);
-    bool assignRef(const Sensor* rhs);
+    sensor_cptr getSource() {return source;}
+    virtual void changeSource(sensor_cptr _source);
+    void replaceBy(sensor_ptr target);
+    bool assignRef(sensor_cptr rhs);
     virtual Sensor& assign(const Sensor& rhs);
 
     //! get value at discrete position
@@ -158,13 +160,19 @@ class Sensor {
   virtual void calcMinMax();
 
 public:
-    void refSuperSensor(Sensor *super);
-    void unrefSuperSensor(Sensor *super);
+    void refSuperSensor(sensor_ptr super);
+    void unrefSuperSensor(sensor_ptr super);
     void invalidateSource();
+    template <typename Derived>
+    std::shared_ptr<Derived> shared_from_base()
+    {
+        return std::static_pointer_cast<Derived>(shared_from_this());
+    }
+
 protected:
     //------------------------- data ----------------
     /** Handle of the source */
-    const Sensor* source;
+    sensor_cptr source;
     /* parameters */
     /** Scale of filter (log2 scale --> 0 means 'full' resolution) */
     float scale;
@@ -179,18 +187,33 @@ protected:
     int   m_Skip;
     int   m_AddSkip;
 private:
-    std::set<Sensor*> superSensors;	//!< references to attached sensors
+    std::set<sensor_ptr> superSensors;	//!< references to attached sensors
 };
+
+template<typename SensorType, typename FirstArgType, typename... Args>
+std::shared_ptr<SensorType> makeSensor(FirstArgType source, Args... args)
+{
+    std::shared_ptr<SensorType> s = std::make_shared<SensorType>(getZeroSensor(), args...);
+    s->changeSource(source);
+    return s;
+}
+
+template<typename SensorType>
+std::shared_ptr<SensorType> makeSensor()
+{
+    return std::make_shared<SensorType>();
+}
 
 /** a sensor that does nothing except returning zeros */
 class ZeroSensor : public Sensor {
 public:
-    ZeroSensor() : Sensor(this) {
-	updateMask = UPD_NOTHING;
-	unsetModified();
-	setID("0");
+    ZeroSensor() : Sensor()
+    {
+        updateMask = UPD_NOTHING;
+        unsetModified();
+        setID("0");
     }
-    void changeSource(const Sensor* source) {};
+    void changeSource(sensor_cptr source) {};
     int getDim1Size() const { return 2; }
     int getDim2Size() const { return 2; }
     int getDim3Size() const { return 1; }
@@ -210,7 +233,7 @@ protected:
 class PPSensor : public Sensor {
  public:
     enum PPState { PP_DONT=0, PP_DO, PP_FORCE };
-    PPSensor(const Sensor *_source);
+    PPSensor(sensor_cptr _source);
     /** Return cached value or compute and cache new one. */
     virtual float getValue(int x, int y) const;
     /** Return cached gradient or compute and cache new one. */

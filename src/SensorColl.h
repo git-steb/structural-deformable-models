@@ -8,15 +8,15 @@
 
 class Sensor;
 
-class SensorCollection : public std::map<std::string,Sensor*> {
+class SensorCollection : public std::map<std::string,sensor_ptr> {
  public:
     SensorCollection();
     ~SensorCollection();
     
-    Sensor* addSensor(const std::string& key, Sensor *s);
-    Sensor* addSensor(Sensor *s);
-    Sensor* readSensor(ParseFile& is);
-    Sensor* getSensor(const std::string& id);
+    sensor_ptr addSensor(const std::string& key, sensor_ptr s);
+    sensor_ptr addSensor(sensor_ptr s);
+    sensor_ptr readSensor(ParseFile& is);
+    sensor_ptr getSensor(const std::string& id);
     SensorCollection& merge(SensorCollection& rhs);
     bool isPrinted( const std::string& id ) const;
     void setPrinted( const std::string& id );

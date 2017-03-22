@@ -43,15 +43,15 @@ Image<T>& makeNoiseImage(Image<T>& nimg, T mean, T sigma);
 //-----------------------------------------------------------------------------
 //Data methods
 
-Dataset::Dataset() : Sensor(this), data(1),
+Dataset::Dataset() : Sensor(sensor_cptr()), data(1),
                      m_Dim1(0), m_Dim2(0), m_Dim3(0), m_NChannels(0), 
                      m_CurrImage(0),m_ppmm(DEFAULT_PPMM),m_RefreshImage(false),
                      m_HalveBeyondSize(0xffffffff)
 {
     setID("d0");
-};
+}
 
-Dataset::Dataset(const char* filename) : Sensor(this), 
+Dataset::Dataset(const char* filename) : Sensor(sensor_cptr()),
                                          m_Dim1(0), m_Dim2(0), m_Dim3(0), 
                                          m_NChannels(0), m_CurrImage(0),
                                          m_ppmm(DEFAULT_PPMM),

@@ -7,6 +7,7 @@
 #endif
 #include <assert.h>
 #include "simpletypes.h"
+#include "types_fwd.h"
 #include <limits>
 
 #ifndef NOTRACE

@@ -40,8 +40,10 @@ void StructTable::clear()
     m_Interpretations.clear();
 }
 
-Dataset* StructTable::getDataset() 
-{ return &m_Brain->getSensorData(); }
+dataset_ptr StructTable::getDataset()
+{
+    return m_Brain->getSensorData().shared_from_base<Dataset>();
+}
 
 SensorCollection* StructTable::getSensors()
 { return (SensorCollection*) &m_Brain->getSensors(); }

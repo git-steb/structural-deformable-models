@@ -325,12 +325,12 @@ long ImageWindow::onKeyPress(FXObject* obj,FXSelector sel,void* ptr){
 int ImageWindow::selectSensor(int sido)
 {
     vuLock glock(m_Brain.getGeomMutex());
-    const SensorCollection &sensors=m_Brain.getSensors();
-    const Sensor* ss=NULL;
+    SensorCollection &sensors = m_Brain.getSensors();
+    sensor_ptr ss = NULL;
     if((int)sensors.size()<=sido) sido=0;
     if(sido<0) sido=sensors.size()-1;
     int sid = sido;
-    for(SensorCollection::const_iterator s=sensors.begin();
+    for(SensorCollection::iterator s=sensors.begin();
         s!=sensors.end();s++,sid--) {
         if(!sid) {
             ss = s->second;
@@ -343,8 +343,8 @@ int ImageWindow::selectSensor(int sido)
         ((SensorCollection&)sensors).selectSensor("d0");
     } else {
         if(!ss->isUpdate(Sensor::UPD_MINMAX)) {
-            ((Sensor*)ss)->enableUpdate(Sensor::UPD_MINMAX);
-            ((Sensor*)ss)->setModified(Sensor::UPD_MINMAX);
+            ss->enableUpdate(Sensor::UPD_MINMAX);
+            ss->setModified(Sensor::UPD_MINMAX);
         }
         Image<float> simg(ss->createSensorImage());
         simg.unsetNAN(0);

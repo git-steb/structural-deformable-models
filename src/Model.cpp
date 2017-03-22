@@ -23,7 +23,7 @@ using namespace std;
 
 ParticleParam ParticleParam::global = ParticleParam();
 
-Model::Model(const Dataset *_dataset, SensorCollection *sensors)
+Model::Model(dataset_cptr _dataset, SensorCollection *sensors)
     : m_TimeStamp(0), m_Dataset(_dataset), m_Sensors(sensors), 
       m_Flags(0), m_PCFlags(PC_NOTHING), m_InstCount(1), m_HLNode(-1), m_ID(0)
 {
@@ -82,11 +82,13 @@ Model& Model::operator=(const Model& rhs)
     return *this;
 }
 
-void Model::attachDataset(const Dataset *dataset) {
+void Model::attachDataset(dataset_cptr dataset) {
     if(m_Dataset == dataset) return;
     m_Dataset = dataset;
     if(m_Sensors && m_Sensors->getSensor("d0") != dataset) 
-        m_Sensors->addSensor("d0", (Sensor*)dataset);
+        m_Sensors->addSensor("d0",
+                std::dynamic_pointer_cast<Sensor>(
+                        std::const_pointer_cast<Dataset>(dataset)));
     adaptDataScale();
 }
 
@@ -251,7 +253,7 @@ bool Model::readSensor(ParseFile &is)
                     << is.getPath()+is.getValue() << endl;
     } else is.pushLine();
     if(!m_Sensors) m_Sensors = new SensorCollection();
-    Sensor* s = m_Sensors->readSensor(is);
+    sensor_ptr s = m_Sensors->readSensor(is);
     if(!s) return false;
     m_Sensors->addSensor(s);
     //s->enableUpdate(Sensor::UPD_MINMAX); done in Node::attachSensor

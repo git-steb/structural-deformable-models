@@ -13,7 +13,7 @@
 /** Intensity sensor (identity operator) */
 class IntensitySensor : public Sensor {
 public:
-    IntensitySensor(const Sensor *_source=NULL) : Sensor(_source) {};
+    IntensitySensor(sensor_cptr _source=NULL) : Sensor(_source) {};
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os) << "i";
         return os;
@@ -28,7 +28,7 @@ protected:
 /** Intensity sensor (identity operator) */
 class PPIntensitySensor : public PPSensor {
 public:
-    PPIntensitySensor(const Sensor *_source=NULL) : PPSensor(_source) {};
+    PPIntensitySensor(sensor_cptr _source=NULL) : PPSensor(_source) {};
 
 protected:
     /** Returns the Intensity */
@@ -37,10 +37,10 @@ protected:
     }
 };
 
-/** Multi-channel intensity Sensor */
+/** Multi-channel intensity Sensor **/
 class MCIntensitySensor : public PPSensor {
  public:
-    MCIntensitySensor(const Sensor *_source=NULL) : PPSensor(_source) {}
+    MCIntensitySensor(sensor_cptr _source=NULL) : PPSensor(_source) {}
     int getNChannels() const { return 1; }    
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os) << "m ";
@@ -64,10 +64,10 @@ protected:
     }
 };
 
-/** Multi-channel gradient Sensor */
+/** Multi-channel gradient Sensor **/
 class MCGSensor : public PPSensor {
  public:
-    MCGSensor(const Sensor *_source=NULL) : PPSensor(_source) 
+    MCGSensor(sensor_cptr _source=NULL) : PPSensor(_source) 
         { m_AddSkip = 1; }
     int getNChannels() const { return 1; }    
     std::ostream& print(std::ostream& os) const {
@@ -103,10 +103,10 @@ protected:
     }
 };
 
-/** Multi-chrominance Sensor */
+/** Multi-chrominance Sensor **/
 class CRSensor : public PPSensor {
  public:
-    CRSensor(const Sensor *_source=NULL) : PPSensor(_source) 
+    CRSensor(sensor_cptr _source=NULL) : PPSensor(_source) 
         { m_AddSkip = 1; }
     int getNChannels() const { return 1; }    
     std::ostream& print(std::ostream& os) const {
@@ -153,7 +153,7 @@ protected:
 /** Smoothed intensity sensor (using gaussian) */
 class SmoothIntensitySensor : public PPSensor {
 public:
-    SmoothIntensitySensor(const Sensor *_source=NULL, float _scale=0);
+    SmoothIntensitySensor(sensor_cptr _source=NULL, float _scale=0);
     bool performUpdate();
     //dword getFilterSize() const {return smoothflt.getSizeX();}
     std::ostream& print(std::ostream& os) const {
@@ -174,10 +174,10 @@ protected:
     Image< std::complex<double> >       m_FData, m_FFilter;
 };
 
-/** gradient magnitude sensor */
+/** gradient magnitude Sensor **/
 class GradMagSensor : public PPSensor {
 public:
-    GradMagSensor(const Sensor* _source=NULL) 
+    GradMagSensor(sensor_cptr _source=NULL) 
         : PPSensor(_source)
 	{
 	    enableUpdate(UPD_DATA);
@@ -204,10 +204,10 @@ protected:
     }
 };
 
-/** curvature sensor */
+/** curvature Sensor **/
 class CornerSensor : public PPSensor {
 public:
-    CornerSensor(const Sensor* _source=NULL) : PPSensor(_source)
+    CornerSensor(sensor_cptr _source=NULL) : PPSensor(_source)
 	{
 	    enableUpdate(UPD_DATA);
 	    togglePP(PPSensor::PP_FORCE);
@@ -271,32 +271,32 @@ class CombiSensor : public PPSensor {
     int getNChannels() const { return sources.size(); }
     int getSkip() const {
         int m_Skip = 0;
-        for(std::vector<Sensor*>::const_iterator s = sources.begin();
+        for(std::vector<sensor_ptr>::const_iterator s = sources.begin();
             s!=sources.end(); s++)
             if((*s)->getSkip() > m_Skip) m_Skip = (*s)->getSkip();
         return m_Skip;
     }
         
-    void changeSource(const Sensor* _source);
+    void changeSource(sensor_cptr _source);
     std::ostream& print(std::ostream& os) const;
     std::ostream& hprint(std::ostream &os, SensorCollection *sc) const;
 //member functions
     void clearSources();
     void setNSources(int n);
-    void setSource(Sensor *_source, float weight, int id);
-    void setSource(Sensor *_source, float weight) 
+    void setSource(sensor_ptr _source, float weight, int id);
+    void setSource(sensor_ptr _source, float weight)
         { setSource(_source, weight, sources.size()); }
     Sensor& assign(const Sensor& rhs);
     void normalizeInput(bool doit=true) { m_NormalizeInput = doit; }
     bool isInputNormalized() const { return m_NormalizeInput; }
 protected:
-    std::vector<Sensor*> sources;
-    bool                 m_NormalizeInput;
+    std::vector<sensor_ptr> sources;
+    bool                    m_NormalizeInput;
 
     //! Computes a scalar product between the multi-channel intensities and the cweights vector.
     float calcValue(int x, int y) const {
 	float result = 0.0f;
-        std::vector<Sensor*>::const_iterator s = sources.begin();
+        std::vector<sensor_ptr>::const_iterator s = sources.begin();
         std::vector<float>::const_iterator w = cweights.begin();
         if(m_NormalizeInput) 
             for(; s != sources.end(); s++,w++) {
@@ -312,7 +312,7 @@ protected:
     std::vector<float> calcMValue(int x, int y) const {
 	std::vector<float> vv(getNChannels());
         std::vector<float>::iterator v = vv.begin();
-        std::vector<Sensor*>::const_iterator s = sources.begin();
+        std::vector<sensor_ptr>::const_iterator s = sources.begin();
         std::vector<float>::const_iterator w = cweights.begin();
         if(m_NormalizeInput)
             for(; v != vv.end(); v++, s++,w++)
@@ -326,10 +326,10 @@ protected:
     //void calcMinMax();
 };
 
-/** Mahalanobis distance sensor */
+/** Mahalanobis distance Sensor **/
 class MahalSensor : public PPSensor {
  public:
-    MahalSensor(const Sensor *_source=NULL, const std::string& fname="") 
+    MahalSensor(sensor_cptr _source=NULL, const std::string& fname="") 
         : PPSensor(_source) 
         { 
             m_AddSkip = 1; 
@@ -370,7 +370,7 @@ class MappingSensor : public PPSensor {
                        MS_GAUSSNORM, MS_MGAUSSNORM, MS_MCLAMPU, MS_BIAS,
                        MS_LAST};
 
-    MappingSensor(const Sensor *_source=NULL, const std::string& mapn="") 
+    MappingSensor(sensor_cptr _source=NULL, const std::string& mapn="") 
         : PPSensor(_source) 
         { 
             m_AddSkip = 1; 

@@ -55,7 +55,7 @@ class StructTable {
     ~StructTable();
     void clear();
     void attachBrain(Brain& brain) { m_Brain = &brain; }
-    Dataset* getDataset();
+    dataset_ptr getDataset();
     SensorCollection* getSensors();
     void reattachSensors();
     void adaptDataScale();

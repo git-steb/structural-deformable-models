@@ -47,16 +47,16 @@ ostream& operator<<(ostream &os, const Node &n) {
     return os;
 }
 
-void Node::attachSensor(const Sensor *_sensor) {
+void Node::attachSensor(sensor_cptr _sensor) {
     sensor = _sensor;
     sensorID = sensor->getID();
-    if(!((Sensor*)sensor)->isUpdate(Sensor::UPD_MINMAX)) {
-        ((Sensor*)sensor)->enableUpdate(Sensor::UPD_MINMAX);
-        ((Sensor*)sensor)->setModified(Sensor::UPD_MINMAX);
+    if(!sensor->isUpdate(Sensor::UPD_MINMAX)) {
+        std::const_pointer_cast<Sensor>(sensor)->enableUpdate(Sensor::UPD_MINMAX);
+        std::const_pointer_cast<Sensor>(sensor)->setModified(Sensor::UPD_MINMAX);
     }
-    const PPSensor *pps = dynamic_cast<const PPSensor*>(_sensor);
+    std::shared_ptr<const PPSensor> pps = std::dynamic_pointer_cast<const PPSensor, const Sensor>(_sensor);
     if(pps && pps->getPPState()==PPSensor::PP_DONT)
-        ((PPSensor*)pps)->togglePP(PPSensor::PP_DO);
+        std::const_pointer_cast<PPSensor>(pps)->togglePP(PPSensor::PP_DO);
 }
 
 void Node::addSensorForce() {

@@ -81,14 +81,14 @@ class Dataset : public Sensor {
     dword getHalveBeyondSize() const { return m_HalveBeyondSize; }
     void addNoise(float sigma);
  protected:
-    /** implementing virtual from class Sensor */
+    /** implementing virtual from class Sensor **/
     float calcValue(int x, int y) const {
 	//vuLock l(*((vuMutex*)&writeMutex));
 	if((dword)x < (dword)m_Dim1 && (dword)y < (dword)m_Dim2)
 	    return data[m_CurrImage].getPixel(x,y);
 	else return 0.0f;
     }
-    /** implementing virtual from class Sensor */
+    /** implementing virtual from class Sensor **/
     std::vector<float> calcMValue(int x, int y) const {
 	//vuLock l(*((vuMutex*)&writeMutex));
 	std::vector<float> mv(m_NChannels);

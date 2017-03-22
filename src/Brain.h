@@ -68,6 +68,7 @@ class Brain : public vuThread {
     void findWinners();
 
     const SensorCollection& getSensors() const { return m_Sensors; }
+    SensorCollection& getSensors() { return m_Sensors; }
 
     void getQualityRange(float &lqof, float &hqof, float shapeweight=-1) const;
     int distributeModel(const Model &model, 
@@ -85,8 +86,8 @@ protected:
     void setupSearch(enum SearchWhat what=SW_RESET, 
                      const PropVec& prop=PropVec());
 protected:
-    Dataset		m_Data;
-    Dataset             m_BrowseData;
+    dataset_ptr         m_Data;
+    dataset_ptr         m_BrowseData;
     SensorCollection	m_Sensors;
     Model		*m_Geom;
     std::vector<Model*>                         *m_CStates;

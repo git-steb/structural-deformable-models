@@ -10,35 +10,46 @@
 
 using namespace std;
 
-Sensor::Sensor(const Sensor *_source) : source(_source ? _source : getZeroSensor()),
-					scale(0.f),
-					updateMask((dword)UPD_DATA),
-					m_ID(""), m_Skip(0), m_AddSkip(0)
+Sensor::Sensor()
+    : source(),
+      scale(0.f),
+      maxval(), minval(), mean(), stdev(),
+      toupdate(), updateMask((dword)0),
+      m_ID(""), m_Skip(0), m_AddSkip(0)
+{ }
+
+Sensor::Sensor(sensor_cptr _source)
+    : source(getZeroSensor()),
+	  scale(0.f),
+	  maxval(), minval(), mean(), stdev(),
+	  toupdate(), updateMask((dword)UPD_DATA),
+      m_ID(""), m_Skip(0), m_AddSkip(0)
 {
-    if(source == this)	// class Dataset or ZeroSensor is initialized
-	cweights.resize(1, 1.f);
-    else {
-	cweights.resize(source->getNChannels(), 1.f);
-        ((Sensor*)source)->refSuperSensor(this);
+    cweights.resize(1, 1.f);
+    if(_source && _source != getZeroSensor() )	{
+        throw logic_error("Only call the sensor constructor with ZeroSensor source");
+        changeSource(_source);
     }
     setModified();
-};
+}
 
 Sensor::~Sensor()
 {
-    ((Sensor*)source)->unrefSuperSensor(this);
-    for(set<Sensor*>::iterator ss = superSensors.begin();
-	ss != superSensors.end(); ss++) 
-	(*ss)->invalidateSource();
+    if(source && source != getZeroSensor())
+        std::const_pointer_cast<Sensor>(source)->unrefSuperSensor( shared_from_this() );
+    for(set<sensor_ptr>::iterator ss = superSensors.begin();
+        ss != superSensors.end();
+        ss++)
+            (*ss)->invalidateSource();
 }
 
-void Sensor::replaceBy(Sensor *target) {
-    for(set<Sensor*>::iterator ss = superSensors.begin();
+void Sensor::replaceBy(sensor_ptr target) {
+    for(set<sensor_ptr>::iterator ss = superSensors.begin();
 	ss != superSensors.end();) 
     {
-	set<Sensor*>::iterator last = ss;
-	ss++;
-	(*last)->changeSource(target);
+        set<sensor_ptr>::iterator last = ss;
+        ss++;
+        (*last)->changeSource(target);
     }
 }
 
@@ -57,7 +68,7 @@ Sensor& Sensor::assign(const Sensor& rhs)
     return *this; 
 }
 
-bool Sensor::assignRef(const Sensor* rhs) {
+bool Sensor::assignRef(sensor_cptr rhs) {
     if(typeid(*this) != typeid(*rhs)) return false;
     assign(*rhs);
     return true;
@@ -84,14 +95,16 @@ void Sensor::getNumberString(char sid[5], dword id)
     sid[i] = 0;
 }
 
-void Sensor::changeSource(const Sensor* _source) {
+void Sensor::changeSource(sensor_cptr _source) {
     assert(source);
-    ((Sensor*)source)->unrefSuperSensor(this);
+    std::const_pointer_cast<Sensor>(source)->unrefSuperSensor( shared_from_this() );
     if(!_source)
-	source = getZeroSensor();
+        source = getZeroSensor();
     else 
-	source = _source; 
-    ((Sensor*)source)->refSuperSensor(this);
+        source = _source;
+    if(cweights.size() != size_t(source->getNChannels()))
+        cweights.resize(source->getNChannels(), 1.f);
+    std::const_pointer_cast<Sensor>(source)->refSuperSensor( shared_from_this() );
     setModified(UPD_DATA);
 }
     
@@ -99,7 +112,7 @@ void Sensor::setCWeights(const vector<float>& weights) {
     //if((int)weights.size() == source->getNChannels()) {
 	cweights = weights;
 	setModified(UPD_CWEIGHTS);
-        //}
+    //}
 }
 void Sensor::setDirection(const Point &dir) {
     this->dir = dir;
@@ -124,12 +137,12 @@ bool Sensor::performUpdate()  {
 	  calcMinMax();
 	}
 	// do nothing for this sensor, but for the others...
-	for(set<Sensor*>::iterator ss = superSensors.begin();
+	for(set<sensor_ptr>::iterator ss = superSensors.begin();
 	    ss != superSensors.end(); ss++) 
 	{
 	  (*ss)->setModified(Sensor::UPD_DATA);
 	}
-	for(set<Sensor*>::iterator ss = superSensors.begin();
+	for(set<sensor_ptr>::iterator ss = superSensors.begin();
 	    ss != superSensors.end(); ss++) 
 	{
 	  (*ss)->performUpdate();
@@ -139,6 +152,11 @@ bool Sensor::performUpdate()  {
 }
 
 void Sensor::calcMinMax() {
+  if(!source) {
+    minval = maxval = 0;
+    mean = stdev = 0;
+    return;
+  }
   int i,j;
   minval=numeric_limits<float>::max();
   maxval=numeric_limits<float>::min();
@@ -163,17 +181,19 @@ void Sensor::calcMinMax() {
   stdev = float(sqrt(avg2-avg*avg))*1.5;
 }
 
-void Sensor::refSuperSensor(Sensor *super) {
-    if(super != this)
-	superSensors.insert(super);
+void Sensor::refSuperSensor(sensor_ptr super) {
+    if(super != getZeroSensor())
+        superSensors.insert(super);
 }
-void Sensor::unrefSuperSensor(Sensor *super) {
-    if(super != this)
-	superSensors.erase(super);
+void Sensor::unrefSuperSensor(sensor_ptr super) {
+    if(super != getZeroSensor())
+        superSensors.erase(super);
 }
-void Sensor::invalidateSource() { 
-    source = getZeroSensor(); 
-    ((Sensor*)source)->refSuperSensor(this);
+void Sensor::invalidateSource() {
+    if(source && source != getZeroSensor()) {
+        std::const_pointer_cast<Sensor>(source)->unrefSuperSensor( shared_from_this() );
+        source = getZeroSensor();
+    }
 }
 
 bool Sensor::isValid(int x, int y) const 
@@ -195,7 +215,7 @@ Image<float> Sensor::createSensorImage() const {
 ostream& Sensor::print(ostream &os) const
 {
     os << "s " << m_ID << " ";
-    if(source->getID() != "d0" && source != this) {
+    if(source && source->getID() != "d0" && source != getZeroSensor()) {
         os << "source " << source->getID() << " ";
     }
     return os;
@@ -204,7 +224,7 @@ ostream& Sensor::print(ostream &os) const
 ostream& Sensor::hprint(ostream &os, SensorCollection *sc) const
 {
     if(sc->isPrinted(m_ID)) return os;
-    if(source && source != this) source->hprint(os, sc);
+    if(source && source != getZeroSensor()) source->hprint(os, sc);
     if(sc->isPrinted(m_ID)) return os;
     sc->setPrinted(m_ID);
     return (print(os) << endl);
@@ -212,15 +232,16 @@ ostream& Sensor::hprint(ostream &os, SensorCollection *sc) const
 
 //-----------------------------------------------------------------------------
 //class ZeroSensor
-const ZeroSensor* getZeroSensor() 
-{ 
-    static ZeroSensor zeros;
-    return &zeros;
+
+sensor_ptr getZeroSensor()
+{
+    static sensor_ptr zeros = std::make_shared<ZeroSensor>();
+    return zeros;
 }
 
 //-----------------------------------------------------------------------------
 //class PPSensor
-PPSensor::PPSensor(const Sensor *_source) 
+PPSensor::PPSensor(sensor_cptr _source) 
     : Sensor(_source), 
       values(source->getDim1Size(), source->getDim2Size(), AIR_NAN),
       gradients(source->getDim1Size(), source->getDim2Size(), 
