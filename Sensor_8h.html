@@ -105,11 +105,12 @@ Include dependency graph for Sensor.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="Sensor_8h__incl.png" border="0" usemap="#src_2Sensor_8h" alt=""/></div>
 <map name="src_2Sensor_8h" id="src_2Sensor_8h">
-<area shape="rect" id="node6" href="common_8h.html" title="common.h" alt="" coords="281,155,363,181"/>
-<area shape="rect" id="node10" href="Point_8h.html" title="Point.h" alt="" coords="211,80,273,107"/>
-<area shape="rect" id="node15" href="Image_8h.html" title="Image.h" alt="" coords="381,80,450,107"/>
+<area shape="rect" id="node6" href="common_8h.html" title="common.h" alt="" coords="297,155,379,181"/>
+<area shape="rect" id="node12" href="Point_8h.html" title="Point.h" alt="" coords="227,80,289,107"/>
+<area shape="rect" id="node17" href="Image_8h.html" title="Image.h" alt="" coords="397,80,466,107"/>
 <area shape="rect" id="node8" href="simpletypes_8h.html" title="simpletypes.h" alt="" coords="181,229,284,256"/>
-<area shape="rect" id="node13" href="mathutil_8h.html" title="mathutil.h" alt="" coords="177,155,256,181"/>
+<area shape="rect" id="node9" href="types__fwd_8h.html" title="types_fwd.h" alt="" coords="402,229,495,256"/>
+<area shape="rect" id="node15" href="mathutil_8h.html" title="mathutil.h" alt="" coords="193,155,272,181"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -167,8 +168,14 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a791b334b0c60a1619b52b4683073825d"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classZeroSensor.html">ZeroSensor</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Sensor_8h.html#a791b334b0c60a1619b52b4683073825d">getZeroSensor</a> ()</td></tr>
-<tr class="separator:a791b334b0c60a1619b52b4683073825d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e2f3018c91778cac76f1d0d3b8de7c5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="types__fwd_8h.html#ab179f7a7d09e543ecbd516d6becb2c4a">sensor_ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="Sensor_8h.html#a5e2f3018c91778cac76f1d0d3b8de7c5">getZeroSensor</a> ()</td></tr>
+<tr class="separator:a5e2f3018c91778cac76f1d0d3b8de7c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f468c21bdfb9bdb1e8fba3a98ba288c"><td class="memTemplParams" colspan="2">template&lt;typename SensorType , typename FirstArgType , typename... Args&gt; </td></tr>
+<tr class="memitem:a2f468c21bdfb9bdb1e8fba3a98ba288c"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; SensorType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="Sensor_8h.html#a2f468c21bdfb9bdb1e8fba3a98ba288c">makeSensor</a> (FirstArgType source, Args...args)</td></tr>
+<tr class="separator:a2f468c21bdfb9bdb1e8fba3a98ba288c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa98f6ac879e09abcf08613710c56765"><td class="memTemplParams" colspan="2">template&lt;typename SensorType &gt; </td></tr>
+<tr class="memitem:aaa98f6ac879e09abcf08613710c56765"><td class="memTemplItemLeft" align="right" valign="top">std::shared_ptr&lt; SensorType &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="Sensor_8h.html#aaa98f6ac879e09abcf08613710c56765">makeSensor</a> ()</td></tr>
+<tr class="separator:aaa98f6ac879e09abcf08613710c56765"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="a954ff603e4110f17c22e14a95b683ad0"></a>
@@ -195,17 +202,17 @@ Functions</h2></td></tr>
 
 <p>Definition at line <a class="el" href="Sensor_8h_source.html#l00013">13</a> of file <a class="el" href="Sensor_8h_source.html">Sensor.h</a>.</p>
 
-<p>Referenced by <a class="el" href="Sensor_8h_source.html#l00079">Sensor::getWeightedValue()</a>.</p>
+<p>Referenced by <a class="el" href="Sensor_8h_source.html#l00076">Sensor::getWeightedValue()</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="a791b334b0c60a1619b52b4683073825d"></a>
+<a class="anchor" id="a5e2f3018c91778cac76f1d0d3b8de7c5"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const <a class="el" href="classZeroSensor.html">ZeroSensor</a>* getZeroSensor </td>
+          <td class="memname"><a class="el" href="types__fwd_8h.html#ab179f7a7d09e543ecbd516d6becb2c4a">sensor_ptr</a> getZeroSensor </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -213,11 +220,60 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="Sensor_8cpp_source.html#l00215">215</a> of file <a class="el" href="Sensor_8cpp_source.html">Sensor.cpp</a>.</p>
+<p>Definition at line <a class="el" href="Sensor_8cpp_source.html#l00234">234</a> of file <a class="el" href="Sensor_8cpp_source.html">Sensor.cpp</a>.</p>
 
-<p>Referenced by <a class="el" href="SensorColl_8cpp_source.html#l00036">SensorCollection::addSensor()</a>, <a class="el" href="Sensor_8cpp_source.html#l00087">Sensor::changeSource()</a>, <a class="el" href="Sensor_8cpp_source.html#l00174">Sensor::invalidateSource()</a>, <a class="el" href="Model_8cpp_source.html#l00208">Model::readNode()</a>, <a class="el" href="SensorColl_8cpp_source.html#l00111">SensorCollection::readSensor()</a>, <a class="el" href="SensorColl_8cpp_source.html#l00016">SensorCollection::SensorCollection()</a>, <a class="el" href="SensorSet_8cpp_source.html#l00125">CombiSensor::setNSources()</a>, and <a class="el" href="SensorSet_8cpp_source.html#l00135">CombiSensor::setSource()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;{ </div><div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    <span class="keyword">static</span> <a class="code" href="classZeroSensor.html">ZeroSensor</a> zeros;</div><div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keywordflow">return</span> &amp;zeros;</div><div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;}</div><div class="ttc" id="classZeroSensor_html"><div class="ttname"><a href="classZeroSensor.html">ZeroSensor</a></div><div class="ttdef"><b>Definition:</b> <a href="Sensor_8h_source.html#l00186">Sensor.h:186</a></div></div>
+<p>Referenced by <a class="el" href="Sensor_8cpp_source.html#l00096">Sensor::changeSource()</a>, <a class="el" href="Sensor_8cpp_source.html#l00222">Sensor::hprint()</a>, <a class="el" href="Sensor_8cpp_source.html#l00190">Sensor::invalidateSource()</a>, <a class="el" href="Sensor_8cpp_source.html#l00213">Sensor::print()</a>, <a class="el" href="Model_8cpp_source.html#l00210">Model::readNode()</a>, <a class="el" href="SensorColl_8cpp_source.html#l00101">SensorCollection::readSensor()</a>, <a class="el" href="Sensor_8cpp_source.html#l00182">Sensor::refSuperSensor()</a>, <a class="el" href="SensorColl_8cpp_source.html#l00016">SensorCollection::SensorCollection()</a>, <a class="el" href="SensorSet_8cpp_source.html#l00123">CombiSensor::setNSources()</a>, <a class="el" href="SensorSet_8cpp_source.html#l00133">CombiSensor::setSource()</a>, <a class="el" href="Sensor_8cpp_source.html#l00186">Sensor::unrefSuperSensor()</a>, and <a class="el" href="Sensor_8cpp_source.html#l00034">Sensor::~Sensor()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;{</div><div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keyword">static</span> <a class="code" href="types__fwd_8h.html#ab179f7a7d09e543ecbd516d6becb2c4a">sensor_ptr</a> zeros = std::make_shared&lt;ZeroSensor&gt;();</div><div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keywordflow">return</span> zeros;</div><div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;}</div><div class="ttc" id="types__fwd_8h_html_ab179f7a7d09e543ecbd516d6becb2c4a"><div class="ttname"><a href="types__fwd_8h.html#ab179f7a7d09e543ecbd516d6becb2c4a">sensor_ptr</a></div><div class="ttdeci">std::shared_ptr&lt; Sensor &gt; sensor_ptr</div><div class="ttdef"><b>Definition:</b> <a href="types__fwd_8h_source.html#l00015">types_fwd.h:15</a></div></div>
 </div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a2f468c21bdfb9bdb1e8fba3a98ba288c"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename SensorType , typename FirstArgType , typename... Args&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;SensorType&gt; makeSensor </td>
+          <td>(</td>
+          <td class="paramtype">FirstArgType&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Args...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="Sensor_8h_source.html#l00189">189</a> of file <a class="el" href="Sensor_8h_source.html">Sensor.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;{</div><div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    std::shared_ptr&lt;SensorType&gt; s = std::make_shared&lt;SensorType&gt;(args...);</div><div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    s-&gt;changeSource(source);</div><div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordflow">return</span> s;</div><div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;}</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aaa98f6ac879e09abcf08613710c56765"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename SensorType &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;SensorType&gt; makeSensor </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="Sensor_8h_source.html#l00197">197</a> of file <a class="el" href="Sensor_8h_source.html">Sensor.h</a>.</p>
+<div class="fragment"><div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;{</div><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keywordflow">return</span> std::make_shared&lt;SensorType&gt;();</div><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;}</div></div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

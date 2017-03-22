@@ -3,7 +3,7 @@ var searchData=
   ['unlock',['unlock',['../classvuMutex.html#a5caf790257bda2214b6567db7e9f8316',1,'vuMutex']]],
   ['unprotectwinners',['unprotectWinners',['../classStructPath.html#a078c37092fe3bc49b96c3fedf4573424',1,'StructPath']]],
   ['unrefmodel',['unrefModel',['../classSensorCollection.html#a3bc226f9a992ca9385518a5aaba0b708',1,'SensorCollection']]],
-  ['unrefsupersensor',['unrefSuperSensor',['../classSensor.html#a63dc05dafa5f5ae282ef85321ca39562',1,'Sensor']]],
+  ['unrefsupersensor',['unrefSuperSensor',['../classSensor.html#ac6d0f225a146c8649e57ea2b087e362e',1,'Sensor']]],
   ['unsetflag',['unsetFlag',['../classSpecies.html#ac441e035d7e39674c64a5d874118ae5b',1,'Species']]],
   ['unsetflags',['unsetFlags',['../classEMDistribution.html#a216d219a2521c573175abc3c344af2e6',1,'EMDistribution::unsetFlags()'],['../classModel.html#ad41cdc4e6319074f02a6a47ed4821527',1,'Model::unsetFlags()']]],
   ['unsetimage',['unsetImage',['../classGLImage.html#a93a0e27482c1ac9a19bac664a38b8913',1,'GLImage']]],

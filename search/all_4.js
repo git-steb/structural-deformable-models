@@ -7,6 +7,8 @@ var searchData=
   ['data_2ecpp',['Data.cpp',['../Data_8cpp.html',1,'']]],
   ['data_2eh',['Data.h',['../Data_8h.html',1,'']]],
   ['dataset',['Dataset',['../classDataset.html',1,'Dataset'],['../classDataset.html#a2ef0a4a688a218d55ef061c6df659a4a',1,'Dataset::Dataset()'],['../classDataset.html#a2768bc74bd6050dd5b9f5bf6fb4e0547',1,'Dataset::Dataset(const char *filename)']]],
+  ['dataset_5fcptr',['dataset_cptr',['../types__fwd_8h.html#ae1c718753b737cc5ba2aebf4a6901ce1',1,'types_fwd.h']]],
+  ['dataset_5fptr',['dataset_ptr',['../types__fwd_8h.html#ad7127a40fdf6db3091d6204dcd59fa9e',1,'types_fwd.h']]],
   ['dbselector',['DBSelector',['../classDBSelector.html',1,'DBSelector'],['../classDBSelector.html#a8b9ef6f8f32819567d18ddd00e75e283',1,'DBSelector::DBSelector(SpeciesDB &amp;db)'],['../classDBSelector.html#a03668e1bef40fce4028a1c77bb4ff0f7',1,'DBSelector::DBSelector(SpeciesDB &amp;db, const char *filename)']]],
   ['default_5fppmm',['DEFAULT_PPMM',['../Data_8h.html#a4bc5239c6ef46c25ea5426dc14f3239c',1,'Data.h']]],
   ['deform_2ecpp',['deform.cpp',['../deform_8cpp.html',1,'']]],

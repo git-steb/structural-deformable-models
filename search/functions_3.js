@@ -10,7 +10,7 @@ var searchData=
   ['calcvalue',['calcValue',['../classDataset.html#a0311eb25b1ee2c4d2e407af560c69cab',1,'Dataset::calcValue()'],['../classSensor.html#a0f3b5bd0009c554b154c3c76736287ed',1,'Sensor::calcValue()'],['../classZeroSensor.html#ab55c69fd8403a52dca95807b591ea126',1,'ZeroSensor::calcValue()'],['../classIntensitySensor.html#a433999f5f9dcc796db9749d08982b3a4',1,'IntensitySensor::calcValue()'],['../classPPIntensitySensor.html#a50899079a0ad6e8ff4446c7d154609d3',1,'PPIntensitySensor::calcValue()'],['../classMCIntensitySensor.html#a6744bac5b85473c2b70de724d4542a00',1,'MCIntensitySensor::calcValue()'],['../classMCGSensor.html#a863a9afdb67e308cb4ed96e635e71f65',1,'MCGSensor::calcValue()'],['../classCRSensor.html#ad6eb4128804ae48ddb7deb31515bddf7',1,'CRSensor::calcValue()'],['../classSmoothIntensitySensor.html#acd7284dd149066093da48216db3e29dc',1,'SmoothIntensitySensor::calcValue()'],['../classGradMagSensor.html#af9d598bdf235fc5136b5d1ec4e838ff2',1,'GradMagSensor::calcValue()'],['../classCornerSensor.html#a8e0dcc6166673c66c39331b55aeab80d',1,'CornerSensor::calcValue()'],['../classCombiSensor.html#a8e5f517274256c7474e728d0424de29a',1,'CombiSensor::calcValue()'],['../classMahalSensor.html#afe9d303cef12088dcf1fefdaa827fbf3',1,'MahalSensor::calcValue()'],['../classMappingSensor.html#ade28e320bd2c9e82e81f1b7a7ffcc1f5',1,'MappingSensor::calcValue()']]],
   ['celement',['CElement',['../classCElement.html#a0f312eb837eadb99f3d75a9f68c44f1b',1,'CElement::CElement()'],['../classCElement.html#aabd8bf62266d8d49f88fcdee61b885fc',1,'CElement::CElement(float v)'],['../classCElement.html#ab6919069567e41ee64d9139b5afc95e1',1,'CElement::CElement(const vector&lt; float &gt; &amp;rhs)']]],
   ['changemodel',['changeModel',['../classBrain.html#a3ac54f359ccc8e06c60547fd164a9376',1,'Brain']]],
-  ['changesource',['changeSource',['../classSensor.html#a9cc187591789d37cc788ac46c8349172',1,'Sensor::changeSource()'],['../classZeroSensor.html#a5f1f164d83bff1ced891ca36b72c8679',1,'ZeroSensor::changeSource()'],['../classCombiSensor.html#a427de6e571bd11540845e0367da56509',1,'CombiSensor::changeSource()']]],
+  ['changesource',['changeSource',['../classSensor.html#a447a5c09d6f5420f5059e79c5d3b3d94',1,'Sensor::changeSource()'],['../classZeroSensor.html#ae1054c1c2ec465ea4b924bfc3f103dd5',1,'ZeroSensor::changeSource()'],['../classCombiSensor.html#a16737c875ac160d52ccc4ef0431f4e9d',1,'CombiSensor::changeSource()']]],
   ['changespecies',['changeSpecies',['../classImageWindow.html#a547c7e236db3be7889a9acbc833d6786',1,'ImageWindow']]],
   ['clamp',['clamp',['../classEMDRect.html#a1f2c168e925df848d6b11406d2b78e4f',1,'EMDRect::clamp()'],['../classPoint2D.html#a7a4a50a25676fef58b4cad3b74bf0ed9',1,'Point2D::clamp()'],['../classVVector.html#a2d490055b24f9cfad5c4a1d60fdec748',1,'VVector::clamp()'],['../mathutil_8h.html#a2eba47b2ad0ed377f77853a882d1b333',1,'clamp():&#160;mathutil.h']]],
   ['clamplb',['clampLB',['../classVVector.html#a0b272cb5cf258b5d538ea3ef7deee5b5',1,'VVector']]],
@@ -33,7 +33,7 @@ var searchData=
   ['connectnodes',['connectNodes',['../classModel.html#a004eb916748b8ee92f899b342aa08e13',1,'Model']]],
   ['connectsubsuper',['connectSubSuper',['../classStructTable.html#aa15989aa6d088fa7dc47e2e793905120',1,'StructTable']]],
   ['const_5ftimes',['const_times',['../classPoint2D.html#a88295ec234bb2ecfd4b05bc78b0e5665',1,'Point2D']]],
-  ['convert',['convert',['../namespacedmutil.html#a915be20725ea21634ecbb8c309e36032',1,'dmutil::convert(const DMatrix&lt; T &gt; &amp;dmat)'],['../namespacedmutil.html#a74ed2ba6e07576d6c9f9b5f8ab12e24d',1,'dmutil::convert(const linalg::Matrix &amp;mat)']]],
+  ['convert',['convert',['../namespacedmutil.html#a2d2ee088ef5d6919abec97d7436504fd',1,'dmutil::convert(const DMatrix&lt; T &gt; &amp;dmat)'],['../namespacedmutil.html#ab08dbffa258a28b684294ab522426da2',1,'dmutil::convert(const typename DMatrix&lt; T &gt;::EMT &amp;mat)']]],
   ['convertfrom',['convertFrom',['../classImage.html#a55b9480e2a584a56ed1fbdb996040b35',1,'Image']]],
   ['convertpointfrommm',['convertPointFromMM',['../classModel.html#a35543a4e5a8b915071347c2d056c7b3b',1,'Model']]],
   ['convertpointtomm',['convertPointToMM',['../classModel.html#abed6faf979c49a4a72cab1924064cf33',1,'Model']]],
@@ -45,7 +45,7 @@ var searchData=
   ['copyfximage2image',['copyFXImage2Image',['../Data_8cpp.html#a4fae2888f469f9fe21a35d813ce8edcd',1,'copyFXImage2Image(vector&lt; Image&lt; byte &gt; &gt; &amp;dimg, const FXImage &amp;img):&#160;Data.cpp'],['../Data_8cpp.html#a209cf5ce2e73e22f21aa4beba79810ff',1,'copyFXImage2Image(Image&lt; byte &gt; &amp;dimg, const FXImage &amp;img):&#160;Data.cpp']]],
   ['copyimage2fximage',['copyImage2FXImage',['../Data_8cpp.html#ae375535f96cb24ad70d758925ae6d533',1,'copyImage2FXImage(FXImage &amp;img, const vector&lt; Image&lt; byte &gt; &gt; &amp;dimg):&#160;Data.cpp'],['../Data_8cpp.html#a52dc2f8dfe4a6ce2c0b6f8c2dc2ff9b3',1,'copyImage2FXImage(FXImage &amp;img, const Image&lt; byte &gt; &amp;dimg):&#160;Data.cpp']]],
   ['copynormalized',['copyNormalized',['../classPoint2D.html#ac6a4d2b6db673a61d0506dae0ae783bd',1,'Point2D']]],
-  ['cornersensor',['CornerSensor',['../classCornerSensor.html#aa3e0ed93fde9c35911f0d82ec8686fc5',1,'CornerSensor']]],
+  ['cornersensor',['CornerSensor',['../classCornerSensor.html#afd5bd1c305de0ad45a3e14d89e78b198',1,'CornerSensor']]],
   ['correctlbub',['correctLBUB',['../classExpectationMap.html#a82bd82465f08815966f7a9a4d81eb71e',1,'ExpectationMap']]],
   ['crc',['CRC',['../crc_8h.html#a7a7cb7f6d40b7cc06da6b204e4a5b0c8',1,'crc.h']]],
   ['create',['create',['../classImageWindow.html#a444a1ebd09b5b92e58031ca09acee42c',1,'ImageWindow::create()'],['../classImageWindow.html#acc2f1efe984f29df67347d4e3d22d365',1,'ImageWindow::create()']]],
@@ -56,5 +56,5 @@ var searchData=
   ['createsensorimage',['createSensorImage',['../classSensor.html#ac9a699d9cdb47374f478a72f023e13d7',1,'Sensor']]],
   ['cross',['cross',['../classVVector.html#ada066865c24e2607e3d8c0cc473ac417',1,'VVector']]],
   ['crossz',['crossZ',['../classPoint2D.html#ab02a1a84d7c8a6e03345b86d98bd8d2d',1,'Point2D']]],
-  ['crsensor',['CRSensor',['../classCRSensor.html#aed902093f501d495f3216ed8fcafb39f',1,'CRSensor']]]
+  ['crsensor',['CRSensor',['../classCRSensor.html#a62e2112cb401adf72de77d76c241cf34',1,'CRSensor']]]
 ];

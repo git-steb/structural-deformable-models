@@ -1,30 +1,29 @@
 <map id="MStructure" name="MStructure">
-<area shape="rect" id="node3" href="$classSubStructure.html" title="SubStructure" alt="" coords="1903,1289,2001,1316"/>
-<area shape="rect" id="node4" href="$classVVector.html" title="VVector\&lt; float, 4 \&gt;" alt="" coords="1601,865,1734,892"/>
-<area shape="rect" id="node20" href="$classModel.html" title="Model" alt="" coords="1923,664,1981,691"/>
-<area shape="rect" id="node37" href="$classSearcher.html" title="Searcher" alt="" coords="2919,728,2993,755"/>
-<area shape="rect" id="node5" href="$classVVector.html" title="VVector\&lt; T, D \&gt;" alt="" coords="1608,1281,1727,1308"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="208,1159,288,1185"/>
-<area shape="rect" id="node10" href="$classStructTable.html" title="StructTable" alt="" coords="3608,1040,3697,1067"/>
-<area shape="rect" id="node14" href="$classBrain.html" title="Brain" alt="" coords="3835,556,3887,583"/>
-<area shape="rect" id="node16" href="$classSensorCollection.html" title="SensorCollection" alt="" coords="1607,787,1728,813"/>
-<area shape="rect" id="node24" href="$classNode.html" title="Implements a Node used by Model and Edge. " alt="" coords="739,637,793,664"/>
-<area shape="rect" id="node26" href="$classSensor.html" title="Sensor" alt="" coords="462,556,525,583"/>
-<area shape="rect" id="node28" href="$classDataset.html" title="Dataset" alt="" coords="732,251,800,277"/>
-<area shape="rect" id="node34" href="$classSpeciesDB.html" title="SpeciesDB" alt="" coords="3363,1715,3451,1741"/>
-<area shape="rect" id="node40" href="$classWinner.html" title="Winner" alt="" coords="2305,1113,2367,1140"/>
-<area shape="rect" id="node7" title="STL class. " alt="" coords="5,1151,132,1193"/>
-<area shape="rect" id="node8" href="$classDMatrix.html" title="DMatrix\&lt; float \&gt;" alt="" coords="591,781,708,808"/>
-<area shape="rect" id="node12" href="$classStructPath.html" title="StructPath" alt="" coords="2294,1012,2378,1039"/>
-<area shape="rect" id="node13" title="STL class. " alt="" coords="1879,1021,2025,1062"/>
-<area shape="rect" id="node15" href="$classvuThread.html" title="vuThread" alt="" coords="3615,1865,3691,1892"/>
-<area shape="rect" id="node17" title="STL class. " alt="" coords="1310,779,1457,821"/>
-<area shape="rect" id="node38" href="$classExpectationMap.html" title="ExpectationMap" alt="" coords="2440,596,2556,623"/>
-<area shape="rect" id="node22" href="$classEdge.html" title="Implements an Edge with spring functionality. " alt="" coords="1357,657,1409,684"/>
-<area shape="rect" id="node25" href="$classPoint2D.html" title="Point2D" alt="" coords="213,325,283,352"/>
-<area shape="rect" id="node27" href="$classParticleParam.html" title="ParticleParam" alt="" coords="1615,556,1719,583"/>
-<area shape="rect" id="node29" href="$classvuMutex.html" title="vuMutex" alt="" coords="457,171,529,197"/>
-<area shape="rect" id="node33" href="$classDBSelector.html" title="DBSelector" alt="" coords="3608,1741,3697,1768"/>
-<area shape="rect" id="node35" href="$classSpecies.html" title="Species" alt="" coords="3372,1785,3441,1812"/>
-<area shape="rect" id="node48" title="STL class. " alt="" coords="187,1749,309,1776"/>
+<area shape="rect" id="node3" href="$classSubStructure.html" title="SubStructure" alt="" coords="1713,585,1812,612"/>
+<area shape="rect" id="node4" href="$classVVector.html" title="VVector\&lt; float, 4 \&gt;" alt="" coords="1367,997,1501,1024"/>
+<area shape="rect" id="node20" href="$classModel.html" title="Model" alt="" coords="1734,1287,1791,1313"/>
+<area shape="rect" id="node35" href="$classSearcher.html" title="Searcher" alt="" coords="2773,1131,2848,1157"/>
+<area shape="rect" id="node37" href="$classEMDRect.html" title="EMDRect" alt="" coords="1723,1053,1803,1080"/>
+<area shape="rect" id="node5" href="$classVVector.html" title="VVector\&lt; T, D \&gt;" alt="" coords="1375,616,1493,643"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="203,737,283,764"/>
+<area shape="rect" id="node10" href="$classStructTable.html" title="StructTable" alt="" coords="3463,600,3552,627"/>
+<area shape="rect" id="node14" href="$classBrain.html" title="Brain" alt="" coords="3689,1257,3741,1284"/>
+<area shape="rect" id="node16" href="$classSensorCollection.html" title="SensorCollection" alt="" coords="1373,1105,1495,1132"/>
+<area shape="rect" id="node24" href="$classNode.html" title="Implements a Node used by Model and Edge. " alt="" coords="456,1359,509,1385"/>
+<area shape="rect" id="node32" href="$classSpeciesDB.html" title="SpeciesDB" alt="" coords="3217,383,3305,409"/>
+<area shape="rect" id="node40" href="$classWinner.html" title="Winner" alt="" coords="2159,825,2222,852"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="5,730,132,771"/>
+<area shape="rect" id="node8" href="$classDMatrix.html" title="DMatrix\&lt; float \&gt;" alt="" coords="1375,393,1493,420"/>
+<area shape="rect" id="node12" href="$classStructPath.html" title="StructPath" alt="" coords="2149,411,2233,437"/>
+<area shape="rect" id="node13" title="STL class. " alt="" coords="1689,519,1836,561"/>
+<area shape="rect" id="node15" href="$classvuThread.html" title="vuThread" alt="" coords="3469,549,3545,576"/>
+<area shape="rect" id="node17" title="STL class. " alt="" coords="1089,1098,1235,1139"/>
+<area shape="rect" id="node36" href="$classExpectationMap.html" title="ExpectationMap" alt="" coords="2133,1048,2249,1075"/>
+<area shape="rect" id="node22" href="$classEdge.html" title="Implements an Edge with spring functionality. " alt="" coords="1136,1359,1188,1385"/>
+<area shape="rect" id="node25" href="$classPoint2D.html" title="Point2D" alt="" coords="208,1496,277,1523"/>
+<area shape="rect" id="node26" href="$classParticleParam.html" title="ParticleParam" alt="" coords="1382,1257,1486,1284"/>
+<area shape="rect" id="node29" href="$classvuMutex.html" title="vuMutex" alt="" coords="3471,1313,3543,1340"/>
+<area shape="rect" id="node31" href="$classDBSelector.html" title="DBSelector" alt="" coords="3463,1161,3552,1188"/>
+<area shape="rect" id="node33" href="$classSpecies.html" title="Species" alt="" coords="3227,1263,3296,1289"/>
+<area shape="rect" id="node48" title="STL class. " alt="" coords="181,5,304,32"/>
 </map>

@@ -177,7 +177,7 @@ template&lt;int D&gt; </div>
 </div><div class="memdoc">
 
 <p>Definition at line <a class="el" href="Clusterer_8h_source.html#l00011">11</a> of file <a class="el" href="Clusterer_8h_source.html">Clusterer.h</a>.</p>
-<div class="fragment"><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;: <a class="code" href="classCElement.html#a3d9b00535c1b6b338a34e3871e89fcb5">id</a>(0), <a class="code" href="classCElement.html#afd24316b9ce93c833de4823ed7d497af">multiv</a>(0) {};</div><div class="ttc" id="classCElement_html_a3d9b00535c1b6b338a34e3871e89fcb5"><div class="ttname"><a href="classCElement.html#a3d9b00535c1b6b338a34e3871e89fcb5">CElement::id</a></div><div class="ttdeci">dword id</div><div class="ttdef"><b>Definition:</b> <a href="Clusterer_8h_source.html#l00078">Clusterer.h:78</a></div></div>
+<div class="fragment"><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;: <a class="code" href="classCElement.html#a3d9b00535c1b6b338a34e3871e89fcb5">id</a>(0), <a class="code" href="classCElement.html#afd24316b9ce93c833de4823ed7d497af">multiv</a>(0) {}</div><div class="ttc" id="classCElement_html_a3d9b00535c1b6b338a34e3871e89fcb5"><div class="ttname"><a href="classCElement.html#a3d9b00535c1b6b338a34e3871e89fcb5">CElement::id</a></div><div class="ttdeci">dword id</div><div class="ttdef"><b>Definition:</b> <a href="Clusterer_8h_source.html#l00078">Clusterer.h:78</a></div></div>
 <div class="ttc" id="classCElement_html_afd24316b9ce93c833de4823ed7d497af"><div class="ttname"><a href="classCElement.html#afd24316b9ce93c833de4823ed7d497af">CElement::multiv</a></div><div class="ttdeci">dword multiv</div><div class="ttdef"><b>Definition:</b> <a href="Clusterer_8h_source.html#l00079">Clusterer.h:79</a></div></div>
 </div><!-- fragment -->
 </div>
@@ -275,9 +275,9 @@ template&lt;int D&gt; </div>
 
 <p>Definition at line <a class="el" href="Clusterer_8h_source.html#l00060">60</a> of file <a class="el" href="Clusterer_8h_source.html">Clusterer.h</a>.</p>
 
-<p>References <a class="el" href="Clusterer_8h_source.html#l00052">CElement&lt; D &gt;::dist2()</a>, and <a class="el" href="DMatrixUtil_8h_source.html#l00080">dmutil::sqrt()</a>.</p>
+<p>References <a class="el" href="Clusterer_8h_source.html#l00052">CElement&lt; D &gt;::dist2()</a>, and <a class="el" href="DMatrixUtil_8h_source.html#l00081">dmutil::sqrt()</a>.</p>
 <div class="fragment"><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                                             {</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;        <span class="keywordflow">return</span> <a class="code" href="namespacedmutil.html#a49fd585ff1020ea23578ff883a65179d">sqrt</a>(<a class="code" href="classCElement.html#afd3bee635a7b58b4ecade531653251c2">dist2</a>(rhs));</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    }</div><div class="ttc" id="classCElement_html_afd3bee635a7b58b4ecade531653251c2"><div class="ttname"><a href="classCElement.html#afd3bee635a7b58b4ecade531653251c2">CElement::dist2</a></div><div class="ttdeci">float dist2(const CElement&lt; D &gt; &amp;rhs) const </div><div class="ttdef"><b>Definition:</b> <a href="Clusterer_8h_source.html#l00052">Clusterer.h:52</a></div></div>
-<div class="ttc" id="namespacedmutil_html_a49fd585ff1020ea23578ff883a65179d"><div class="ttname"><a href="namespacedmutil.html#a49fd585ff1020ea23578ff883a65179d">dmutil::sqrt</a></div><div class="ttdeci">DMatrix&lt; T &gt; &amp; sqrt(DMatrix&lt; T &gt; &amp;mat)</div><div class="ttdef"><b>Definition:</b> <a href="DMatrixUtil_8h_source.html#l00080">DMatrixUtil.h:80</a></div></div>
+<div class="ttc" id="namespacedmutil_html_a49fd585ff1020ea23578ff883a65179d"><div class="ttname"><a href="namespacedmutil.html#a49fd585ff1020ea23578ff883a65179d">dmutil::sqrt</a></div><div class="ttdeci">DMatrix&lt; T &gt; &amp; sqrt(DMatrix&lt; T &gt; &amp;mat)</div><div class="ttdef"><b>Definition:</b> <a href="DMatrixUtil_8h_source.html#l00081">DMatrixUtil.h:81</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -698,7 +698,7 @@ template&lt;int D&gt; </div>
 <p>References <a class="el" href="Clusterer_8h_source.html#l00079">CElement&lt; D &gt;::multiv</a>.</p>
 
 <p>Referenced by <a class="el" href="Clusterer_8h_source.html#l00118">Clusterer&lt; D &gt;::classify()</a>.</p>
-<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{ <a class="code" href="classCElement.html#afd24316b9ce93c833de4823ed7d497af">multiv</a> = cid; }        </div><div class="ttc" id="classCElement_html_afd24316b9ce93c833de4823ed7d497af"><div class="ttname"><a href="classCElement.html#afd24316b9ce93c833de4823ed7d497af">CElement::multiv</a></div><div class="ttdeci">dword multiv</div><div class="ttdef"><b>Definition:</b> <a href="Clusterer_8h_source.html#l00079">Clusterer.h:79</a></div></div>
+<div class="fragment"><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;{ <a class="code" href="classCElement.html#afd24316b9ce93c833de4823ed7d497af">multiv</a> = cid; }</div><div class="ttc" id="classCElement_html_afd24316b9ce93c833de4823ed7d497af"><div class="ttname"><a href="classCElement.html#afd24316b9ce93c833de4823ed7d497af">CElement::multiv</a></div><div class="ttdeci">dword multiv</div><div class="ttdef"><b>Definition:</b> <a href="Clusterer_8h_source.html#l00079">Clusterer.h:79</a></div></div>
 </div><!-- fragment -->
 </div>
 </div>

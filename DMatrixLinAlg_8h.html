@@ -88,7 +88,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">DMatrixLinAlg.h File Reference</div>  </div>
@@ -97,6 +96,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &quot;<a class="el" href="DMatrix_8h_source.html">DMatrix.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="DMatrixUtil_8h_source.html">DMatrixUtil.h</a>&quot;</code><br />
 <code>#include &lt;Eigen/SVD&gt;</code><br />
+<code>#include &lt;Eigen/Dense&gt;</code><br />
+<code>#include &lt;Eigen/Core&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
@@ -105,10 +106,11 @@ Include dependency graph for DMatrixLinAlg.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="DMatrixLinAlg_8h__incl.png" border="0" usemap="#src_2DMatrixLinAlg_8h" alt=""/></div>
 <map name="src_2DMatrixLinAlg_8h" id="src_2DMatrixLinAlg_8h">
-<area shape="rect" id="node2" href="DMatrix_8h.html" title="DMatrix.h" alt="" coords="85,80,163,107"/>
-<area shape="rect" id="node10" href="DMatrixUtil_8h.html" title="DMatrixUtil.h" alt="" coords="188,80,287,107"/>
+<area shape="rect" id="node2" href="DMatrix_8h.html" title="DMatrix.h" alt="" coords="177,80,255,107"/>
+<area shape="rect" id="node13" href="DMatrixUtil_8h.html" title="DMatrixUtil.h" alt="" coords="331,80,429,107"/>
 <area shape="rect" id="node6" href="common_8h.html" title="common.h" alt="" coords="272,155,355,181"/>
-<area shape="rect" id="node8" href="simpletypes_8h.html" title="simpletypes.h" alt="" coords="262,229,365,256"/>
+<area shape="rect" id="node8" href="simpletypes_8h.html" title="simpletypes.h" alt="" coords="201,229,303,256"/>
+<area shape="rect" id="node9" href="types__fwd_8h.html" title="types_fwd.h" alt="" coords="328,229,421,256"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -126,8 +128,6 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacelinalg"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelinalg.html">linalg</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacedmutil"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacedmutil.html">dmutil</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -136,19 +136,14 @@ Macros</h2></td></tr>
 <tr class="memitem:aa3181b5b88afe41dcc5f2985cd29e033"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="DMatrixLinAlg_8h.html#aa3181b5b88afe41dcc5f2985cd29e033">DMLA_TAU</a>&#160;&#160;&#160;0.0000001f</td></tr>
 <tr class="separator:aa3181b5b88afe41dcc5f2985cd29e033"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:a61e5d65bc5d0faae2244302b16af9762"><td class="memItemLeft" align="right" valign="top">typedef Eigen::MatrixXf&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacelinalg.html#a61e5d65bc5d0faae2244302b16af9762">linalg::Matrix</a></td></tr>
-<tr class="separator:a61e5d65bc5d0faae2244302b16af9762"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a915be20725ea21634ecbb8c309e36032"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a915be20725ea21634ecbb8c309e36032"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacelinalg.html#a61e5d65bc5d0faae2244302b16af9762">linalg::Matrix</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedmutil.html#a915be20725ea21634ecbb8c309e36032">dmutil::convert</a> (const <a class="el" href="classDMatrix.html">DMatrix</a>&lt; T &gt; &amp;dmat)</td></tr>
-<tr class="separator:a915be20725ea21634ecbb8c309e36032"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74ed2ba6e07576d6c9f9b5f8ab12e24d"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
-<tr class="memitem:a74ed2ba6e07576d6c9f9b5f8ab12e24d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classDMatrix.html">DMatrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedmutil.html#a74ed2ba6e07576d6c9f9b5f8ab12e24d">dmutil::convert</a> (const <a class="el" href="namespacelinalg.html#a61e5d65bc5d0faae2244302b16af9762">linalg::Matrix</a> &amp;mat)</td></tr>
-<tr class="separator:a74ed2ba6e07576d6c9f9b5f8ab12e24d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d2ee088ef5d6919abec97d7436504fd"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a2d2ee088ef5d6919abec97d7436504fd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classDMatrix.html">DMatrix</a>&lt; T &gt;::EMT&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedmutil.html#a2d2ee088ef5d6919abec97d7436504fd">dmutil::convert</a> (const <a class="el" href="classDMatrix.html">DMatrix</a>&lt; T &gt; &amp;dmat)</td></tr>
+<tr class="separator:a2d2ee088ef5d6919abec97d7436504fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab08dbffa258a28b684294ab522426da2"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:ab08dbffa258a28b684294ab522426da2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classDMatrix.html">DMatrix</a>&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedmutil.html#ab08dbffa258a28b684294ab522426da2">dmutil::convert</a> (const typename <a class="el" href="classDMatrix.html">DMatrix</a>&lt; T &gt;::EMT &amp;mat)</td></tr>
+<tr class="separator:ab08dbffa258a28b684294ab522426da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfaace497e35ba8a5093a5a83d327ac2"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
 <tr class="memitem:acfaace497e35ba8a5093a5a83d327ac2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classDMatrix.html">DMatrix</a>&lt; T &gt; &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacedmutil.html#acfaace497e35ba8a5093a5a83d327ac2">dmutil::invert</a> (<a class="el" href="classDMatrix.html">DMatrix</a>&lt; T &gt; &amp;dmat)</td></tr>
 <tr class="separator:acfaace497e35ba8a5093a5a83d327ac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,9 +168,9 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Definition at line <a class="el" href="DMatrixLinAlg_8h_source.html#l00010">10</a> of file <a class="el" href="DMatrixLinAlg_8h_source.html">DMatrixLinAlg.h</a>.</p>
+<p>Definition at line <a class="el" href="DMatrixLinAlg_8h_source.html#l00012">12</a> of file <a class="el" href="DMatrixLinAlg_8h_source.html">DMatrixLinAlg.h</a>.</p>
 
-<p>Referenced by <a class="el" href="DMatrixLinAlg_8h_source.html#l00126">dmutil::pseudoInv()</a>.</p>
+<p>Referenced by <a class="el" href="DMatrixLinAlg_8h_source.html#l00131">dmutil::pseudoInv()</a>.</p>
 
 </div>
 </div>

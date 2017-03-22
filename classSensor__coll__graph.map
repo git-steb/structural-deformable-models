@@ -1,5 +1,5 @@
 <map id="Sensor" name="Sensor">
-<area shape="rect" id="node2" href="$classPoint2D.html" title="Point2D" alt="" coords="5,96,75,123"/>
-<area shape="rect" id="node3" title="STL class. " alt="" coords="99,96,179,123"/>
-<area shape="rect" id="node4" title="STL class. " alt="" coords="75,5,202,47"/>
+<area shape="rect" id="node3" href="$classPoint2D.html" title="Point2D" alt="" coords="178,103,247,130"/>
+<area shape="rect" id="node4" title="STL class. " alt="" coords="271,103,351,130"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="248,5,375,47"/>
 </map>

@@ -8,7 +8,6 @@ var searchData=
   ['initialized',['initialized',['../classDataset.html#affd9ddd05daa6a218094cb7a0d61a094',1,'Dataset::initialized()'],['../classImage.html#a41077996334eeef15472d34fecffa526',1,'Image::initialized()']]],
   ['inittransform',['initTransform',['../classFourier2D.html#ad439cf47bb45034ddb99e869b8769564',1,'Fourier2D']]],
   ['insert',['insert',['../classImage.html#a5ae2ac0f375e48acc4669d9392f4b00d',1,'Image']]],
-  ['intensitysensor',['IntensitySensor',['../classIntensitySensor.html#a9926d66bb1ffcee1911ae86a87339bba',1,'IntensitySensor']]],
   ['interleave',['interleave',['../classImage.html#aa6ecfb24df54a8f85b11d940ec31fabd',1,'Image::interleave()'],['../Data_8cpp.html#a1501ead94032618e6e92dd1aa3883201',1,'interleave():&#160;Data.cpp']]],
   ['invalidatepc',['invalidatePC',['../classModel.html#ab72547b5631c9737054113d45ba61321',1,'Model']]],
   ['invalidatesource',['invalidateSource',['../classSensor.html#ade1edfc2754ec89bf7fe700077f9f1b0',1,'Sensor']]],

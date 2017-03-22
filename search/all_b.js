@@ -3,7 +3,6 @@ var searchData=
   ['length',['length',['../classEdge.html#a704ba43866df48c91d5f67697f392325',1,'Edge']]],
   ['length2',['length2',['../classEdge.html#a2e4d4625c777ebaf56ab03829c861ec2',1,'Edge']]],
   ['lengthratio',['lengthRatio',['../classEdge.html#a730ef87f0e87504b4e10ca341d686b36',1,'Edge']]],
-  ['linalg',['linalg',['../namespacelinalg.html',1,'']]],
   ['line',['LINE',['../common_8h.html#aa529f66e1dbb67cfe79dd28f51baed5a',1,'common.h']]],
   ['load',['load',['../classBrain.html#a05fed6d38c13e8cc3f9df455bdcafe05',1,'Brain::load()'],['../classDataset.html#abec28cffddc144a0f970eddabfdd581e',1,'Dataset::load()'],['../classSpeciesDB.html#af8ba4ae9ed83692094b8ddb204ef195c',1,'SpeciesDB::load()'],['../classDBSelector.html#a00127c69e1bee8cf430b52cc9babfa57',1,'DBSelector::load()'],['../classStructTable.html#a73e34177e71eb92a29653d61c441126c',1,'StructTable::load()']]],
   ['loadconfig',['loadConfig',['../classMahalSensor.html#a5f59cb88e88b59306875ea31e8d2cdc3',1,'MahalSensor']]],

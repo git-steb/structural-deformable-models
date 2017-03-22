@@ -1,21 +1,15 @@
 <map id="EMDGauss" name="EMDGauss">
-<area shape="rect" id="node2" href="$classEMDistribution.html" title="EMDistribution" alt="" coords="2419,151,2527,177"/>
-<area shape="rect" id="node3" href="$classWinner.html" title="Winner" alt="" coords="2200,128,2263,155"/>
-<area shape="rect" id="node4" href="$classModel.html" title="Model" alt="" coords="2001,428,2059,455"/>
-<area shape="rect" id="node5" href="$classSensorCollection.html" title="SensorCollection" alt="" coords="2412,781,2533,808"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="149,719,296,761"/>
-<area shape="rect" id="node27" title="STL class. " alt="" coords="156,295,289,321"/>
-<area shape="rect" id="node10" title="STL class. " alt="" coords="372,401,452,428"/>
-<area shape="rect" id="node17" href="$classNode.html" title="Implements a Node used by Model and Edge. " alt="" coords="919,656,973,683"/>
-<area shape="rect" id="node20" href="$classSensor.html" title="Sensor" alt="" coords="619,631,681,657"/>
-<area shape="rect" id="node24" href="$classDataset.html" title="Dataset" alt="" coords="912,288,980,315"/>
-<area shape="rect" id="node11" title="STL class. " alt="" coords="159,394,286,435"/>
-<area shape="rect" id="node13" href="$classVVector.html" title="VVector\&lt; float, 4 \&gt;" alt="" coords="1744,228,1877,255"/>
-<area shape="rect" id="node15" href="$classEdge.html" title="Implements an Edge with spring functionality. " alt="" coords="1558,529,1610,556"/>
-<area shape="rect" id="node18" href="$classPoint2D.html" title="Point" alt="" coords="624,681,676,708"/>
-<area shape="rect" id="node19" href="$classPoint2D.html" title="Point2D" alt="" coords="377,631,447,657"/>
-<area shape="rect" id="node23" href="$classParticleParam.html" title="ParticleParam" alt="" coords="1759,377,1863,404"/>
-<area shape="rect" id="node26" href="$classImage.html" title="Image\&lt; byte \&gt;" alt="" coords="359,11,465,37"/>
-<area shape="rect" id="node28" href="$classvuMutex.html" title="vuMutex" alt="" coords="614,237,686,264"/>
-<area shape="rect" id="node29" href="$classGLImage.html" title="GLImage" alt="" coords="613,288,687,315"/>
+<area shape="rect" id="node2" href="$classEMDistribution.html" title="EMDistribution" alt="" coords="2025,389,2133,416"/>
+<area shape="rect" id="node3" href="$classWinner.html" title="Winner" alt="" coords="1801,464,1863,491"/>
+<area shape="rect" id="node4" href="$classModel.html" title="Model" alt="" coords="1596,232,1653,259"/>
+<area shape="rect" id="node5" href="$classSensorCollection.html" title="SensorCollection" alt="" coords="2019,273,2140,300"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="1759,155,1905,197"/>
+<area shape="rect" id="node10" title="STL class. " alt="" coords="203,412,283,439"/>
+<area shape="rect" id="node17" href="$classNode.html" title="Implements a Node used by Model and Edge. " alt="" coords="409,160,463,187"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="5,405,132,446"/>
+<area shape="rect" id="node13" href="$classVVector.html" title="VVector\&lt; float, 4 \&gt;" alt="" coords="1317,48,1451,75"/>
+<area shape="rect" id="node15" href="$classEdge.html" title="Implements an Edge with spring functionality. " alt="" coords="1047,109,1099,136"/>
+<area shape="rect" id="node18" href="$classPoint2D.html" title="Point" alt="" coords="217,96,269,123"/>
+<area shape="rect" id="node19" href="$classPoint2D.html" title="Point2D" alt="" coords="208,160,277,187"/>
+<area shape="rect" id="node21" href="$classParticleParam.html" title="ParticleParam" alt="" coords="1332,249,1436,276"/>
 </map>

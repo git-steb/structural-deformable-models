@@ -1,7 +1,8 @@
 <map id="src/PropVec.h" name="src/PropVec.h">
-<area shape="rect" id="node2" href="$VVector_8h.html" title="VVector.h" alt="" coords="100,80,180,107"/>
-<area shape="rect" id="node3" href="$Point_8h.html" title="Point.h" alt="" coords="205,80,267,107"/>
-<area shape="rect" id="node7" href="$common_8h.html" title="common.h" alt="" coords="93,155,176,181"/>
-<area shape="rect" id="node11" href="$mathutil_8h.html" title="mathutil.h" alt="" coords="297,155,375,181"/>
-<area shape="rect" id="node9" href="$simpletypes_8h.html" title="simpletypes.h" alt="" coords="177,229,279,256"/>
+<area shape="rect" id="node2" href="$VVector_8h.html" title="VVector.h" alt="" coords="44,80,124,107"/>
+<area shape="rect" id="node3" href="$Point_8h.html" title="Point.h" alt="" coords="149,80,211,107"/>
+<area shape="rect" id="node7" href="$common_8h.html" title="common.h" alt="" coords="372,155,455,181"/>
+<area shape="rect" id="node13" href="$mathutil_8h.html" title="mathutil.h" alt="" coords="241,155,319,181"/>
+<area shape="rect" id="node9" href="$simpletypes_8h.html" title="simpletypes.h" alt="" coords="251,229,354,256"/>
+<area shape="rect" id="node10" href="$types__fwd_8h.html" title="types_fwd.h" alt="" coords="472,229,565,256"/>
 </map>

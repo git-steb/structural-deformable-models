@@ -30,5 +30,6 @@ var searchData=
   ['transpose',['transpose',['../classDMatrix.html#af143c5e0f02010f4c8a8e9d2a79f3860',1,'DMatrix']]],
   ['triggertest',['triggerTest',['../classBrain.html#ace0efb285e0fff20d8633ce87dd96efc',1,'Brain::triggerTest()'],['../classSearcher.html#a7f356926efac9dfe239631517cbfcdc0',1,'Searcher::triggerTest()'],['../classStructTable.html#a022e3589499f97797050420178c10609',1,'StructTable::triggerTest()']]],
   ['trylock',['trylock',['../classvuMutex.html#a6f76593c99826eab531542adeac7b197',1,'vuMutex']]],
-  ['ttrait',['TTrait',['../classVVector.html#ab9ef3165899296832cfa2c6533b3068c',1,'VVector']]]
+  ['ttrait',['TTrait',['../classVVector.html#ab9ef3165899296832cfa2c6533b3068c',1,'VVector']]],
+  ['types_5ffwd_2eh',['types_fwd.h',['../types__fwd_8h.html',1,'']]]
 ];

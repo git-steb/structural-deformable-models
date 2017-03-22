@@ -1,11 +1,11 @@
 <map id="MahalSensor" name="MahalSensor">
-<area shape="rect" id="node2" href="$classPPSensor.html" title="PPSensor" alt="" coords="279,301,360,328"/>
-<area shape="rect" id="node3" href="$classSensor.html" title="Sensor" alt="" coords="100,199,163,225"/>
-<area shape="rect" id="node4" href="$classPoint2D.html" title="Point2D" alt="" coords="139,109,209,136"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="29,109,109,136"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="5,5,132,47"/>
-<area shape="rect" id="node8" href="$classImage.html" title="Image\&lt; float \&gt;" alt="" coords="409,199,515,225"/>
-<area shape="rect" id="node12" href="$classDMatrix.html" title="DMatrix\&lt; float \&gt;" alt="" coords="485,249,602,276"/>
-<area shape="rect" id="node9" href="$classImage.html" title="Image\&lt; Point2D \&gt;" alt="" coords="255,199,384,225"/>
-<area shape="rect" id="node10" title="STL class. " alt="" coords="237,109,391,136"/>
+<area shape="rect" id="node2" href="$classPPSensor.html" title="PPSensor" alt="" coords="350,316,431,343"/>
+<area shape="rect" id="node3" href="$classSensor.html" title="Sensor" alt="" coords="359,213,422,240"/>
+<area shape="rect" id="node5" href="$classPoint2D.html" title="Point2D" alt="" coords="460,117,529,143"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="184,117,264,143"/>
+<area shape="rect" id="node7" title="STL class. " alt="" coords="161,5,287,47"/>
+<area shape="rect" id="node9" href="$classImage.html" title="Image\&lt; float \&gt;" alt="" coords="461,213,568,240"/>
+<area shape="rect" id="node13" href="$classDMatrix.html" title="DMatrix\&lt; float \&gt;" alt="" coords="541,264,659,291"/>
+<area shape="rect" id="node10" href="$classImage.html" title="Image\&lt; Point2D \&gt;" alt="" coords="54,213,183,240"/>
+<area shape="rect" id="node11" title="STL class. " alt="" coords="5,117,160,143"/>
 </map>

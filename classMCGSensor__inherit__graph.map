@@ -1,4 +1,4 @@
 <map id="MCGSensor" name="MCGSensor">
-<area shape="rect" id="node2" href="$classPPSensor.html" title="PPSensor" alt="" coords="12,80,93,107"/>
-<area shape="rect" id="node3" href="$classSensor.html" title="Sensor" alt="" coords="21,5,84,32"/>
+<area shape="rect" id="node2" href="$classPPSensor.html" title="PPSensor" alt="" coords="39,169,120,196"/>
+<area shape="rect" id="node3" href="$classSensor.html" title="Sensor" alt="" coords="48,95,111,121"/>
 </map>
