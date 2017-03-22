@@ -16,7 +16,7 @@ class ParseFile;
 class Searcher {
     typedef std::list<Model*> MBin;
     typedef const std::list<Model*> CMBin;
- public:
+public:
     Searcher();
     Searcher(const Searcher& rhs);
     ~Searcher();
@@ -45,7 +45,7 @@ class Searcher {
     float getGeneration(const Model* model) const;
     void setShapeWeight(float shapeweight) { m_ShapeWeight = shapeweight; }
     float getShapeWeight() const { return m_ShapeWeight; }
- protected:
+protected:
     std::map<dword,Winner>& updateWinList();
     inline int getBindex(int bx, int by, bool &culled=*((bool*)NULL)) const;
     inline int getBindex(const PropVec &prop,bool& culled=*((bool*)NULL))const;
@@ -61,7 +61,7 @@ class Searcher {
     int add(Model* m);
     Model& mutate(Model& model, float rate=1) const;
     int distribute(int n=-1, float qth=0, bool count=false);
- protected:
+protected:
     Model                       m_Representative;
     PropVec                     m_AvgWinner, m_StdWinner;
     PropVec                     m_MinModel, m_MaxModel;
@@ -147,17 +147,17 @@ inline float Searcher::relativeQOF(float qof) const
 
 //----------------------------------------------------------------------------
 class SearcherParams {
- public:
+public:
     SearcherParams();
     std::ostream& write(std::ostream& os, bool showcomment=false) const;
     bool read(ParseFile& is);
-    friend std::ostream& operator<<(std::ostream& os, 
-                                    const SearcherParams& rhs) 
-        { return rhs.write(os); }
-    friend std::istream& operator>>(std::istream& is, SearcherParams& rhs) 
-        { ParseFile pf(is); rhs.read(pf); return is; }
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const SearcherParams& rhs)
+    { return rhs.write(os); }
+    friend std::istream& operator>>(std::istream& is, SearcherParams& rhs)
+    { ParseFile pf(is); rhs.read(pf); return is; }
     static SearcherParams global;
- public:
+public:
     dword m_NSpawns;            //!< number of new spawned shapes at each cycle
     float m_NSpawnsTHRed;       //!< threshold reduction factor for new spawns
     dword m_MaxPop;             //!< maximum population count

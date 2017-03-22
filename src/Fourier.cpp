@@ -53,16 +53,16 @@ void Fourier2D::saveWisdom() {
 void Fourier2D::initTransform(int xsize, int ysize, double* f, double *F) {
     if(m_PlansCreated) destroyTransform();
 #ifdef F2D_REAL_TRANSFORM
-    m_Plan2D    = fftw_plan_dft_r2c_2d(ysize, xsize, f, (fftw_complex*)F, 
+    m_Plan2D    = fftw_plan_dft_r2c_2d(ysize, xsize, f, (fftw_complex*)F,
                                        F2D_PLANQUAL);
-    m_Plan2Dinv = fftw_plan_dft_c2r_2d(ysize, xsize, (fftw_complex*)F, f, 
+    m_Plan2Dinv = fftw_plan_dft_c2r_2d(ysize, xsize, (fftw_complex*)F, f,
                                        FFTW_ESTIMATE);
 #else
-    m_Plan2D    = fftw_plan_dft_2d(ysize, xsize, 
-                                   (fftw_complex*)f, (fftw_complex*)F, 
+    m_Plan2D    = fftw_plan_dft_2d(ysize, xsize,
+                                   (fftw_complex*)f, (fftw_complex*)F,
                                    FFTW_FORWARD, FFTW_ESTIMATE);
-    m_Plan2Dinv = fftw_plan_dft_2d(ysize, xsize, 
-                                   (fftw_complex*)f, (fftw_complex*)F, 
+    m_Plan2Dinv = fftw_plan_dft_2d(ysize, xsize,
+                                   (fftw_complex*)f, (fftw_complex*)F,
                                    FFTW_BACKWARD, FFTW_ESTIMATE);
 #endif
     m_SizeX = xsize; m_SizeY = ysize;

@@ -35,7 +35,7 @@ public:
     }
 
     Point2D& operator=(const float *rhs) {
-        this->x = rhs[0]; this->y = rhs[1]; 
+        this->x = rhs[0]; this->y = rhs[1];
         return *this;
     }
     Point2D& operator+=(const Point2D& rhs) {
@@ -115,7 +115,7 @@ public:
         return psi * (180.0*M_1_PI);
 #endif
     }
-    
+
     float sinAngleX() const {
         return -y/norm();
     }
@@ -125,13 +125,13 @@ public:
         return angle(Point2D(1,0));
     }
 
-	
+
     Point2D operator*(float rhs) const {
         Point2D p(*this);
         p *= rhs;
         return p;
     }
-	
+
     Point2D operator+(const Point2D &rhs) const {
         Point2D p(*this);
         p += rhs;
@@ -174,20 +174,20 @@ public:
     //! normalizes the vector; returns old norm
     float normalize() {
         float n = norm();
-        if (n>0.0f)	operator*=(1/n);
+        if (n>0.0f) operator*=(1/n);
         return n;
     }
 
     bool clamp(float x0,float y0,float x1,float y1)
-	{
+        {
             return ::clamp(x,y,x0,y0,x1,y1);
-	}
+        }
 
     friend std::ostream& operator<<(std::ostream &os, const Point2D &p) {
         os << p.x << " " << p.y;
         return os;
     }
-	
+
     friend std::istream& operator>>(std::istream &is, Point2D &p) {
         is >> p.x;
         is >> p.y;
@@ -198,7 +198,7 @@ public:
     void glVertex() const {
         glVertex2f(x, y);
     }
-     
+
     const Point2D flipOrtho() const {
         return Point2D(-y,x);
     }
@@ -209,9 +209,9 @@ public:
         return p;
     }
     const Point2D rotate(float angle) const {
-	float ca = cos(angle);
-	float sa = sin(angle);
-	return Point2D(x*ca-y*sa,x*sa+y*ca);
+        float ca = cos(angle);
+        float sa = sin(angle);
+        return Point2D(x*ca-y*sa,x*sa+y*ca);
     }
     friend bool operator==(const Point2D& lhs, const Point2D& rhs) {
         return lhs.x == rhs.x && lhs.y == rhs.y;

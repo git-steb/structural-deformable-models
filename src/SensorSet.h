@@ -20,7 +20,7 @@ public:
 protected:
     /** Returns the Intensity */
     float calcValue(int x, int y) const {
-	return source->getValue(x,y);
+        return source->getValue(x,y);
     }
 };
 
@@ -29,42 +29,42 @@ class PPIntensitySensor : public PPSensor {
 protected:
     /** Returns the Intensity */
     float calcValue(int x, int y) const {
-	return source->getValue(x,y);
+        return source->getValue(x,y);
     }
 };
 
 /** Multi-channel intensity Sensor **/
 class MCIntensitySensor : public PPSensor {
- public:
-    int getNChannels() const { return 1; }    
+public:
+    int getNChannels() const { return 1; }
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os) << "m ";
         for(dword i=0; i<cweights.size(); i++) { //source->getNChannels()
             if(i) os << " ";
-	    os << cweights[i];
+            os << cweights[i];
         }
         return os;
     }
 protected:
     //! Computes a scalar product between the multi-channel intensitis and the cweights vector.
     float calcValue(int x, int y) const {
-	float result = 0.0f;
-	const std::vector<float> mv = source->getMValue(x,y);
-	assert(mv.size() == cweights.size());
-	for(dword i=0; i<mv.size(); i++) { //source->getNChannels()
-	    float weight = cweights[i];
-	    if(weight!=0.0f) result += mv[i]*weight;
-	}
-	return result;
+        float result = 0.0f;
+        const std::vector<float> mv = source->getMValue(x,y);
+        assert(mv.size() == cweights.size());
+        for(dword i=0; i<mv.size(); i++) { //source->getNChannels()
+            float weight = cweights[i];
+            if(weight!=0.0f) result += mv[i]*weight;
+        }
+        return result;
     }
 };
 
 /** Multi-channel gradient Sensor **/
 class MCGSensor : public PPSensor {
- public:
+public:
     MCGSensor(sensor_cptr _source=NULL)
         { m_AddSkip = 1; }
-    int getNChannels() const { return 1; }    
+    int getNChannels() const { return 1; }
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os)
             << "M";
@@ -73,12 +73,12 @@ class MCGSensor : public PPSensor {
 protected:
     //! Computes a scalar product between the multi-channel intensities and the cweights vector.
     float calcValue(int x, int y) const {
-	float result = 0.0f;
-	const std::vector<float> mv = source->getMValue(x,y);
+        float result = 0.0f;
+        const std::vector<float> mv = source->getMValue(x,y);
         for(std::vector<float>::const_iterator v=mv.begin();
             v != mv.end(); v++)
             result+=*v;
-	return result;
+        return result;
     }
     virtual Point calcGradient(int x, int y) const {
         std::vector<float> c = source->getMValue(x,y);
@@ -94,16 +94,16 @@ protected:
         }
         g.x = sqrt(g.x);
         g.y = sqrt(g.y);
-	return g;
+        return g;
     }
 };
 
 /** Multi-chrominance Sensor **/
 class CRSensor : public PPSensor {
- public:
+public:
     CRSensor()
         { m_AddSkip = 1; }
-    int getNChannels() const { return 1; }    
+    int getNChannels() const { return 1; }
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os)
             << "r";
@@ -112,8 +112,8 @@ class CRSensor : public PPSensor {
 protected:
     //! Computes saturation or some other colour indicator
     float calcValue(int x, int y) const {
-	float result = 0.0f;
-	std::vector<float> mv = source->getMValue(x,y);
+        float result = 0.0f;
+        std::vector<float> mv = source->getMValue(x,y);
 #define SATURATION
 #ifdef CHROMITHING
         float g = 0;
@@ -160,7 +160,7 @@ public:
 protected:
     void calcAllValues();
     float calcValue(int x, int y) const {
-	return source->getValue(x,y);
+        return source->getValue(x,y);
     }
     void updateScale();
 protected:
@@ -173,18 +173,18 @@ protected:
 class GradMagSensor : public PPSensor {
 public:
     GradMagSensor()
-	{
-	    enableUpdate(UPD_DATA);
-	    togglePP(PPSensor::PP_FORCE);
+        {
+            enableUpdate(UPD_DATA);
+            togglePP(PPSensor::PP_FORCE);
             m_AddSkip = 1;
             performUpdate();
-	};
-     bool performUpdate() {
-         if(isModified(UPD_DATA)) {
-             m_Skip = source->getSkip()+m_AddSkip;
-         }
-         return PPSensor::performUpdate();
-     }
+        };
+    bool performUpdate() {
+        if(isModified(UPD_DATA)) {
+            m_Skip = source->getSkip()+m_AddSkip;
+        }
+        return PPSensor::performUpdate();
+    }
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os)
             << "d";
@@ -193,8 +193,8 @@ public:
 protected:
     /** Compute gradient magnitude */
     float calcValue(int x, int y) const {
-	if(!isValid(x,y)) return 0;
-	else return source->getGradient(x,y).norm();
+        if(!isValid(x,y)) return 0;
+        else return source->getGradient(x,y).norm();
     }
 };
 
@@ -202,18 +202,18 @@ protected:
 class CornerSensor : public PPSensor {
 public:
     CornerSensor()
-	{
-	    enableUpdate(UPD_DATA);
-	    togglePP(PPSensor::PP_FORCE);
+        {
+            enableUpdate(UPD_DATA);
+            togglePP(PPSensor::PP_FORCE);
             m_AddSkip = 3;
-	};
+        };
 
-     bool performUpdate() {
-         if(isModified(UPD_DATA)) {
-             m_Skip = source->getSkip()+m_AddSkip;
-         }
-         return PPSensor::performUpdate();
-     }
+    bool performUpdate() {
+        if(isModified(UPD_DATA)) {
+            m_Skip = source->getSkip()+m_AddSkip;
+        }
+        return PPSensor::performUpdate();
+    }
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os)
             << "c";
@@ -222,42 +222,42 @@ public:
 protected:
     /** Compute cornerness */
     float calcValue(int x, int y) const {
-	if(!isValid(x,y)) return 0;
-	float value = source->getValue(x,y);
-	if(value==0) return 0;
-	Point c=source->getGradient(x,y);
-	Point ddx = source->getGradient(x+1,y)-c;
-	Point ddy = source->getGradient(x,y+1)-c;
+        if(!isValid(x,y)) return 0;
+        float value = source->getValue(x,y);
+        if(value==0) return 0;
+        Point c=source->getGradient(x,y);
+        Point ddx = source->getGradient(x+1,y)-c;
+        Point ddy = source->getGradient(x,y+1)-c;
 //#define SS_GRADIENT_WEIGHTED_DETERMINANT
 #ifdef SS_GRADIENT_WEIGHTED_DETERMINANT
-	float n1 = ddx.normalize();
-	float n2 = ddy.normalize();
-	float det = ddx.x*ddy.y-ddx.y*ddy.x;
-	det *= min(n1,n2);
+        float n1 = ddx.normalize();
+        float n2 = ddy.normalize();
+        float det = ddx.x*ddy.y-ddx.y*ddy.x;
+        det *= min(n1,n2);
 #else
-	float det = ddx.x*ddy.y-ddx.y*ddy.x;
+        float det = ddx.x*ddy.y-ddx.y*ddy.x;
 #endif
-	if(det<0) return 0;	// repelling regions are no good
-	float ret=det*value;
-	return ret;
+        if(det<0) return 0; // repelling regions are no good
+        float ret=det*value;
+        return ret;
 /* using eigenvalues
-	//cout << det;
-	//cout << ddx << endl << ddy << endl;
-	float p = (ddx.x+ddy.y)/2;
-	float d = sqrt(p*p-ddx.x*ddy.y+ddx.y*ddy.x);
-	//cout << "p=" << p << " d=" << d<<endl;
-	float e1 = p+d;
-	float e2 = p-d;
-	//cout << "e1="<<e1<<" e2="<<e2<<endl;
-	//cout << "---------------------" << endl;
-	return e1*e2;
+//cout << det;
+//cout << ddx << endl << ddy << endl;
+float p = (ddx.x+ddy.y)/2;
+float d = sqrt(p*p-ddx.x*ddy.y+ddx.y*ddy.x);
+//cout << "p=" << p << " d=" << d<<endl;
+float e1 = p+d;
+float e2 = p-d;
+//cout << "e1="<<e1<<" e2="<<e2<<endl;
+//cout << "---------------------" << endl;
+return e1*e2;
 */
     }
 };
 
 /** Multi-Sensor */
 class CombiSensor : public PPSensor {
- public:
+public:
     CombiSensor(int nchannels=0);
     virtual ~CombiSensor();
 
@@ -270,7 +270,7 @@ class CombiSensor : public PPSensor {
             if((*s)->getSkip() > m_Skip) m_Skip = (*s)->getSkip();
         return m_Skip;
     }
-        
+
     void changeSource(sensor_cptr _source);
     std::ostream& print(std::ostream& os) const;
     std::ostream& hprint(std::ostream &os, SensorCollection *sc) const;
@@ -289,10 +289,10 @@ protected:
 
     //! Computes a scalar product between the multi-channel intensities and the cweights vector.
     float calcValue(int x, int y) const {
-	float result = 0.0f;
+        float result = 0.0f;
         std::vector<sensor_ptr>::const_iterator s = sources.begin();
         std::vector<float>::const_iterator w = cweights.begin();
-        if(m_NormalizeInput) 
+        if(m_NormalizeInput)
             for(; s != sources.end(); s++,w++) {
                 result += (*s)->getWeightedValue(x,y)*(*w);
             }
@@ -300,11 +300,11 @@ protected:
             for(; s != sources.end(); s++,w++) {
                 result += (*s)->getValue(x,y)*(*w);
             }
-	return result;
+        return result;
     }
 
     std::vector<float> calcMValue(int x, int y) const {
-	std::vector<float> vv(getNChannels());
+        std::vector<float> vv(getNChannels());
         std::vector<float>::iterator v = vv.begin();
         std::vector<sensor_ptr>::const_iterator s = sources.begin();
         std::vector<float>::const_iterator w = cweights.begin();
@@ -322,13 +322,13 @@ protected:
 
 /** Mahalanobis distance Sensor **/
 class MahalSensor : public PPSensor {
- public:
+public:
     MahalSensor(const std::string& fname="")
-        { 
-            m_AddSkip = 1; 
+        {
+            m_AddSkip = 1;
             loadConfig(fname);
         }
-    int getNChannels() const { return 1; }    
+    int getNChannels() const { return 1; }
     Sensor& assign(const Sensor& rhs);
     std::ostream& print(std::ostream& os) const {
         Sensor::print(os)
@@ -345,7 +345,7 @@ class MahalSensor : public PPSensor {
 protected:
     //! Computes saturation or some other colour indicator
     float calcValue(int x, int y) const {
-	std::vector<float> mv = source->getMValue(x,y);
+        std::vector<float> mv = source->getMValue(x,y);
         DMatrix<float> v(1,std::min(mv.size(),size_t(3)),&mv.front());
         v -= m;
         DMatrix<float> vt(v); vt.transpose();
@@ -358,21 +358,21 @@ protected:
 
 /** Sensor performing various mappings */
 class MappingSensor : public PPSensor {
- public:
-    enum MappingTypes {MS_IDENTITY, MS_CLAMPLU, MS_CLAMPL, MS_CLAMPU, 
+public:
+    enum MappingTypes {MS_IDENTITY, MS_CLAMPLU, MS_CLAMPL, MS_CLAMPU,
                        MS_GAUSSNORM, MS_MGAUSSNORM, MS_MCLAMPU, MS_BIAS,
                        MS_LAST};
 
     MappingSensor(const std::string& mapn="")
         : m_MappingID()
-        { 
-            m_AddSkip = 1; 
+        {
+            m_AddSkip = 1;
             setMapping(mapn);
         }
-    int getNChannels() const { return 1; }    
+    int getNChannels() const { return 1; }
     Sensor& assign(const Sensor& rhs);
     std::ostream& print(std::ostream& os) const;
-    const char* getMappingName() const 
+    const char* getMappingName() const
         { return s_MappingNames[m_MappingID]; }
     dword getMappingID() const { return m_MappingID; }
     dword setMappingID(dword id);
@@ -387,31 +387,31 @@ protected:
         switch(m_MappingID) {
 //             case MS_IDENTITY:
 //                 break;
-            case MS_CLAMPL:
-                if(v < m_Param[0]) v = m_Param[0];
-                break;
-            case MS_CLAMPU:
-                if(v > m_Param[0]) v = m_Param[0];
-                break;
-            case MS_CLAMPLU:
-                if(v < m_Param[0]) v = m_Param[0];
-                else if(v > m_Param[1]) v = m_Param[1];
-                break;
-            case MS_MCLAMPU:
-                if(v > m_Param[1]) v = m_Param[1];
-                break;
-            case MS_GAUSSNORM:
-                v = (v-m_Param[1])*m_Param[2]+0.5;
-                break;
-            case MS_MGAUSSNORM:
-                if(v>0.f) v = (v-m_Param[1])*m_Param[2];
-                break;
-            case MS_BIAS:
-                //if(v>0.f) { 
-                v = (v-m_Param[1])*m_Param[2]; 
-                v = erf(v)*0.5+0.5;
-                //} else v = 0.f;
-                break;
+        case MS_CLAMPL:
+            if(v < m_Param[0]) v = m_Param[0];
+            break;
+        case MS_CLAMPU:
+            if(v > m_Param[0]) v = m_Param[0];
+            break;
+        case MS_CLAMPLU:
+            if(v < m_Param[0]) v = m_Param[0];
+            else if(v > m_Param[1]) v = m_Param[1];
+            break;
+        case MS_MCLAMPU:
+            if(v > m_Param[1]) v = m_Param[1];
+            break;
+        case MS_GAUSSNORM:
+            v = (v-m_Param[1])*m_Param[2]+0.5;
+            break;
+        case MS_MGAUSSNORM:
+            if(v>0.f) v = (v-m_Param[1])*m_Param[2];
+            break;
+        case MS_BIAS:
+            //if(v>0.f) {
+            v = (v-m_Param[1])*m_Param[2];
+            v = erf(v)*0.5+0.5;
+            //} else v = 0.f;
+            break;
         }
         return v;
     }

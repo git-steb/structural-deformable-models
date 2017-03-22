@@ -4,7 +4,7 @@
 #include <fftw3.h>
 
 class Fourier2D {
- public:
+public:
     Fourier2D();
     ~Fourier2D();
     void initTransform(int xsize, int ysize, double* f, double* F);
@@ -17,10 +17,10 @@ class Fourier2D {
     int realX() const { return m_SizeX; }
     int realY() const { return m_SizeY; }
 
- protected:
+protected:
     void loadWisdom();
     void saveWisdom();
-    
+
 //--- member variables ---
     fftw_plan           m_Plan2D, m_Plan2Dinv;
     bool                m_PlansCreated;

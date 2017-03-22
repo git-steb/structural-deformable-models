@@ -8,7 +8,7 @@
 #include "common.h"
 
 class Winner {
- public:
+public:
     enum ReservedID { WID_EMPTY = 0, WID_FIRST, WID_LAST = 0xfffffdff,
                       WID_FRAME, WID_BLOCKED, WID_FIRSTFREE};
     typedef       std::map<std::string,dword>                   BestRatings;
@@ -16,8 +16,8 @@ class Winner {
     typedef       std::map<std::string, std::map<dword,float> > Ratings;
     typedef const std::map<std::string, std::map<dword,float> > CRatings;
 
-    Winner(Model* m=NULL) : m_WinnerID(WID_EMPTY), m_BestRating(0.f)
-        { setModel(m); }
+Winner(Model* m=NULL) : m_WinnerID(WID_EMPTY), m_BestRating(0.f)
+    { setModel(m); }
     void setModel(Model* m);
     void setStructName(const std::string& sname) { m_StructName = sname; }
     void clearRatings();
@@ -25,14 +25,14 @@ class Winner {
     float updateBestRating();
     const BestRatings::mapped_type&
         getBestRatingID(const std::string& sname) const
-        { return m_BestRatings.find(sname)->second; }
+    { return m_BestRatings.find(sname)->second; }
     const Ratings::mapped_type& getRatingList(const std::string& sname) const
-        { return m_Ratings.find(sname)->second; }
+    { return m_Ratings.find(sname)->second; }
     const std::pair<dword,float> getBest(const std::string& sname) const;
-    bool hasConnection(const std::string& sname) const 
-        { return m_Ratings.find(sname) != m_Ratings.end(); }
+    bool hasConnection(const std::string& sname) const
+    { return m_Ratings.find(sname) != m_Ratings.end(); }
     float getConnection(const std::string& sname, dword wid) const;
- public:
+public:
     Model*      m_Model;
     dword       m_WinnerID;
     std::string m_StructName;
@@ -42,21 +42,21 @@ class Winner {
 };
 
 class EMDistribution {
- public:
+public:
     enum EDFlags { ED_NONE=0, ED_OLD=1 };
-    EMDistribution() : m_Integral(1.f), m_ShootCount(0), m_Flags(ED_NONE) {};
+EMDistribution() : m_Integral(1.f), m_ShootCount(0), m_Flags(ED_NONE) {};
     virtual ~EMDistribution() {}
-    virtual PropVec getPropVec() const 
-        { return PropVec(0.); }
-    virtual void setIntegral(float integral) 
-        { m_Integral = integral; }
+    virtual PropVec getPropVec() const
+    { return PropVec(0.); }
+    virtual void setIntegral(float integral)
+    { m_Integral = integral; }
     virtual EMDistribution* copy() const {
         return new EMDistribution(*this);
     }
-    virtual float ratePropVec(const PropVec& prop, Winner* winner=NULL) const 
-        { return 0; }
-    void setCreator(const Winner& creator) { 
-        m_Creator = creator; 
+    virtual float ratePropVec(const PropVec& prop, Winner* winner=NULL) const
+    { return 0; }
+    void setCreator(const Winner& creator) {
+        m_Creator = creator;
     }
     void setShootCount(dword scount) { m_ShootCount = scount; }
     dword getShootCount() const { return m_ShootCount; }
@@ -71,14 +71,14 @@ class EMDistribution {
 };
 
 class EMDRect : public EMDistribution {
- public:
-    EMDRect(const PropVec &lb=PropVec(0.f), 
-            const PropVec &ub=PropVec(1.f)) 
-        : m_LB(lb), m_UB(ub)
-        {}
+public:
+EMDRect(const PropVec &lb=PropVec(0.f),
+        const PropVec &ub=PropVec(1.f))
+    : m_LB(lb), m_UB(ub)
+    {}
     virtual ~EMDRect() {}
-    virtual EMDistribution* copy()  const 
-        { return (EMDistribution*) (new EMDRect(*this)); }
+    virtual EMDistribution* copy()  const
+    { return (EMDistribution*) (new EMDRect(*this)); }
     PropVec getPropVec() const;
     float ratePropVec(const PropVec& prop, Winner* winner=NULL) const;
     PropVec& clamp(PropVec &v) { return v.clamp(m_LB, m_UB); }
@@ -91,27 +91,27 @@ class EMDRect : public EMDistribution {
 };
 
 class EMDGauss : public EMDistribution {
- public:
-    EMDGauss(const PropVec &avg=PropVec(0.f), 
-             const PropVec &stdev=PropVec(1.f)) 
-        : m_Avg(avg) { setStdev(stdev); }
+public:
+EMDGauss(const PropVec &avg=PropVec(0.f),
+         const PropVec &stdev=PropVec(1.f))
+    : m_Avg(avg) { setStdev(stdev); }
     virtual ~EMDGauss() {};
-    virtual EMDistribution* copy()  const 
-        { return (EMDistribution*) (new EMDGauss(*this)); }
+    virtual EMDistribution* copy()  const
+    { return (EMDistribution*) (new EMDGauss(*this)); }
     PropVec getPropVec() const;
     float ratePropVec(const PropVec& prop, Winner* winner=NULL) const;
     void setAvg(const PropVec& avg) { m_Avg = avg; }
     void setStdev(const PropVec& stdev);
- protected:
+protected:
     PropVec m_Avg, m_Stdev, m_StdevRate;
 };
 
 class EMDXformer : public EMDistribution {
- public:
-    EMDXformer(EMDistribution* input, 
-               const PropVec& origin=getIdentityPropTF(),
-               const DMatrixf& tfmat=DMatrixf()) 
-        : m_InputEMD(input), m_Origin(origin), m_Mean(0.f), m_Stdev(1.f) {
+public:
+EMDXformer(EMDistribution* input,
+           const PropVec& origin=getIdentityPropTF(),
+           const DMatrixf& tfmat=DMatrixf())
+    : m_InputEMD(input), m_Origin(origin), m_Mean(0.f), m_Stdev(1.f) {
         assert(input != NULL);
         setTFMat(tfmat);
     }
@@ -133,19 +133,19 @@ class EMDXformer : public EMDistribution {
     void setTFMat(const DMatrixf& mat);
     void setMean(const PropVec& mean) { m_Mean = mean; }
     void setStdev(const PropVec& stdev) { m_Stdev = stdev; }
- protected:
+protected:
     EMDistribution*             m_InputEMD;
     DMatrixf                    m_TFMat, m_ITFMat;
     PropVec                     m_Origin, m_Mean, m_Stdev;
 };
 
 class ExpectationMap : public EMDRect {
- public:
+public:
     typedef std::map<dword,EMDistribution*> EDistributions;
 
     ExpectationMap() {}
-    ExpectationMap(const Model &model) 
-        { setRepresentative(model); }
+    ExpectationMap(const Model &model)
+    { setRepresentative(model); }
     ExpectationMap(const ExpectationMap &rhs) {
         operator=(rhs); }
     virtual ~ExpectationMap() { clear(); }
@@ -171,7 +171,7 @@ class ExpectationMap : public EMDRect {
     operator bool() const { return !m_Distributions.empty(); }
     static void correctLBUB(PropVec& lb, PropVec& ub);
 
- protected:
+protected:
     Model                               m_Representative;
     EDistributions                      m_Distributions;
     std::map<float, EMDistribution*>    m_SortDist;

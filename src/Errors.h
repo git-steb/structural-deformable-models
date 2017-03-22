@@ -9,37 +9,37 @@
 class Exception {};
 
 class IOException : public Exception {
- public:
+public:
     IOException(const char* msg = NULL) : message(NULL) {
-	setMessage(msg);
+        setMessage(msg);
     }
     ~IOException() {
-	if(message) {
-	    delete message;
-	    message = NULL;
-	}
+        if(message) {
+            delete message;
+            message = NULL;
+        }
     }
     void setMessage(const char* msg=NULL) {
-	if(!msg) {
-	    if(message) {
-		if(message[0] != 0) {
-		    delete message;
-		    message = new char[1];
-		    message[0] = 0;
-		}
-	    } else {
-		message = new char[1];
-		message[0] = 0;
-	    }
-	    return;
-	}
-	int len = strlen(msg);
-	if(!len) setMessage(NULL);
-	message = new char[len+1];
-	strcpy(message, msg);
+        if(!msg) {
+            if(message) {
+                if(message[0] != 0) {
+                    delete message;
+                    message = new char[1];
+                    message[0] = 0;
+                }
+            } else {
+                message = new char[1];
+                message[0] = 0;
+            }
+            return;
+        }
+        int len = strlen(msg);
+        if(!len) setMessage(NULL);
+        message = new char[len+1];
+        strcpy(message, msg);
     }
     const char* getMessage() const { return message; }
- protected:
+protected:
     char *message;
 };
 

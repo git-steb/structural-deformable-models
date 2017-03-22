@@ -60,7 +60,7 @@ typedef union {
   float v;
 } _airFloat;
 
-/* 
+/*
 ** The hex numbers in braces are examples of C's "initial member of a union"
 ** aggregate initialization.  We'd be totally out of luck without this.
 */
@@ -92,7 +92,7 @@ static const airFloat airFloatSNaN = {0x7fffffff};
 inline int
 airIsNaN(float g) {
   _airFloat f;
-  
+
   f.v = g;
   return (255 == f.c.exp && f.c.frac);
 }

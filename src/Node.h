@@ -12,7 +12,7 @@
 //! Implements a Node used by Model and Edge
 class Node : public Point {
     friend class Model;
- public:
+public:
     enum NodeState { ST_NONE=0, ST_HIGHLIGHT=1, ST_SELECT=2 };
 
     //! Default constructor

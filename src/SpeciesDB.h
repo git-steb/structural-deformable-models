@@ -10,7 +10,7 @@
 #include "ParseFile.h"
 
 class Species : public std::map<std::string, std::string> {
- public:
+public:
     static const char* SFIELDS[];
     const static char s_SPFLAGS[];
     enum SpFlags {
@@ -32,7 +32,7 @@ class Species : public std::map<std::string, std::string> {
     dword unsetFlag(dword flag);
     dword readFlagString(const std::string &flags);
     std::string getFlagString() const;
-    bool select(const Species& sp, 
+    bool select(const Species& sp,
                 enum SpCompare how=Species::CMP_CONTAINS) const;
     dword getScale() const;
     friend ParseFile& operator>>(ParseFile &is, Species &sp);
@@ -43,7 +43,7 @@ class Species : public std::map<std::string, std::string> {
 };
 
 class SpeciesDB : public std::map<dword, Species> {
- public:
+public:
     SpeciesDB() {}
     SpeciesDB(const char* filename) {
         load(filename);
@@ -54,7 +54,7 @@ class SpeciesDB : public std::map<dword, Species> {
     friend std::ostream& operator<<(std::ostream &os, const SpeciesDB &sp);
     const std::string& getDirectory() const { return m_Directory; }
     const std::string& getFilename() const { return m_Filename; }
-    dword select(const Species& rhs, 
+    dword select(const Species& rhs,
                  enum Species::SpCompare how=Species::CMP_CONTAINS);
     dword select(const std::list<dword>& idlist);
     dword getSelectionID(int dir=0, bool wrap=true);
@@ -73,13 +73,13 @@ protected:
 };
 
 /** This class helps to select subsets of a data base.  As well it
- assists in navigation through the selectors and the resulting
- selections.*/
+    assists in navigation through the selectors and the resulting
+    selections.*/
 class DBSelector {
 public:
     DBSelector(SpeciesDB &db) : m_DB(db), m_CSel(m_Selectors.begin()) {};
-    DBSelector(SpeciesDB &db, const char* filename) 
-        : m_DB(db), m_CSel(m_Selectors.begin()) 
+    DBSelector(SpeciesDB &db, const char* filename)
+        : m_DB(db), m_CSel(m_Selectors.begin())
         { load(filename); }
     /** Load a set of species used as selectors for filtering the data base.
         Calls update() afterwards. */
@@ -95,16 +95,16 @@ public:
             else return m_CSpecies;
         }
     /**Move on to next selection.
-       \param dir -1 move backwards, 1 move forwards, 0 just refresh 
+       \param dir -1 move backwards, 1 move forwards, 0 just refresh
        \param wrap if false then return false if end of selection list has been reached. Otherwise just wrap around.
     */
     bool nextSelection(int dir=1, bool wrap=true);
     /**Move on to next selector.
-       \param walkdir -1=move backwards, 1=move forwards (default), 0=just refresh 
+       \param walkdir -1=move backwards, 1=move forwards (default), 0=just refresh
        \param wrap if false then return false if end of selector list has been reached. Otherwise just wrap around.
     */
     bool nextSelector(int walkdir=1, bool wrap=true, dword mincount=1);
-    
+
 public:
     SpeciesDB                   &m_DB;
     std::list<Species>               m_Selectors;

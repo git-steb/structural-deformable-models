@@ -21,8 +21,8 @@ typedef std::vector<Edge> EdgeArray;
 
 //--- for spring model
 typedef struct {
-  Point dpdt;
-  Point dvdt;
+    Point dpdt;
+    Point dvdt;
 } NodeDerivative;
 
 //---
@@ -33,11 +33,11 @@ class SensorCollection;
 class Model {
 protected:
     enum PreCompF {PC_CENTER=0x01, PC_SCALE=0x02, PC_DIR=0x04, PC_QOF=0x08,
-                   PC_LIVE=0x10, PC_NOTHING=0x00, PC_ALL=0x1f, 
+                   PC_LIVE=0x10, PC_NOTHING=0x00, PC_ALL=0x1f,
                    PC_PVEC=PC_CENTER|PC_SCALE|PC_DIR,
                    PC_STATS=PC_QOF|PC_LIVE};
 public:
-    enum DistType {DIST_XY, DIST_XYS, DIST_PVEC, DIST_POINTS, 
+    enum DistType {DIST_XY, DIST_XYS, DIST_PVEC, DIST_POINTS,
                    DIST_CPOINTS, DIST_HPOINTS };
     //enum TTimeStamp { TS_CREATE=0, TS_WIN, TS_LOOSE, TS_LAST};
     enum ModelState { ST_WINNER=1, ST_LOOSER=2, ST_OLDSTATE=4, ST_DEL=8,
@@ -98,11 +98,11 @@ public:
     //! read model parameters
     bool readParameter(ParseFile &is);
     /** Read complete geometry from input stream.
-	# is comment character, v introduces a point (vertex), e an edge:
-	#example
-	v 1 1
-	v 2 2
-	e 1 2
+        # is comment character, v introduces a point (vertex), e an edge:
+        #example
+        v 1 1
+        v 2 2
+        e 1 2
     */
     friend ParseFile& operator>>(ParseFile &is, Model &g);
     /** Read geometry from stream. */
@@ -113,7 +113,7 @@ public:
     /** Write geometry to file. */
     bool writeFile(const char* filename) const;
     void attachDataset(dataset_cptr dataset);
-    
+
     float getQualityOfFit() const;
     float getLiveliness() const;
     void translate(const Point &t);
@@ -121,7 +121,7 @@ public:
     void freeze();
     void push(const Point &t);
     void rotate(float angle, const Point &c);
-    void rotate(float angle) { 
+    void rotate(float angle) {
         dword cf=m_PCFlags&PC_CENTER;rotate(angle,getCenter());m_PCFlags|=cf;}
     void pushRotate(const Point &c, float angle);
     void attract(const Point &c, float factor);
@@ -182,13 +182,13 @@ public:
         //if(ts!=0.) m_TimeStamp[TS_WIN]=ts;
     }
     bool isWinner() { return m_Flags&ST_WINNER; }
-    void setLooser(bool isloose=true, float ts=0.) { 
+    void setLooser(bool isloose=true, float ts=0.) {
         if(isloose) m_Flags |= ST_LOOSER;
         else m_Flags &= ~ST_LOOSER;
         //if(ts!=0.) m_TimeStamp[TS_LOOSE]=ts;
     }
     bool isLooser() { return m_Flags&ST_LOOSER; }
-    void setOldState(bool isoldstate=true, float ts=0.) { 
+    void setOldState(bool isoldstate=true, float ts=0.) {
         if(isoldstate) m_Flags |= ST_OLDSTATE;
         else m_Flags &= ~ST_OLDSTATE;
     }
@@ -198,7 +198,7 @@ public:
     dword& setFlags(dword flags) { return m_Flags|=flags; }
     dword& unsetFlags(dword flags) { return m_Flags&=~flags; }
     dword& switchFlags(dword flags) { return m_Flags^=flags; }
-    void setShapeWeight(float weight) { 
+    void setShapeWeight(float weight) {
         m_ShapeWeight = weight; invalidatePC(PC_QOF); }
     void adaptDataScale(dword ppmm=0);
     dword getDataScale() const { return m_ppmm; }
@@ -213,9 +213,9 @@ public:
     Point2D& convertPointToMM(Point2D& pt) const;
     PropVec& convertPropFromMM(PropVec& prop) const;
     PropVec& convertPropToMM(PropVec& prop) const;
-    
+
     int nearestNode(const Point& pos, float& dist=*(float*)(NULL)) const;
-    float distance(const Model& rhs, 
+    float distance(const Model& rhs,
                    enum Model::DistType kind=DIST_POINTS) const;
     void invalidatePC(dword pcflags=PC_ALL) { m_PCFlags &= ~pcflags; }
 
@@ -223,7 +223,7 @@ public:
     void setInstCount(dword ic) { m_InstCount=ic; }
     dword mergeModel( Model& mergemod);
     const std::string& getFilename() const { return m_Filename; }
-    
+
     /** Set ID of highlighted node.
         Pass invalid node id (e.g. -1) to have none highlighted. */
     void setHLNode(int hlnode);
@@ -258,17 +258,17 @@ public:
     //std::vector<float> m_TimeStamp;          // time stamps (see. TTimeStamp)
     float         m_TimeStamp;          //!< time stamps (see. TTimeStamp)
 
- protected:
+protected:
     NodeArray nodes;                    //!< indexed list of nodes
     EdgeArray edges;                    //!< indexed list of edges
 
     dataset_cptr                m_Dataset;
-    SensorCollection		    *m_Sensors;
+    SensorCollection            *m_Sensors;
     std::string                 m_SensorFile;
     float                       m_ShapeWeight;
     dword                       m_Flags;
-    std::string			m_Name;
-    dword			m_CRC;
+    std::string         m_Name;
+    dword           m_CRC;
     dword                       m_ppmm;
     mutable int                 m_DirNodeInd;
     mutable dword               m_PCFlags;

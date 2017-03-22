@@ -16,13 +16,13 @@ class ParseFile {
 public:
     enum ErrorID {ERR_OK=0, ERR_FILE, ERR_PARSE, ERR_EOF };
 
-    ParseFile(const std::string& filename) 
-        : m_IS(m_IF.rdbuf()), m_Error(ERR_OK), c_CommentChar('#') {
+ParseFile(const std::string& filename)
+    : m_IS(m_IF.rdbuf()), m_Error(ERR_OK), c_CommentChar('#') {
         open(filename);
     }
 
-    ParseFile(std::istream& is) 
-        : m_IS(is.rdbuf()), m_Error(ERR_OK), c_CommentChar('#') {}
+ParseFile(std::istream& is)
+    : m_IS(is.rdbuf()), m_Error(ERR_OK), c_CommentChar('#') {}
 
     bool open(const std::string& filename) {
         resetStrings();
@@ -41,7 +41,7 @@ public:
     void close() {
         m_Error = ERR_OK;
         m_LineN = 0;
-        m_Line.clear(); m_Key.clear(); m_Value.clear(); 
+        m_Line.clear(); m_Key.clear(); m_Value.clear();
         m_Filename.clear(); m_Path.clear();
         m_IF.close();
     }
@@ -58,9 +58,9 @@ public:
     const int getLineNumber() const { return m_LineN; }
     const bool getNextLine() {
         if(m_Error != ERR_OK) return false;
-        m_LastLine = m_Line; 
+        m_LastLine = m_Line;
         m_Line.clear(); m_Key.clear(); m_Value.clear();
-        while(m_Key.empty() && 
+        while(m_Key.empty() &&
               (!m_PushedLines.empty() ? true : (bool)std::getline(m_IS, m_Line))) {
             if(!m_PushedLines.empty()) {
                 m_Line = m_PushedLines.back();
@@ -72,13 +72,13 @@ public:
         return true;
     }
     void pushLine(const std::string& line) { m_PushedLines.push_back(line); }
-    void pushLine() { 
-        pushLine(m_Line); 
-        if(!m_LastLine.empty()) 
+    void pushLine() {
+        pushLine(m_Line);
+        if(!m_LastLine.empty())
         { m_Line = m_LastLine; m_LastLine.clear(); parseLine(); }
     }
-    void setParseError(const std::string& msg = "") 
-        { if(m_Error == ERR_OK) { m_Error = ERR_PARSE; m_ErrMsg = msg; } }
+    void setParseError(const std::string& msg = "")
+    { if(m_Error == ERR_OK) { m_Error = ERR_PARSE; m_ErrMsg = msg; } }
     char getCommentChar() const { return c_CommentChar; }
     void setCommentChar(char cchar) { ((char&)c_CommentChar) = cchar; }
 
@@ -86,11 +86,11 @@ public:
         std::ostringstream msg;
         msg << "[file " << m_Filename << "] ";
         switch(m_Error) {
-            case ERR_OK: msg << "none"; break;
-            case ERR_FILE: msg << "error opening file"; break;
-            case ERR_PARSE: msg << "parse error in line " << m_LineN; 
-                break;
-            case ERR_EOF: msg << "end of file"; break;
+        case ERR_OK: msg << "none"; break;
+        case ERR_FILE: msg << "error opening file"; break;
+        case ERR_PARSE: msg << "parse error in line " << m_LineN;
+            break;
+        case ERR_EOF: msg << "end of file"; break;
         }
         if(!m_ErrMsg.empty()) msg << ": " << m_ErrMsg;
         return msg.str();
@@ -128,7 +128,7 @@ protected:
         if(lines >> m_Key) {
             lines >> std::ws;
             std::getline(lines, m_Value);
-        } 
+        }
     }
 protected:
     std::ifstream               m_IF;

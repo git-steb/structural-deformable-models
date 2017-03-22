@@ -13,106 +13,109 @@ class Model;
 //! Implements an Edge with spring functionality
 class Edge {
     friend class Model;
- public:
+public:
 //     Edge() {
-// 	from = -1;
-// 	to = -1;
-// 	restlength = 0;
-// 	springconstant = PART_SPRINGCONST;
-// 	dampingconstant = PART_DAMPING;
-// 	nodes = NULL;
+//  from = -1;
+//  to = -1;
+//  restlength = 0;
+//  springconstant = PART_SPRINGCONST;
+//  dampingconstant = PART_DAMPING;
+//  nodes = NULL;
 //     }
-    Edge(const Edge &rhs ) {
-	operator=(rhs);
-    }
-    Edge(int _from, int _to, std::vector<Node> &_nodes, 
-         const ParticleParam *phys = &ParticleParam::global, 
-         int _index=-1) {
-	from = _from;
-	to = _to;
-	nodes = &_nodes;
-	adaptRestLength();
-	springconstant = phys->springconst;
-	dampingconstant = phys->damping;
-        edgesensor = 0;
-	index = _index;
+    Edge(const Edge &rhs )
+    {
+        operator=(rhs);
     }
     Edge(int _from, int _to, std::vector<Node> &_nodes,
-	 float restlength, float spring_k=1, int _index=-1) {
-	from = _from;
-	to = _to;
-	nodes = &_nodes;
-	this->restlength = restlength;
-	this->springconstant = spring_k;
+         const ParticleParam *phys = &ParticleParam::global,
+         int _index=-1)
+    {
+        from = _from;
+        to = _to;
+        nodes = &_nodes;
+        adaptRestLength();
+        springconstant = phys->springconst;
+        dampingconstant = phys->damping;
         edgesensor = 0;
-	this->index = _index;
+        index = _index;
+    }
+    Edge(int _from, int _to, std::vector<Node> &_nodes,
+         float restlength, float spring_k=1, int _index=-1)
+    {
+        from = _from;
+        to = _to;
+        nodes = &_nodes;
+        this->restlength = restlength;
+        this->springconstant = spring_k;
+        edgesensor = 0;
+        this->index = _index;
     }
 
     virtual ~Edge() {}
 
     void setNodesList(std::vector<Node> &nodes) {
-	this->nodes = &nodes;
+        this->nodes = &nodes;
     }
 
     Edge& operator=(const Edge &rhs) {
         if(&rhs == this) return *this;
-	from = rhs.from;
-	to = rhs.to;
-	nodes = rhs.nodes;
-	restlength = rhs.restlength;
-	springconstant = rhs.springconstant;
-	dampingconstant = rhs.dampingconstant;
+        from = rhs.from;
+        to = rhs.to;
+        nodes = rhs.nodes;
+        restlength = rhs.restlength;
+        springconstant = rhs.springconstant;
+        dampingconstant = rhs.dampingconstant;
         edgesensor = rhs.edgesensor;
-	index = rhs.index;
-	return *this;
+        index = rhs.index;
+        return *this;
     }
 
     const Point dir() const {
-	if(from==-1 || to==-1) return Point();
-	return toNode()-fromNode();
+        if(from==-1 || to==-1) return Point();
+        return toNode()-fromNode();
     }
     const Point idir() const {
-	if(from==-1 || to==-1) return Point();
-	return fromNode()-toNode();
+        if(from==-1 || to==-1) return Point();
+        return fromNode()-toNode();
     }
 
     float length2() const {
-	if(from==-1 || to==-1) return 0;
-	return dir().norm2();
+        if(from==-1 || to==-1) return 0;
+        return dir().norm2();
     }
 
     float length() const {
-	return (float)sqrt(length2());
+        return (float)sqrt(length2());
     }
 
     float lengthRatio() const {
-	return length()/restlength;
+        return length()/restlength;
     }
 
     float adaptRestLength() {
-	return restlength = length();
+        return restlength = length();
     }
- 
+
     float adaptRestLength(float ratio) {
-	return restlength -= (restlength-length())*ratio;
+        return restlength -= (restlength-length())*ratio;
     }
     float getAngle() const {
-	return dir().angleX();
+        return dir().angleX();
     }
     float adaptAngle() {
-	return xangle = getAngle();
+        return xangle = getAngle();
     }
     friend std::ostream& operator<<(std::ostream &os, const Edge &p) {
-	os << "e " << p.from+1 << " " << p.to+1; 
+        os << "e " << p.from+1 << " " << p.to+1;
         if(p.springconstant != ParticleParam::global.springconst)
-	    os << " sc " << p.springconstant;
-	if(p.dampingconstant != ParticleParam::global.damping)
-	    os << " dc " << p.dampingconstant; 
-	if(p.length() != p.restlength) os << " rl " << p.restlength;
-	if(p.edgesensor>0) os << " es f " << p.edgesensor;
-	if(p.edgesensor<0) os << " es t " << -p.edgesensor;
-	os << std::endl;
-	return os;
+            os << " sc " << p.springconstant;
+        if(p.dampingconstant != ParticleParam::global.damping)
+            os << " dc " << p.dampingconstant;
+        if(p.length() != p.restlength) os << " rl " << p.restlength;
+        if(p.edgesensor>0) os << " es f " << p.edgesensor;
+        if(p.edgesensor<0) os << " es t " << -p.edgesensor;
+        os << std::endl;
+        return os;
     }
 
     Node& fromNode() { return (*nodes)[from]; }
@@ -121,7 +124,7 @@ class Edge {
     const Node& toNode() const { return (*nodes)[to]; }
 
     dword getSensorValue(float& sum, dword& nsamples) const;
- public:
+public:
     int from, to;
     float xangle; // angle to x-axis
     float cxangle; // current angle to x-axis
@@ -133,7 +136,7 @@ class Edge {
     float dampingconstant;
     int   edgesensor; //!< 0-none, >0-use from sensor n times, <0 use to sensor
 
- protected:
+protected:
     //! index in the model (Model.edges)
     int index;
 };

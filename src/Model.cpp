@@ -24,7 +24,7 @@ using namespace std;
 ParticleParam ParticleParam::global = ParticleParam();
 
 Model::Model(dataset_cptr _dataset, SensorCollection *sensors)
-    : m_TimeStamp(0), m_Dataset(_dataset), m_Sensors(sensors), 
+    : m_TimeStamp(0), m_Dataset(_dataset), m_Sensors(sensors),
       m_Flags(0), m_PCFlags(PC_NOTHING), m_InstCount(1), m_HLNode(-1), m_ID(0)
 {
     phys.gravitational = phys.gravitational;
@@ -42,7 +42,7 @@ Model::Model(const Model& rhs)
     operator=(rhs);
 }
 
-Model::~Model() 
+Model::~Model()
 {
     attachSensorColl(NULL);
 }
@@ -57,7 +57,7 @@ Model& Model::operator=(const Model& rhs)
     edges = rhs.edges;
     for(EdgeArray::iterator e=edges.begin(); e!=edges.end(); e++)
     {
-	e->setNodesList(nodes);
+        e->setNodesList(nodes);
     }
     m_Flags = rhs.m_Flags;
 //     phys.gravitational = rhs.phys.gravitational;
@@ -85,10 +85,10 @@ Model& Model::operator=(const Model& rhs)
 void Model::attachDataset(dataset_cptr dataset) {
     if(m_Dataset == dataset) return;
     m_Dataset = dataset;
-    if(m_Sensors && m_Sensors->getSensor("d0") != dataset) 
+    if(m_Sensors && m_Sensors->getSensor("d0") != dataset)
         m_Sensors->addSensor("d0",
-                std::dynamic_pointer_cast<Sensor>(
-                        std::const_pointer_cast<Dataset>(dataset)));
+                             std::dynamic_pointer_cast<Sensor>(
+                                 std::const_pointer_cast<Dataset>(dataset)));
     adaptDataScale();
 }
 
@@ -120,9 +120,9 @@ void Model::reset()
 int Model::addNode(const Node &node)
 {
     if(node.index!=-1 && nodes.size()>(dword)node.index) {
- 	TRACE(node.index);
- 	nodes[node.index] = node;
- 	return node.index;
+        TRACE(node.index);
+        nodes[node.index] = node;
+        return node.index;
     }
     int index = nodes.size();
     //nodes[index] = node;
@@ -159,7 +159,7 @@ int Model::addEdge(const Node &from, const Node &to)
 //! \returns index in the internal array
 int Model::addEdge(int ifrom, int ito)
 {
-    assert((dword)ifrom<nodes.size() && 
+    assert((dword)ifrom<nodes.size() &&
            (dword)ito<nodes.size() && ifrom>=0 && ito>=0);
     return addEdge( Edge(ifrom, ito, nodes, &phys) );
 }
@@ -168,8 +168,8 @@ bool Model::readEdge(ParseFile &is)
 {
     if(!is.getNextLine()) return false;
     if(is.getKey() != "e") {
-	is.pushLine();
-	return false;
+        is.pushLine();
+        return false;
     }
     istringstream vs(is.getValue());
     vs >> ws;
@@ -184,7 +184,7 @@ bool Model::readEdge(ParseFile &is)
     Edge &ed = edges[addEdge(from, to)];
     string param;
     while(vs >> param) {
-        if(param == "sc") 
+        if(param == "sc")
             vs >> ed.springconstant;
         else if(param == "dc")
             vs >> ed.dampingconstant;
@@ -211,8 +211,8 @@ bool Model::readNode(ParseFile &is)
 {
     if(!is.getNextLine()) return false;
     if(is.getKey() != "v") {
-	is.pushLine();
-	return false;
+        is.pushLine();
+        return false;
     }
     istringstream vs(is.getValue());
     vs >> ws;
@@ -229,7 +229,7 @@ bool Model::readNode(ParseFile &is)
                 is.setParseError("tried to load undefined sensor");
                 throw new IOException("tried to load undefined sensor");
             }
-        } else if(param == "m") 
+        } else if(param == "m")
             vs >> n.mass;
         else {
             is.setParseError("error reading node parameters");
@@ -249,7 +249,7 @@ bool Model::readSensor(ParseFile &is)
         if(sf) {
             m_SensorFile = is.getValue();
             while(sf) readSensor(sf);
-        } else cerr << "couldn't load sensor file " 
+        } else cerr << "couldn't load sensor file "
                     << is.getPath()+is.getValue() << endl;
     } else is.pushLine();
     if(!m_Sensors) m_Sensors = new SensorCollection();
@@ -260,12 +260,12 @@ bool Model::readSensor(ParseFile &is)
     return true;
 }
 
-bool Model::readParameter(ParseFile &is) 
+bool Model::readParameter(ParseFile &is)
 {
     if(!is.getNextLine()) return false;
     if(is.getKey() != "p") {
-	is.pushLine();
-	return false;
+        is.pushLine();
+        return false;
     }
     istringstream vs(is.getValue());
     string pname;
@@ -285,14 +285,14 @@ bool Model::readParameter(ParseFile &is)
     } else if(pname == "torque") {
         vs >> phys.torque;
     } else if(pname == "name") {
-	string name;
+        string name;
         vs >> name;
-	setName(name);
+        setName(name);
     } else if(pname == "ppmm") {
         vs >> m_ppmm;
     } else if(pname == "dirnode") {
         vs >> m_DirNodeInd;
-    } 
+    }
     return true;
 }
 
@@ -307,15 +307,15 @@ ParseFile& operator>>(ParseFile &is, Model &g)
         int phase=0;
         while(is) {
             if(phase == 0) {
-                if(!g.readSensor(is) && !g.readParameter(is)) 
+                if(!g.readSensor(is) && !g.readParameter(is))
                     phase++;
             }
             if(phase == 1) {
-                if(!g.readNode(is)) 
+                if(!g.readNode(is))
                     phase++;
             }
             if(phase == 2) {
-                if(!g.readEdge(is)) 
+                if(!g.readEdge(is))
                     phase++;
             }
             if(phase == 3 && !is.eof()) {
@@ -338,7 +338,7 @@ ParseFile& operator>>(ParseFile &is, Model &g)
 ostream& operator<<(ostream &os, const Model &g)
 {
     os << "p name " << g.m_Name << endl;
-    if(g.m_ppmm != DEFAULT_PPMM) 
+    if(g.m_ppmm != DEFAULT_PPMM)
         os << "p ppmm " << g.m_ppmm << endl;
     os << "p dirnode " << g.m_DirNodeInd << endl;
     os << g.phys;
@@ -349,16 +349,16 @@ ostream& operator<<(ostream &os, const Model &g)
         os << "sensors " << g.m_SensorFile << endl;
     } else {
         g.m_Sensors->clearPrintList();
-        for(NodeArray::const_iterator n = g.nodes.begin(); n != g.nodes.end(); 
+        for(NodeArray::const_iterator n = g.nodes.begin(); n != g.nodes.end();
             n++)
             n->sensor->hprint(os, (SensorCollection*)g.m_Sensors);
     }
     os << endl;
     for(NodeArray::const_iterator n = g.nodes.begin(); n != g.nodes.end(); n++)
-	os << *n;
+        os << *n;
     os << endl;
     for(EdgeArray::const_iterator e = g.edges.begin(); e != g.edges.end(); e++)
-	os << *e;
+        os << *e;
     return os;
 }
 
@@ -366,15 +366,15 @@ bool Model::readFile(const char *filename, bool fullread)
 {
     ParseFile is(filename);
     if(is) {
-	try {
-	    is >> *this;
-	} catch (const IOException *e) {
- 	    cerr << "IOException: " << e->getMessage() << endl
- 		 << "reading file " << filename << endl;
+        try {
+            is >> *this;
+        } catch (const IOException *e) {
+            cerr << "IOException: " << e->getMessage() << endl
+                 << "reading file " << filename << endl;
             reset();
-	    return false;
-	}
-	return true;
+            return false;
+        }
+        return true;
     } else return false;
 }
 
@@ -382,28 +382,28 @@ bool Model::writeFile(const char *filename) const
 {
     ofstream os(filename);
     if(os) {
-	try {
-	    os << "# file '" << filename << "' "<<endl;
-	    ParticleParam::global = phys;
-	    os << *this;
-	} catch (const IOException *e) {
-	    cerr << "IOException: " << e->getMessage() << endl
-		 << "writing file " << filename << endl;
-	    return false;
-	}
-	os.close();
-	return true;
+        try {
+            os << "# file '" << filename << "' "<<endl;
+            ParticleParam::global = phys;
+            os << *this;
+        } catch (const IOException *e) {
+            cerr << "IOException: " << e->getMessage() << endl
+                 << "writing file " << filename << endl;
+            return false;
+        }
+        os.close();
+        return true;
     } else return false;
 }
 
-void Model::setName(const string &name) 
+void Model::setName(const string &name)
 {
     m_Name = name;
     m_CRC = (dword)CRC((unsigned char*)m_Name.c_str(), m_Name.size());
 }
 
 void Model::setHLNode(int hlnode) {
-    if(m_HLNode>=0 && m_HLNode<getNNodes()) 
+    if(m_HLNode>=0 && m_HLNode<getNNodes())
         getNode(m_HLNode).disableState(Node::ST_HIGHLIGHT);
     m_HLNode = hlnode;
     if(m_HLNode>=0 && m_HLNode<getNNodes())
@@ -550,39 +550,39 @@ void Model::draw(bool drawPoints) const {
         glEnd();
     }
     if(drawPoints &&  !nodes.empty()) {
-	glPointSize(3.0f);
-	glEnable(GL_POINT_SMOOTH);
-	glColor3f(0,0,1);
-	glBegin(GL_POINTS);
-	for(NodeArray::const_iterator n=nodes.begin(); n!=nodes.end(); n++)
-	{
-	    n->glVertex();
-	}
-	glEnd();
-	glDisable(GL_POINT_SMOOTH);
-	glPointSize(1.0f);
-	for(NodeArray::const_iterator n=nodes.begin(); n!=nodes.end(); n++)
-	{
-	    if(n->hasState()) n->draw();
-	}
+        glPointSize(3.0f);
+        glEnable(GL_POINT_SMOOTH);
+        glColor3f(0,0,1);
+        glBegin(GL_POINTS);
+        for(NodeArray::const_iterator n=nodes.begin(); n!=nodes.end(); n++)
+        {
+            n->glVertex();
+        }
+        glEnd();
+        glDisable(GL_POINT_SMOOTH);
+        glPointSize(1.0f);
+        for(NodeArray::const_iterator n=nodes.begin(); n!=nodes.end(); n++)
+        {
+            if(n->hasState()) n->draw();
+        }
     }
 }
 
 /*
-void Model::drawPS(CAMgraphicsProcess& gp, dword mode) const {
-    double x[2], y[2];
-    double height  = !m_Dataset || !m_Dataset->initialized() ? 0.0 
-        : m_Dataset->getDim2Size();
-    for(EdgeArray::const_iterator e=edges.begin(); e!=edges.end(); e++)
-    {
-        const Node& from = e->fromNode();
-        const Node& to = e->toNode();
-        x[0] = from.x; x[1] = to.x;
-        if(height > 0.0) { y[0] = from.y; y[1] = to.y; }
-        else { y[0] = height-from.y; y[1] = height-to.y; }
-        gp.plot(x,y,2);
-    }
-}
+  void Model::drawPS(CAMgraphicsProcess& gp, dword mode) const {
+  double x[2], y[2];
+  double height  = !m_Dataset || !m_Dataset->initialized() ? 0.0
+  : m_Dataset->getDim2Size();
+  for(EdgeArray::const_iterator e=edges.begin(); e!=edges.end(); e++)
+  {
+  const Node& from = e->fromNode();
+  const Node& to = e->toNode();
+  x[0] = from.x; x[1] = to.x;
+  if(height > 0.0) { y[0] = from.y; y[1] = to.y; }
+  else { y[0] = height-from.y; y[1] = height-to.y; }
+  gp.plot(x,y,2);
+  }
+  }
 */
 
 void Model::attachSensorColl(SensorCollection* sc)
@@ -593,7 +593,7 @@ void Model::attachSensorColl(SensorCollection* sc)
     m_Sensors = sc;
 }
 
-void Model::mergeSensorCollection(SensorCollection *sensors) 
+void Model::mergeSensorCollection(SensorCollection *sensors)
 {
     if(!sensors) return;
     if(m_Sensors != NULL) {
@@ -604,18 +604,18 @@ void Model::mergeSensorCollection(SensorCollection *sensors)
 
 float Model::getNodeAngle(const Node &n) const {
     if(n.edges.size()>=2) {
-	int eind1 = n.edges[0];
-	Point e1 = eind1<0 ? edges[-eind1-1].idir() : edges[eind1-1].dir();
-	int eind2 = n.edges[1];
-	Point e2 = eind2<0 ? edges[-eind2-1].idir() : edges[eind2-1].dir();
-	//TRACE(e1<<" "<<e2<<" "<<e1.angle(e2));
-	return e1.angle(e2);
+        int eind1 = n.edges[0];
+        Point e1 = eind1<0 ? edges[-eind1-1].idir() : edges[eind1-1].dir();
+        int eind2 = n.edges[1];
+        Point e2 = eind2<0 ? edges[-eind2-1].idir() : edges[eind2-1].dir();
+        //TRACE(e1<<" "<<e2<<" "<<e1.angle(e2));
+        return e1.angle(e2);
     } return 0.0;
 }
 
 void Model::reattachSensors() {
     for (NodeArray::iterator p=nodes.begin(); p!=nodes.end();p++) {
-	p->attachSensor(m_Sensors->getSensor(p->sensorID));
+        p->attachSensor(m_Sensors->getSensor(p->sensorID));
     }
 }
 
@@ -633,7 +633,7 @@ dword Model::createEdgeSensors(float dist)
     }
     return nsens;
 }
-    
+
 //----------------------------------------------------------------------------
 //---- Spring model stuff -----
 
@@ -641,61 +641,61 @@ void Model::resetForces()
 {
     Point zero;
     for (NodeArray::iterator p=nodes.begin(); p!=nodes.end();p++) {
-	p->f = zero;
+        p->f = zero;
     }
 }
 // Update the forces on each particle
 void Model::calculateForces(float dt)
 {
-   Point down(0.0f, -1.0f);
-   Point f;
-   float imgf, ifscale;
-   if(phys.imgforce == 0) {
-       imgf = 0;
-       ifscale = 0;
-   } else {
-       imgf = addImageForces(dt);
-       ifscale=1;
-   }
-   if(imgf>0.0) ifscale = ((float)phys.imgforce/imgf)*(float)nodes.size();
-   //TRACE(imgf<< " scale="<<ifscale);
-   for (NodeArray::iterator p=nodes.begin(); p!=nodes.end();p++) {
-      //if (p->fixed) continue;
-       p->f *= ifscale;
-       p->f += p->ef/dt;
-       p->ef = 0.;
-      /* Gravitation */
-       if(phys.gravitational > 0.0f)
-	   p->f = (down * (phys.gravitational * p->mass));
+    Point down(0.0f, -1.0f);
+    Point f;
+    float imgf, ifscale;
+    if(phys.imgforce == 0) {
+        imgf = 0;
+        ifscale = 0;
+    } else {
+        imgf = addImageForces(dt);
+        ifscale=1;
+    }
+    if(imgf>0.0) ifscale = ((float)phys.imgforce/imgf)*(float)nodes.size();
+    //TRACE(imgf<< " scale="<<ifscale);
+    for (NodeArray::iterator p=nodes.begin(); p!=nodes.end();p++) {
+        //if (p->fixed) continue;
+        p->f *= ifscale;
+        p->f += p->ef/dt;
+        p->ef = 0.;
+        /* Gravitation */
+        if(phys.gravitational > 0.0f)
+            p->f = (down * (phys.gravitational * p->mass));
 
-      /* Viscous drag */
-       if(phys.viscousdrag > 0.0f)
-	   p->f -= (p->v * phys.viscousdrag);
-   }
+        /* Viscous drag */
+        if(phys.viscousdrag > 0.0f)
+            p->f -= (p->v * phys.viscousdrag);
+    }
 
-   /* Handle the spring interaction */
-   for (EdgeArray::iterator s=edges.begin(); s!=edges.end(); s++)
-   {
-       Point d = s->fromNode();
-       d -= s->toNode();
-       float len = d.norm();
-       float len1 = 1/len;
-       //spring force
-       f = (s->springconstant * (len - s->restlength));
-                                        //calc damping force
-       Point vd(s->fromNode().v);
-       vd -= s->toNode().v;
-       d *= len1;                       //spring direction normalized
-       //vd.times(d);                     //project velocity difference to spring
-       vd = vd.dot(d);                     //project velocity difference to spring
-       vd *= s->dampingconstant;
-       f += vd;
-       f *= (d*-1);
+    /* Handle the spring interaction */
+    for (EdgeArray::iterator s=edges.begin(); s!=edges.end(); s++)
+    {
+        Point d = s->fromNode();
+        d -= s->toNode();
+        float len = d.norm();
+        float len1 = 1/len;
+        //spring force
+        f = (s->springconstant * (len - s->restlength));
+        //calc damping force
+        Point vd(s->fromNode().v);
+        vd -= s->toNode().v;
+        d *= len1;                       //spring direction normalized
+        //vd.times(d);                     //project velocity difference to spring
+        vd = vd.dot(d);                     //project velocity difference to spring
+        vd *= s->dampingconstant;
+        f += vd;
+        f *= (d*-1);
 
-       //if not fixed - maybe
-       s->fromNode().f += f;
-       s->toNode().f -= f;
-   }
+        //if not fixed - maybe
+        s->fromNode().f += f;
+        s->toNode().f -= f;
+    }
 }
 
 float Model::addImageForces(float dt) {
@@ -703,8 +703,8 @@ float Model::addImageForces(float dt) {
     if(m_Dataset) const_cast<vuMutex&>(m_Dataset->writeMutex).lock();
     float allf=0;
     for (NodeArray::iterator p=nodes.begin(); p!=nodes.end();p++) {
-	p->addSensorForce();
-	allf += p->f.norm();
+        p->addSensorForce();
+        allf += p->f.norm();
     }
     if(m_Dataset) const_cast<vuMutex&>(m_Dataset->writeMutex).unlock();
     return allf;
@@ -712,13 +712,13 @@ float Model::addImageForces(float dt) {
 
 void Model::prepareTorque() {
     for(NodeArray::iterator p=nodes.begin(); p!=nodes.end();p++) {
-	p->oangle = getNodeAngle(*p);
+        p->oangle = getNodeAngle(*p);
     }
 }
 
 void Model::addTorque(float dt) {
-  //doesn't really work with a node array other than nodes 
-  //(because of edges.fromNode()...
+    //doesn't really work with a node array other than nodes
+    //(because of edges.fromNode()...
     if(m_Dataset) const_cast<vuMutex&>(m_Dataset->writeMutex).lock();
     //NodeArray &narr = tp ? *tp : nodes;
     for(NodeArray::iterator p=nodes.begin(); p!=nodes.end();p++) {
@@ -754,81 +754,81 @@ void Model::updateParticles(float dt,int method)
     method = getSearchPara().m_ParaSolver;
     if(nodes.empty()) return;
     switch (method) {
-        case 0:                                   // Euler
-        {
-            std::vector<NodeDerivative> m_Deriv(getNNodes());
-            resetForces();
-            calculateForces(dt);
-            addTorque(dt);
-            calculateDerivatives(m_Deriv);
-            vector<NodeDerivative>::iterator d=m_Deriv.begin();
-            for (NodeArray::iterator n=nodes.begin();
-                 n != nodes.end(), d != m_Deriv.end(); n++, d++) {
-                *n += (d->dpdt*dt);
-                n->v += (d->dvdt*dt);
-            }
+    case 0:                                   // Euler
+    {
+        std::vector<NodeDerivative> m_Deriv(getNNodes());
+        resetForces();
+        calculateForces(dt);
+        addTorque(dt);
+        calculateDerivatives(m_Deriv);
+        vector<NodeDerivative>::iterator d=m_Deriv.begin();
+        for (NodeArray::iterator n=nodes.begin();
+             n != nodes.end(), d != m_Deriv.end(); n++, d++) {
+            *n += (d->dpdt*dt);
+            n->v += (d->dvdt*dt);
         }
-        break;
-        case 1:                                   // Midpoint
-        {
-            int i;
-            std::vector<NodeDerivative> m_Deriv(getNNodes());
-            resetForces();
-            calculateForces(dt);
-            addTorque(dt);
-            calculateDerivatives(m_Deriv);
-            NodeArray ptmp(nodes);
-            for (i=0;i<(int)nodes.size();i++) {
-                nodes[i] += (m_Deriv[i].dpdt * (dt * 0.5));
-                nodes[i].v += (m_Deriv[i].dvdt * (dt * 0.5));
-            }
-            vector<NodeDerivative> deriv2(getNNodes());
-            resetForces();
-            calculateForces(dt);
-            addTorque(dt);
-            calculateDerivatives(deriv2);
-            for (i=0;i<(int)nodes.size();i++) {
-                nodes[i].setPos(ptmp[i]+
-                                ((m_Deriv[i].dpdt+deriv2[i].dpdt)* (0.5*dt)));
-                nodes[i].v = ptmp[i].v+
-                    ((m_Deriv[i].dvdt+deriv2[i].dvdt)*(0.5*dt));
-            }
+    }
+    break;
+    case 1:                                   // Midpoint
+    {
+        int i;
+        std::vector<NodeDerivative> m_Deriv(getNNodes());
+        resetForces();
+        calculateForces(dt);
+        addTorque(dt);
+        calculateDerivatives(m_Deriv);
+        NodeArray ptmp(nodes);
+        for (i=0;i<(int)nodes.size();i++) {
+            nodes[i] += (m_Deriv[i].dpdt * (dt * 0.5));
+            nodes[i].v += (m_Deriv[i].dvdt * (dt * 0.5));
         }
-        break;
-        case 2:                                   // latent midpoint
-        {
-            // the goal of this approach is to use information about
-            // the last derivative to get more stable results if step
-            // size is increasing. actually, there is no point in using
-            // a derivative of a long past position to correct the
-            // current derivative for further steps. incorporating the
-            // old one makes the method even more instable...
-            
-            // in the original implementation this is preserved from last time
-            std::vector<NodeDerivative> m_Deriv(getNNodes());
-            float m_LastDT = 0;
-            vector<NodeDerivative> deriv(getNNodes());
-            resetForces();
-            calculateForces(dt);
-            addTorque(dt);
-            calculateDerivatives(deriv);
-            if(m_LastDT == 0 || deriv.size() != m_Deriv.size()) {
-                m_Deriv = deriv;
-                m_LastDT = 0;
-            }
-            //float wnow = dt*m_LastDT / (dt+m_LastDT);
-            //float wlast =  dt*dt / (dt+m_LastDT);
-            float wnow = 0.9*dt;
-            float wlast = dt - wnow;
-            int i;
-            for (i=0;i<(int)nodes.size();i++) {
-                nodes[i] += (m_Deriv[i].dpdt*wlast+deriv[i].dpdt*wnow);
-                nodes[i].v += (m_Deriv[i].dvdt*wlast+deriv[i].dvdt*wnow);
-            }
+        vector<NodeDerivative> deriv2(getNNodes());
+        resetForces();
+        calculateForces(dt);
+        addTorque(dt);
+        calculateDerivatives(deriv2);
+        for (i=0;i<(int)nodes.size();i++) {
+            nodes[i].setPos(ptmp[i]+
+                            ((m_Deriv[i].dpdt+deriv2[i].dpdt)* (0.5*dt)));
+            nodes[i].v = ptmp[i].v+
+                ((m_Deriv[i].dvdt+deriv2[i].dvdt)*(0.5*dt));
+        }
+    }
+    break;
+    case 2:                                   // latent midpoint
+    {
+        // the goal of this approach is to use information about
+        // the last derivative to get more stable results if step
+        // size is increasing. actually, there is no point in using
+        // a derivative of a long past position to correct the
+        // current derivative for further steps. incorporating the
+        // old one makes the method even more instable...
+
+        // in the original implementation this is preserved from last time
+        std::vector<NodeDerivative> m_Deriv(getNNodes());
+        float m_LastDT = 0;
+        vector<NodeDerivative> deriv(getNNodes());
+        resetForces();
+        calculateForces(dt);
+        addTorque(dt);
+        calculateDerivatives(deriv);
+        if(m_LastDT == 0 || deriv.size() != m_Deriv.size()) {
             m_Deriv = deriv;
-            m_LastDT = dt;
+            m_LastDT = 0;
         }
-        break;
+        //float wnow = dt*m_LastDT / (dt+m_LastDT);
+        //float wlast =  dt*dt / (dt+m_LastDT);
+        float wnow = 0.9*dt;
+        float wlast = dt - wnow;
+        int i;
+        for (i=0;i<(int)nodes.size();i++) {
+            nodes[i] += (m_Deriv[i].dpdt*wlast+deriv[i].dpdt*wnow);
+            nodes[i].v += (m_Deriv[i].dvdt*wlast+deriv[i].dvdt*wnow);
+        }
+        m_Deriv = deriv;
+        m_LastDT = dt;
+    }
+    break;
     }
     invalidatePC();
 }
@@ -841,11 +841,11 @@ void Model::calculateDerivatives(vector<NodeDerivative> &deriv)
     deriv.resize(nodes.size());
     vector<NodeDerivative>::iterator d = deriv.begin();
     for (NodeArray::iterator n = nodes.begin();
-	 d != deriv.end(), n != nodes.end(); 
-	 d++, n++) {
-	d->dpdt = n->v;
-	d->dvdt = n->f;
-	d->dvdt *= (1/n->mass);
+         d != deriv.end(), n != nodes.end();
+         d++, n++) {
+        d->dpdt = n->v;
+        d->dvdt = n->f;
+        d->dvdt *= (1/n->mass);
     }
 }
 
@@ -854,8 +854,8 @@ const Point Model::getCenter() const {
         Point c(0,0);
         if(!nodes.empty()) {
             for (NodeArray::const_iterator n = nodes.begin();
-                 n != nodes.end(); 
-                 n++) 
+                 n != nodes.end();
+                 n++)
             {
                 c+=*n;
             }
@@ -874,7 +874,7 @@ const Node& Model::getDirNode() const {
         Point c = getCenter();
         float cdist = -1.;
         dword cind = 0;
-        for(NodeArray::const_iterator n=nodes.begin(); 
+        for(NodeArray::const_iterator n=nodes.begin();
             n!=nodes.end(); n++, cind++)
         {
             float dist = (*n-c).norm2();
@@ -889,7 +889,7 @@ const Node& Model::getDirNode() const {
 
 float Model::getDirection() const {
     if(!(m_PCFlags&PC_DIR)) {
-        setPropDir(m_PropVec, nodes.empty() ? 0 : 
+        setPropDir(m_PropVec, nodes.empty() ? 0 :
                    mapAngle2PI((getDirNode()-getCenter()).angle()) );
         m_PCFlags|=PC_DIR;
     }
@@ -900,30 +900,30 @@ float Model::getDirection() const {
 //--- misc functions
 void Model::addNoise(float r)
 {
-  /*
-    for(NodeArray::iterator n = nodes.begin(); n != nodes.end(); n++) {
-	Point d(r-2*frand(r), r-2*frand(r));
-	n->ef += d;
-    }
-  */
-    for(NodeArray::iterator n = nodes.begin(); n != nodes.end(); n++) {
-      float minlen=-1;
-      for(vector<int>::const_iterator edi=n->edges.begin(); 
-	  edi!=n->edges.end(); edi++) {
-	float elen = edges[abs(*edi)-1].length();
-	if(minlen==-1) minlen = elen;
-	else if(minlen>elen) minlen=elen;
-      }
-      float er = r*minlen;
-      Point d(er-2*frand(er), er-2*frand(er));
+    /*
+      for(NodeArray::iterator n = nodes.begin(); n != nodes.end(); n++) {
+      Point d(r-2*frand(r), r-2*frand(r));
       n->ef += d;
+      }
+    */
+    for(NodeArray::iterator n = nodes.begin(); n != nodes.end(); n++) {
+        float minlen=-1;
+        for(vector<int>::const_iterator edi=n->edges.begin();
+            edi!=n->edges.end(); edi++) {
+            float elen = edges[abs(*edi)-1].length();
+            if(minlen==-1) minlen = elen;
+            else if(minlen>elen) minlen=elen;
+        }
+        float er = r*minlen;
+        Point d(er-2*frand(er), er-2*frand(er));
+        n->ef += d;
     }
 }
 
 void Model::translate(const Point &t)
 {
     for(NodeArray::iterator n = nodes.begin(); n != nodes.end(); n++) {
-	*n += t;
+        *n += t;
     }
     invalidatePC(PC_CENTER|PC_STATS);
 }
@@ -931,14 +931,14 @@ void Model::translate(const Point &t)
 void Model::push(const Point &t)
 {
     for(NodeArray::iterator n = nodes.begin(); n != nodes.end(); n++) {
-	n->f += t;
+        n->f += t;
     }
 }
 
 void Model::freeze()
 {
     for(EdgeArray::iterator e = edges.begin(); e != edges.end(); e++) {
-	e->adaptRestLength();
+        e->adaptRestLength();
     }
     prepareTorque();
 }
@@ -946,7 +946,7 @@ void Model::freeze()
 void Model::rotate(float angle, const Point &c)
 {
     for(NodeArray::iterator n = nodes.begin(); n != nodes.end(); n++) {
-	(Point2D&)*n = c+(*n-c).rotate(angle);
+        (Point2D&)*n = c+(*n-c).rotate(angle);
     }
     invalidatePC(PC_DIR|PC_CENTER|PC_STATS);
 }
@@ -954,28 +954,28 @@ void Model::rotate(float angle, const Point &c)
 void Model::pushRotate(const Point &c, float angle)
 {
     for(NodeArray::iterator n = nodes.begin(); n != nodes.end(); n++) {
-	n->ef += (*n-c).flipOrtho().copyNormalized()*angle;
+        n->ef += (*n-c).flipOrtho().copyNormalized()*angle;
     }
 }
 
 void Model::attract(const Point &c, float factor)
 {
     for(NodeArray::iterator n = nodes.begin(); n != nodes.end(); n++) {
-	n->ef -= (*n-c)*factor;
+        n->ef -= (*n-c)*factor;
     }
 }
 
 float Model::getLengthRatio() const {
     float lengths=0,restlengths=0;
     for(EdgeArray::const_iterator e = edges.begin(); e != edges.end(); e++) {
-	lengths+=e->length();
-	restlengths+=e->restlength;
+        lengths+=e->length();
+        restlengths+=e->restlength;
     }
     return lengths/restlengths;
 #ifdef NOTLENGTHWEIGHTED
     float lenrat=0;
     for(EdgeArray::const_iterator e = edges.begin(); e != edges.end(); e++) {
-	lenrat += e->lengthRatio();
+        lenrat += e->lengthRatio();
     }
     return lenrat/(float)edges.size();
 #endif
@@ -984,9 +984,9 @@ float Model::getLengthRatio() const {
 float Model::getLengthVariation() const {
     float vlengths=0,restlengths=0;
     for(EdgeArray::const_iterator e = edges.begin(); e != edges.end(); e++) {
-	register float dl = e->restlength-e->length();
-	vlengths+=dl*dl;
-	restlengths+=e->restlength;
+        register float dl = e->restlength-e->length();
+        vlengths+=dl*dl;
+        restlengths+=e->restlength;
     }
     register float n = edges.size();
     return sqrt(vlengths*n)/(restlengths);
@@ -998,10 +998,10 @@ float Model::getDeformation() const {
     float scale = 1/getLengthRatio();
     float scscale = 1/ParticleParam::global.springconst;
     for(EdgeArray::const_iterator e = edges.begin(); e != edges.end(); e++) {
-	register float dl = e->restlength-e->length()*scale;
+        register float dl = e->restlength-e->length()*scale;
         //dl *= e->springconstant*scscale; // weight by relative springconst
-	vlengths+=dl*dl;
-	restlengths+=e->restlength;
+        vlengths+=dl*dl;
+        restlengths+=e->restlength;
     }
     register float n = edges.size();
     return sqrt(vlengths*n)/(restlengths);
@@ -1010,7 +1010,7 @@ float Model::getDeformation() const {
 float Model::getFullLength() const {
     float length=0;
     for(EdgeArray::const_iterator e = edges.begin(); e != edges.end(); e++) {
-	length += e->length();
+        length += e->length();
     }
     return length;
 }
@@ -1034,7 +1034,7 @@ float Model::getMaxRadius(const Point& center) const {
     float dist = 0;
     for(NodeArray::const_iterator n = nodes.begin(); n != nodes.end(); n++) {
         register float td = (*n-center).norm2();
-	if(dist<td) dist=td;
+        if(dist<td) dist=td;
     }
     return sqrt(dist);
     //return (center-getDirNode()).norm();
@@ -1043,64 +1043,64 @@ float Model::getMaxRadius(const Point& center) const {
 float Model::distance(const Model& rhs, enum Model::DistType kind) const
 {
     switch(kind) {
-        case DIST_XY:
-            return (getCenter() - rhs.getCenter()).norm();
-            break;
-        case DIST_XYS:
-        {
-            float scaledist = getStdRadius() - rhs.getStdRadius();
-            return sqrt((getCenter() - rhs.getCenter()).norm2() 
-                        + scaledist*scaledist);
-        }
+    case DIST_XY:
+        return (getCenter() - rhs.getCenter()).norm();
         break;
-        case DIST_PVEC:
-        {
-            PropVec prop = getProperties();
-            PropVec rhsprop = rhs.getProperties();
-            Point2D sd = getPropSDir(prop);
-            Point2D rhssd = getPropSDir(rhsprop);
-            prop[2] = sd.x; prop[3] = sd.y;
-            rhsprop[2] = rhssd.x; rhsprop[3] = rhssd.y;
-            return (prop - rhsprop).norm();
-        }
-        break;
-        case DIST_POINTS:
-            if(getNNodes() != rhs.getNNodes()) 
-                return std::numeric_limits<float>::max();
-            else {
-                float dist=0;
-                for(NodeArray::const_iterator thisn = nodes.begin(),
-                        rhsn = rhs.nodes.begin(); 
-                    thisn != nodes.end(); thisn++, rhsn++)
-                {
-                    dist += (*thisn-*rhsn).norm2();
-                }
-                return sqrt(dist);
-            }
-            break;
-        case DIST_HPOINTS:      // Chamfer distance
-        case DIST_CPOINTS:      // Hausdorff distance
-        {
-            if(getNNodes()==0 || rhs.getNNodes()==0) 
-                return std::numeric_limits<float>::max();
-            double dist=0;
-            for(NodeArray::const_iterator thisn = nodes.begin(); 
-                thisn != nodes.end(); thisn++)
+    case DIST_XYS:
+    {
+        float scaledist = getStdRadius() - rhs.getStdRadius();
+        return sqrt((getCenter() - rhs.getCenter()).norm2()
+                    + scaledist*scaledist);
+    }
+    break;
+    case DIST_PVEC:
+    {
+        PropVec prop = getProperties();
+        PropVec rhsprop = rhs.getProperties();
+        Point2D sd = getPropSDir(prop);
+        Point2D rhssd = getPropSDir(rhsprop);
+        prop[2] = sd.x; prop[3] = sd.y;
+        rhsprop[2] = rhssd.x; rhsprop[3] = rhssd.y;
+        return (prop - rhsprop).norm();
+    }
+    break;
+    case DIST_POINTS:
+        if(getNNodes() != rhs.getNNodes())
+            return std::numeric_limits<float>::max();
+        else {
+            float dist=0;
+            for(NodeArray::const_iterator thisn = nodes.begin(),
+                    rhsn = rhs.nodes.begin();
+                thisn != nodes.end(); thisn++, rhsn++)
             {
-                float mindist = std::numeric_limits<float>::max();
-                for(NodeArray::const_iterator rhsn = rhs.nodes.begin();
-                    rhsn != rhs.nodes.end(); rhsn++)
-                {
-                    register float d = (*thisn-*rhsn).norm2();
-                    if(d<mindist) mindist = d;
-                }
-                if(kind == DIST_HPOINTS && mindist>dist) dist=(double)mindist;
-                if(kind == DIST_CPOINTS ) dist += sqrt((double)mindist);
+                dist += (*thisn-*rhsn).norm2();
             }
-            if(kind == DIST_HPOINTS) dist = sqrt(dist);
-            if(kind == DIST_CPOINTS) dist /= getNNodes();
-            return float(dist);
+            return sqrt(dist);
         }
+        break;
+    case DIST_HPOINTS:      // Chamfer distance
+    case DIST_CPOINTS:      // Hausdorff distance
+    {
+        if(getNNodes()==0 || rhs.getNNodes()==0)
+            return std::numeric_limits<float>::max();
+        double dist=0;
+        for(NodeArray::const_iterator thisn = nodes.begin();
+            thisn != nodes.end(); thisn++)
+        {
+            float mindist = std::numeric_limits<float>::max();
+            for(NodeArray::const_iterator rhsn = rhs.nodes.begin();
+                rhsn != rhs.nodes.end(); rhsn++)
+            {
+                register float d = (*thisn-*rhsn).norm2();
+                if(d<mindist) mindist = d;
+            }
+            if(kind == DIST_HPOINTS && mindist>dist) dist=(double)mindist;
+            if(kind == DIST_CPOINTS ) dist += sqrt((double)mindist);
+        }
+        if(kind == DIST_HPOINTS) dist = sqrt(dist);
+        if(kind == DIST_CPOINTS) dist /= getNNodes();
+        return float(dist);
+    }
     }
     return 0;
 }
@@ -1126,26 +1126,26 @@ int Model::nearestNode(const Point& pos, float& dist) const
 void Model::adaptRestLength(float ratio)
 {
     for(EdgeArray::iterator e = edges.begin(); e != edges.end(); e++) {
-	e->adaptRestLength(ratio);
+        e->adaptRestLength(ratio);
     }
 }
 
 void Model::adaptRestLengthSel(float ratio, const DMatrixf& selm)
 {
     for(EdgeArray::iterator e = edges.begin(); e != edges.end(); e++) {
-	e->adaptRestLength(ratio);
+        e->adaptRestLength(ratio);
     }
 }
 
 void Model::scale(float factor, bool movepoints)
 {
     for(EdgeArray::iterator e = edges.begin(); e != edges.end(); e++) {
-	e->restlength*=factor;
+        e->restlength*=factor;
     }
     if(movepoints) {
         Point center = getCenter();
-        for(NodeArray::iterator n = nodes.begin(); 
-            n != nodes.end(); n++) 
+        for(NodeArray::iterator n = nodes.begin();
+            n != nodes.end(); n++)
         {
             n->setPos(center + ((*n-center)*factor));
         }
@@ -1166,7 +1166,7 @@ void Model::adaptProportion(float ratio)
     float corrat = getLengthRatio();
     corrat -= (corrat-1)*(1-ratio);
     for(EdgeArray::iterator e = edges.begin(); e != edges.end(); e++) {
-	e->restlength *= corrat;
+        e->restlength *= corrat;
     }
 }
 
@@ -1194,7 +1194,7 @@ float Model::getEdgeSensorFit(dword* npts) const
     float fit = 0;
     dword npoints = 0;
     for(EdgeArray::const_iterator e = edges.begin(); e != edges.end(); e++) {
-	float i=e->getSensorValue(fit, npoints);
+        float i=e->getSensorValue(fit, npoints);
     }
     if(npoints) fit /= (float)npoints;
     if(npts) *npts = npoints;
@@ -1338,4 +1338,3 @@ dword Model::getSelectedNodesN(dword state) const
         if(n->hasState(state)) count++;
     return count;
 }
-

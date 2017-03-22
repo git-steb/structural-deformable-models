@@ -19,20 +19,20 @@ vuMutex& getLogMut() {return logmut;}
 
 void* _kickoff(void* ptr)
 {
-  vuThread *th = (vuThread*)ptr;
-  int   whatsup = th->m_Whatsup;
-  void* data    = th->m_AdditionalData;
-  th->m_WhatsupMutex.unlock();
+    vuThread *th = (vuThread*)ptr;
+    int   whatsup = th->m_Whatsup;
+    void* data    = th->m_AdditionalData;
+    th->m_WhatsupMutex.unlock();
 
-  th->run(whatsup, data);
+    th->run(whatsup, data);
 
-  th->stopThread();
-  return NULL;
+    th->stopThread();
+    return NULL;
 }
 
 /*
-void* _ret_kickoff(void *ptr)
-{
+  void* _ret_kickoff(void *ptr)
+  {
   vuThread *th = (vuThread*)ptr;
   int whatsup = th->m_Whatsup;
   th->m_WhatsupMutex.unlock();
@@ -45,43 +45,43 @@ void* _ret_kickoff(void *ptr)
 bool vuThread::startThread(int whatsup, void* data)
 
 {
-  pthread_t *thread = new pthread_t;
+    pthread_t *thread = new pthread_t;
 
-  m_WhatsupMutex.lock();
-  m_Whatsup        = whatsup;
-  m_AdditionalData = data;
+    m_WhatsupMutex.lock();
+    m_Whatsup        = whatsup;
+    m_AdditionalData = data;
 
-  pthread_attr_t tattr;
+    pthread_attr_t tattr;
 
 //  cout << "here" << endl;
 
-  pthread_attr_setdetachstate (&tattr, PTHREAD_CREATE_DETACHED);
+    pthread_attr_setdetachstate (&tattr, PTHREAD_CREATE_DETACHED);
 
 //  cout << "s1" << endl;
 
-  int t = pthread_create(thread, NULL, &_kickoff, (void*) this);
+    int t = pthread_create(thread, NULL, &_kickoff, (void*) this);
 
-  if (t != 0)
+    if (t != 0)
 
-  {
-//  	cout << "s2.5" << endl;
-  	cout << strerror (errno) << endl;
-	if (t == EAGAIN)
-		cout << "eagain" << endl;
+    {
+//      cout << "s2.5" << endl;
+        cout << strerror (errno) << endl;
+        if (t == EAGAIN)
+            cout << "eagain" << endl;
 
-	return false;
-  }
+        return false;
+    }
 
-  pthread_detach (*thread);
+    pthread_detach (*thread);
 
 //  cout << "s3" << endl;
 
-  return true;
+    return true;
 }
 
 /*bool vuThread::retStartThread(int whatsup)
 
-{
+  {
   pthread_t *thread = new pthread_t [1];
 
   m_WhatsupMutex.lock();
@@ -92,21 +92,21 @@ bool vuThread::startThread(int whatsup, void* data)
   if (t != 0)
 
   {
-  	cout << strerror (errno) << endl;
-	if (t == EAGAIN)
-		cout << "eagain" << endl;
+  cout << strerror (errno) << endl;
+  if (t == EAGAIN)
+  cout << "eagain" << endl;
 
-	return false;
+  return false;
   }
 
   pthread_detach (*thread);
 
   return true;
-}*/
+  }*/
 
 void vuThread::stopThread()
 {
-	pthread_exit(NULL);
+    pthread_exit(NULL);
 }
 
 void vuThread::usleep(unsigned long ms)
@@ -118,36 +118,36 @@ vuMutex::vuMutex(bool recursive)
 {
     mutex = (void*) new pthread_mutex_t;
     if(recursive) {
-	pthread_mutexattr_t attr;
-	pthread_mutexattr_init(&attr);
-	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
-	// other: PTHREAD_MUTEX_FAST_NP (default), PTHREAD_MUTEX_ERRORCHECK_NP
-	pthread_mutex_init((pthread_mutex_t*)mutex, &attr);
-	pthread_mutexattr_destroy(&attr);
+        pthread_mutexattr_t attr;
+        pthread_mutexattr_init(&attr);
+        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
+        // other: PTHREAD_MUTEX_FAST_NP (default), PTHREAD_MUTEX_ERRORCHECK_NP
+        pthread_mutex_init((pthread_mutex_t*)mutex, &attr);
+        pthread_mutexattr_destroy(&attr);
     } else {
-	pthread_mutex_init((pthread_mutex_t*)mutex, NULL);
-    }	
+        pthread_mutex_init((pthread_mutex_t*)mutex, NULL);
+    }
 }
 
 vuMutex::~vuMutex()
 {
-  pthread_mutex_destroy((pthread_mutex_t*) mutex);
-  delete (pthread_mutex_t*)mutex;
+    pthread_mutex_destroy((pthread_mutex_t*) mutex);
+    delete (pthread_mutex_t*)mutex;
 }
 
 void vuMutex::lock()
 {
-  pthread_mutex_lock( (pthread_mutex_t*) mutex );
+    pthread_mutex_lock( (pthread_mutex_t*) mutex );
 }
 
 bool vuMutex::trylock()
 {
-  return pthread_mutex_trylock( (pthread_mutex_t*) mutex ) != EBUSY;
+    return pthread_mutex_trylock( (pthread_mutex_t*) mutex ) != EBUSY;
 }
 
 void vuMutex::unlock()
 {
-  pthread_mutex_unlock( (pthread_mutex_t*) mutex );
+    pthread_mutex_unlock( (pthread_mutex_t*) mutex );
 }
 
 #else // WIN32 defined
@@ -158,95 +158,95 @@ void vuMutex::unlock()
 
 vuMutex::vuMutex(bool recursive)
 {
-  // one of these should be usable as recursive mutex, but right now,
-  // I don't know which... so we just have fast mutexes
-	//mutex = (void*)CreateMutex( NULL, FALSE, NULL );
-	
-	//mutex = (void*)new CRITICAL_SECTION;
-	//InitializeCriticalSection((CRITICAL_SECTION*)mutex);
+    // one of these should be usable as recursive mutex, but right now,
+    // I don't know which... so we just have fast mutexes
+    //mutex = (void*)CreateMutex( NULL, FALSE, NULL );
 
-	//mutex = (void*)CreateSemaphore(NULL, 1, 0x7fffffff, NULL);
+    //mutex = (void*)new CRITICAL_SECTION;
+    //InitializeCriticalSection((CRITICAL_SECTION*)mutex);
 
-	mutex = (void*)CreateEvent(NULL,FALSE,TRUE,NULL);
+    //mutex = (void*)CreateSemaphore(NULL, 1, 0x7fffffff, NULL);
+
+    mutex = (void*)CreateEvent(NULL,FALSE,TRUE,NULL);
 }
 
 vuMutex::~vuMutex()
 {
-	if(mutex) {
-		//DeleteCriticalSection((CRITICAL_SECTION*)mutex);
-		//delete (CRITICAL_SECTION*)mutex;
-		CloseHandle((HANDLE)mutex);
-		mutex = NULL;
-	}
+    if(mutex) {
+        //DeleteCriticalSection((CRITICAL_SECTION*)mutex);
+        //delete (CRITICAL_SECTION*)mutex;
+        CloseHandle((HANDLE)mutex);
+        mutex = NULL;
+    }
 }
 
 void vuMutex::lock()
 {
-	WaitForSingleObject( (HANDLE)mutex, INFINITE );
-	//EnterCriticalSection((CRITICAL_SECTION*)mutex);
+    WaitForSingleObject( (HANDLE)mutex, INFINITE );
+    //EnterCriticalSection((CRITICAL_SECTION*)mutex);
 }
 
 bool vuMutex::trylock()
 {
-  return WaitForSingleObject( (HANDLE)mutex, 1) != WAIT_TIMEOUT;
-//	return false;
+    return WaitForSingleObject( (HANDLE)mutex, 1) != WAIT_TIMEOUT;
+//  return false;
 }
 
 void vuMutex::unlock()
 {
-	//ReleaseSemaphore( (HANDLE)mutex, 1, NULL );
-	//LeaveCriticalSection((CRITICAL_SECTION*)mutex);
-	SetEvent((HANDLE)mutex);
+    //ReleaseSemaphore( (HANDLE)mutex, 1, NULL );
+    //LeaveCriticalSection((CRITICAL_SECTION*)mutex);
+    SetEvent((HANDLE)mutex);
 }
 
 void _kickoff(void* ptr)
 {
-  vuThread *th = reinterpret_cast<vuThread*>(ptr); 
-  int   whatsup = th->m_Whatsup;
-  void* data    = th->m_AdditionalData;
-  th->m_Whatsup = -1;
-  th->m_WhatsupMutex.unlock();
-  th->run(whatsup, data);
-  return;
+    vuThread *th = reinterpret_cast<vuThread*>(ptr);
+    int   whatsup = th->m_Whatsup;
+    void* data    = th->m_AdditionalData;
+    th->m_Whatsup = -1;
+    th->m_WhatsupMutex.unlock();
+    th->run(whatsup, data);
+    return;
 }
 
 bool vuThread::startThread(int whatsup, void* data)
 {
-	m_WhatsupMutex.lock();
-	m_Whatsup        = whatsup;
-	m_AdditionalData = data;
+    m_WhatsupMutex.lock();
+    m_Whatsup        = whatsup;
+    m_AdditionalData = data;
 
-	unsigned long thread = _beginthread(_kickoff, 0, (void*)this);
-	//HANDLE thread = CreateThread(NULL, 0, _kickoff, this, 0, NULL);
-	while(m_Whatsup == -1);
+    unsigned long thread = _beginthread(_kickoff, 0, (void*)this);
+    //HANDLE thread = CreateThread(NULL, 0, _kickoff, this, 0, NULL);
+    while(m_Whatsup == -1);
 
-	m_WhatsupMutex.lock();
-	m_WhatsupMutex.unlock();
-	if (thread == (unsigned long)(-1))
-	{
-//  	cout << "s2.5" << endl;
-  		cout << strerror (errno) << endl;
-		if (errno == EAGAIN)
-			cout << "eagain" << endl;
+    m_WhatsupMutex.lock();
+    m_WhatsupMutex.unlock();
+    if (thread == (unsigned long)(-1))
+    {
+//      cout << "s2.5" << endl;
+        cout << strerror (errno) << endl;
+        if (errno == EAGAIN)
+            cout << "eagain" << endl;
 
-		return false;
-	}
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 void vuThread::stopThread()
 {
-	//_endthread();
+    //_endthread();
 }
 
 void vuThread::usleep(unsigned long ms) {
-   if (ms > 500)
-     Sleep ((ms+500)/1000);
-   else if (ms > 0)
-     Sleep (1);
-   else
-     Sleep (0);
+    if (ms > 500)
+        Sleep ((ms+500)/1000);
+    else if (ms > 0)
+        Sleep (1);
+    else
+        Sleep (0);
 }
 
 #endif

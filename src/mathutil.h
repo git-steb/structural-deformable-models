@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #ifndef M_PI
-#define M_PI 3.14159265359 
+#define M_PI 3.14159265359
 #endif
 #ifndef M_1_PI
 #define M_1_PI (1/M_PI)
@@ -23,26 +23,26 @@ inline int absint(int v) { return v<0 ? -v : v;}
 template <class T>
 bool clamp(T& x, T& y, const T x0, const T y0, const T x1, const T y1)
 {
-	bool ret=false;
-	if(x<x0) { ret = true; x = x0;}
-	if(x>x1) { ret = true; x = x1;}
-	if(y<y0) { ret = true; y = y0;}
-	if(y>y1) { ret = true; y = y1;}
-	return ret;
+    bool ret=false;
+    if(x<x0) { ret = true; x = x0;}
+    if(x>x1) { ret = true; x = x1;}
+    if(y<y0) { ret = true; y = y0;}
+    if(y>y1) { ret = true; y = y1;}
+    return ret;
 }
 
 /*
-template <class T>
-T min(const T a, const T b)
-{
-	return a<b ? a : b;
-}
+  template <class T>
+  T min(const T a, const T b)
+  {
+  return a<b ? a : b;
+  }
 
-template <class T>
-T max(const T a, const T b)
-{
-	return a>b ? a : b;
-}
+  template <class T>
+  T max(const T a, const T b)
+  {
+  return a>b ? a : b;
+  }
 */
 
 #define frand(max) (((float)rand())*(max)/RAND_MAX)

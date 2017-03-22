@@ -19,7 +19,7 @@ inline PropVec& setPropPos(PropVec &prop, const Point2D &p)
 inline float getPropScale(const PropVec &prop)
 { return prop[PVEC_SCALE]; }
 
-inline PropVec& setPropScale(PropVec &prop, float pscale) 
+inline PropVec& setPropScale(PropVec &prop, float pscale)
 { prop[PVEC_SCALE] = pscale; return prop; }
 
 inline float getPropDir(const PropVec &prop)
@@ -28,10 +28,10 @@ inline float getPropDir(const PropVec &prop)
 inline PropVec& setPropDir(PropVec &prop, float dir)
 { prop[PVEC_DIR] = dir; return prop; }
 
-inline Point2D getPropSDir(const PropVec& prop) 
+inline Point2D getPropSDir(const PropVec& prop)
 { return Point2D(getPropScale(prop),0).rotate(getPropDir(prop)); }
 
-inline PropVec& setPropSDir(PropVec& prop, const Point2D& sdir) 
+inline PropVec& setPropSDir(PropVec& prop, const Point2D& sdir)
 { return setPropScale(setPropDir(prop, sdir.angle()), sdir.norm()); }
 
 inline PropTF getPropTF(const PropVec& from, const PropVec& to)

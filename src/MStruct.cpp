@@ -21,7 +21,7 @@ using namespace std;
 
 //--------------------------- MStructure ------------------------------------
 
-MStructure::MStructure(const string& name, StructTable* psTable) 
+MStructure::MStructure(const string& name, StructTable* psTable)
     : m_PStructTable(psTable), m_Size(1.0f), m_Weight(1.0f)
 {
     setName(name);
@@ -31,12 +31,12 @@ MStructure::MStructure(const string& name, StructTable* psTable)
     }
 }
 
-MStructure::MStructure(const MStructure& rhs) 
-{ 
-    operator=(rhs); 
+MStructure::MStructure(const MStructure& rhs)
+{
+    operator=(rhs);
 }
 
-MStructure::~MStructure() 
+MStructure::~MStructure()
 {
     if(!m_RefProp.empty()) saveRefProp();
     clear();
@@ -60,8 +60,8 @@ MStructure& MStructure::operator=(const MStructure& rhs)
 
 void MStructure::clear()
 {
-    m_Name.clear(); 
-    m_Model.clear(); 
+    m_Name.clear();
+    m_Model.clear();
     m_Size = 1.0f;
     m_Weight = 1.0f;
     m_SupStructures.clear();
@@ -71,7 +71,7 @@ void MStructure::clear()
 }
 
 void MStructure::setName(const string& name)
-{ 
+{
     m_Name = name;
     m_FrameWinner.m_StructName = name; //just in case it is used
     m_FrameWinner.m_WinnerID = Winner::WID_FRAME;
@@ -79,7 +79,7 @@ void MStructure::setName(const string& name)
 
 const Winner* MStructure::getWinner(dword wid) const
 {
-    if(isFrame() && wid==Winner::WID_FRAME) 
+    if(isFrame() && wid==Winner::WID_FRAME)
         return &m_FrameWinner;
     else return m_Searcher.getWinner(wid);
 }
@@ -106,7 +106,7 @@ bool MStructure::read(ParseFile &is)
                 setName(value.c_str());
                 loadRefProp();
             }
-        } else if(m_Name.empty()) { 
+        } else if(m_Name.empty()) {
             is.pushLine(); return false;
         } else if(key == "end") readon = false;
         else if(key == "model") {
@@ -136,7 +136,7 @@ void MStructure::write(ostream &os) const
     if(!m_Model.getFilename().empty()) {
         string filename = m_Model.getFilename();
         if(m_PStructTable) {
-            if(filename.substr(0,m_PStructTable->getPath().size()) 
+            if(filename.substr(0,m_PStructTable->getPath().size())
                == m_PStructTable->getPath())
                 filename = filename.substr(m_PStructTable->getPath().size());
         }
@@ -157,8 +157,8 @@ void MStructure::write(ostream &os) const
 string MStructure::getInfoFilename(const string& suffix) const {
     string fn;
     if(m_PStructTable) {
-      fn = m_PStructTable->getFilename();
-      fn = fn.substr(0, fn.rfind('.'));
+        fn = m_PStructTable->getFilename();
+        fn = fn.substr(0, fn.rfind('.'));
     } else fn = "struct";
     fn = fn + "_" + m_Name + "_" + suffix + ".dm";
     return fn;
@@ -215,12 +215,12 @@ dword MStructure::loadRefProp()
     } return 0;
 }
 
-void MStructure::saveRefProp() const 
+void MStructure::saveRefProp() const
 {
     if(!*this) return;
     string filename = getInfoFilename("pvec");
     ofstream os(filename.c_str());
-    if(os) 
+    if(os)
         for(map<dword,PropVec>::const_iterator rp=m_RefProp.begin();
             rp != m_RefProp.end(); rp++)
         {
@@ -243,14 +243,14 @@ void MStructure::buildAllStats()
         set<dword> strefmod; st.getRefModelIDs(
             insert_iterator<set<dword> >(strefmod, strefmod.begin()) );
         list<dword> comod;
-        set_intersection( refmod.begin(), refmod.end(), 
-                          strefmod.begin(), strefmod.end(), 
+        set_intersection( refmod.begin(), refmod.end(),
+                          strefmod.begin(), strefmod.end(),
                           back_inserter(comod) );
         dword ncomod = comod.size();
         DMatrixf tfmat(PropVec::size(), ncomod);
         dword rowind = 0;
         for(list<dword>::const_iterator idi = comod.begin();
-            idi != comod.end(); idi++, rowind++) 
+            idi != comod.end(); idi++, rowind++)
         {
             Point2D pivot(0,0); bool usepivot = false;
             if(subs.m_Pivot>=0 && m_Model.getNNodes()>subs.m_Pivot) {
@@ -263,18 +263,18 @@ void MStructure::buildAllStats()
                             << getInfoFilename(toString(*idi)) << endl;
             }
             //compute transformation
-            PropVec prop, ssprop; 
+            PropVec prop, ssprop;
             if(getRefProp(*idi, prop) && st.getRefProp(*idi, ssprop)) {
                 setPropPos(prop, getPropPos(prop) + pivot);
                 PropTF sstf = getPropTF(prop, ssprop);
                 DMatrixf tfvec(PropVec::size(), 1, sstf.begin());
                 tfmat.setRange(0,rowind,tfvec);
-            } else cerr << "error getting propvec for " << m_Name 
-                        << " or " << st.m_Name << " for species " 
+            } else cerr << "error getting propvec for " << m_Name
+                        << " or " << st.m_Name << " for species "
                         << *idi << endl;
         }
         subs.analyseTF(tfmat);
-        if(subs.m_Mode&SubStructure::MODE_SHOWSTATS) 
+        if(subs.m_Mode&SubStructure::MODE_SHOWSTATS)
             showStats(subs);
     }
     buildMasterModel();
@@ -291,7 +291,7 @@ bool MStructure::buildMasterModel(float scscale)
     DMatrixf lenrat(1, m_Model.getNEdges(), 0.f);
     dword nmod = 0;
     for(list<dword>::const_iterator idi = refmod.begin();
-        idi != refmod.end(); idi++) 
+        idi != refmod.end(); idi++)
     {
         if(getRefModel(*idi, model)) {  // get model instance
             if(model.getNEdges() == m_Model.getNEdges()) {
@@ -329,7 +329,7 @@ bool MStructure::buildMasterModel(float scscale)
             float sc = lenrat.at(0,i);
             sc *= scscale;
             //DUMP(sc);
-            if(sc>minlr) sc = 1/sc; 
+            if(sc>minlr) sc = 1/sc;
             else sc = scmax;
             //cout << "springconst = " << sc << endl;
             me.restlength = rl*m_Model.getDataScale();
@@ -370,8 +370,8 @@ void MStructure::refSubSuper(bool doclear)
     }
 }
 
-bool MStructure::addExpectation(const SubStructure& subs, 
-                                ExpectationMap& expmap, bool backwards) const 
+bool MStructure::addExpectation(const SubStructure& subs,
+                                ExpectationMap& expmap, bool backwards) const
 {
 // if inverse look backwards to super structure
 //     MStructure& st = m_PStructTable->getStructs()
@@ -381,13 +381,13 @@ bool MStructure::addExpectation(const SubStructure& subs,
         float ppmm = (float)m_PStructTable->getDataset()->getPPMM();
         PropVec frameprop(m_PStructTable->getDataset()->getPropVec());
         if(!(subs.m_Mode&SubStructure::MODE_NOSPAWN)) {
-            EMDistribution* emdist = 
-                subs.generateEMDist(frameprop,ppmm,backwards, 
+            EMDistribution* emdist =
+                subs.generateEMDist(frameprop,ppmm,backwards,
                                     getSearchPara().m_PDist);
             emdist->setCreator(m_FrameWinner);
             EMDistribution* olddist=expmap.getEDist(m_FrameWinner.m_WinnerID);
             if(olddist) emdist->setShootCount(olddist->getShootCount());
-            float exhaust = 
+            float exhaust =
                 float(emdist->getShootCount()) / getSearchPara().m_MaxShoot;
             if(exhaust>1.f) exhaust = 0.f;
             else exhaust = 1.f-exhaust;
@@ -409,7 +409,7 @@ bool MStructure::addExpectation(const SubStructure& subs,
     if(!nwinners) return false;
     DMatrixf qof(1, nwinners);
     map<dword,Winner>::const_iterator wi = winners.begin();
-    for(dword i=0; i<nwinners; i++, wi++) 
+    for(dword i=0; i<nwinners; i++, wi++)
         qof.at(0,i) = wi->second.m_Model->getQualityOfFit();
     float avgqof = dmutil::avg(qof).at(0,0);
     float stdqof = dmutil::stdev(qof).at(0,0);
@@ -444,9 +444,9 @@ bool MStructure::addExpectation(const SubStructure& subs,
             emdist->setCreator(winner);
             EMDistribution* olddist=expmap.getEDist(winner.m_WinnerID);
             if(olddist) emdist->setShootCount(olddist->getShootCount());
-            if(maxshoot < emdist->getShootCount()) 
+            if(maxshoot < emdist->getShootCount())
                 maxshoot = emdist->getShootCount();
-            float exhaust = 
+            float exhaust =
                 float(emdist->getShootCount()) / getSearchPara().m_MaxShoot;
             if(exhaust>1.f) exhaust = 0.f;
             else exhaust = 1.f-exhaust;
@@ -535,7 +535,7 @@ void MStructure::verifyWinnerRating()
     for(map<dword,Winner>::iterator wi = wl.begin(); wi!=wl.end(); wi++)
     { // for each Winner wi
         for(Winner::Ratings::iterator refstruct = wi->second.m_Ratings.begin();
-            refstruct != wi->second.m_Ratings.end(); refstruct++) 
+            refstruct != wi->second.m_Ratings.end(); refstruct++)
         { // for each rating parent structure
             MStructure& st = m_PStructTable->getStructs()[refstruct->first];
             if(!st.isFrame()) {
@@ -569,15 +569,15 @@ void MStructure::showStats(const SubStructure& subs, std::ostream& os) const
     set<dword> strefmod; st.getRefModelIDs(
         insert_iterator<set<dword> >(strefmod, strefmod.begin()) );
     list<dword> comod;
-    set_intersection( refmod.begin(), refmod.end(), 
-                      strefmod.begin(), strefmod.end(), 
+    set_intersection( refmod.begin(), refmod.end(),
+                      strefmod.begin(), strefmod.end(),
                       back_inserter(comod) );
     dword ncomod = comod.size();
     DMatrixf tfmat(PropVec::size(), ncomod);
     DMatrixf ratings(1,ncomod);
     dword rowind = 0;
     for(list<dword>::const_iterator idi = comod.begin();
-        idi != comod.end(); idi++, rowind++) 
+        idi != comod.end(); idi++, rowind++)
     {
         Point2D pivot(0,0); bool usepivot = false;
         if(subs.m_Pivot>=0 && m_Model.getNNodes()>subs.m_Pivot) {
@@ -590,7 +590,7 @@ void MStructure::showStats(const SubStructure& subs, std::ostream& os) const
                       << getInfoFilename(toString(*idi)) << endl;
         }
         //compute transformation
-        PropVec prop, ssprop; 
+        PropVec prop, ssprop;
         if(getRefProp(*idi, prop) && st.getRefProp(*idi, ssprop)) {
             setPropPos(prop, getPropPos(prop) + pivot);
             PropTF sstf = getPropTF(prop, ssprop);
@@ -605,8 +605,8 @@ void MStructure::showStats(const SubStructure& subs, std::ostream& os) const
                    << getPropTF(prop,ssprop) << endl;
                 delete ed;
             } else os << "error generating exp.distr. for " << *idi << endl;
-        } else os << "error getting propvec for " << m_Name 
-                  << " or " << st.m_Name << " for species " 
+        } else os << "error getting propvec for " << m_Name
+                  << " or " << st.m_Name << " for species "
                   << *idi << endl;
     }
     EMDistribution* ed = subs.generateEMDist(getIdentityPropTF(),1,false,
@@ -617,13 +617,13 @@ void MStructure::showStats(const SubStructure& subs, std::ostream& os) const
         DUMP(subs.m_Stdev);
         delete ed;
 
-	os << "pcomp  : " << PropVec(&subs.m_Sigma.at(0,0)) << endl;
-	os << "average: " << dmutil::avg(ratings).at(0,0) << endl;
-	os << "stdev  : " << dmutil::stdev(ratings).at(0,0) << endl;
-	if(ncomod>0) {
-	  os << "min    : " << ratings.min() << endl;
-	  os << "max    : " << ratings.max() << endl;
-	}
+        os << "pcomp  : " << PropVec(&subs.m_Sigma.at(0,0)) << endl;
+        os << "average: " << dmutil::avg(ratings).at(0,0) << endl;
+        os << "stdev  : " << dmutil::stdev(ratings).at(0,0) << endl;
+        if(ncomod>0) {
+            os << "min    : " << ratings.min() << endl;
+            os << "max    : " << ratings.max() << endl;
+        }
     } else os << "error generating exp.distr." << endl;
 }
 
@@ -633,12 +633,12 @@ bool MStructure::stepSearch(float dt)
 }
 
 //---------------------------------------------------------------------------
-SubStructure::SubStructure(const std::string& subStructName, 
+SubStructure::SubStructure(const std::string& subStructName,
                            const std::string& supStructName,
                            const PropTF& transform,int pivot)
     : m_SubStructName(subStructName),m_SupStructName(subStructName),
-      m_Transform(transform), m_Pivot(pivot), 
-      m_Polar(false), m_RateWeight(SUBSTRUCT_RATEWEIGHT), 
+      m_Transform(transform), m_Pivot(pivot),
+      m_Polar(false), m_RateWeight(SUBSTRUCT_RATEWEIGHT),
       m_RateTH(SUBSTRUCT_RATETH), m_Mode(MODE_NONE)
 {
 }
@@ -664,7 +664,7 @@ void SubStructure::analyseTF(const DMatrixf& tfmat)
 //         f1 << tfmat;
 //         ofstream f2("ids.dat");
 //         copy(comod.begin(), comod.end(), ostream_iterator<dword>(f2, "\n"));
-    //build a (0,1) standardized matrix of the distribution 
+    //build a (0,1) standardized matrix of the distribution
     DMatrixf avghg(avg(ntfmat));
     DMatrixf stdevhg(stdev(ntfmat));
     DMatrixf mavg(expand(avghg, 1,ntfmat.sizeY()));
@@ -681,7 +681,7 @@ void SubStructure::analyseTF(const DMatrixf& tfmat)
     m_Sigma = mS.getDiag();
     float relvar = 1.f/4; //1.f/dmutil::sum(m_Sigma).at(0,0); // has to be 1/4
     for(dword i=0;i<m_Sigma.sizeY(); i++)
-        if(m_Sigma.at(0,i)*relvar < getSearchPara().m_PCTH) 
+        if(m_Sigma.at(0,i)*relvar < getSearchPara().m_PCTH)
             m_Sigma.at(0,i) = 0.f;
     dmutil::sqrt(m_Sigma);
     m_Mean = &avghg.at(0,0);
@@ -709,99 +709,99 @@ void SubStructure::analyseTF(const DMatrixf& tfmat)
 }
 
 EMDistribution* SubStructure::generateEMDist(const PropVec& wprop, float ppmm,
-                                             bool backwards, 
+                                             bool backwards,
                                              dword dtype) const
 {
     //ATTENTION: backward transform isn't working the way I'm doing it here
     // so, only use forward transform
     EMDistribution* emdist = NULL;
     switch(DistrType(dtype)) {
-        case EMD_PCA:
-        {
-        	if(m_Sigma.empty()) break;
-            //generate a transformed gaussian distribution (using PCA xform)
-            DMatrixf stddm(m_Sigma);
-            stddm *= getSearchPara().m_ScaleStd;
-            PropVec stdtf(&stddm.at(0,0));
-            EMDGauss* eminput = new EMDGauss(PropVec(0.f), stdtf);
-            //EMDRect* eminput = new EMDRect(stdtf*-1.f, stdtf);
-            DMatrixf tfmat = backwards ? m_IPC : m_PC;
+    case EMD_PCA:
+    {
+        if(m_Sigma.empty()) break;
+        //generate a transformed gaussian distribution (using PCA xform)
+        DMatrixf stddm(m_Sigma);
+        stddm *= getSearchPara().m_ScaleStd;
+        PropVec stdtf(&stddm.at(0,0));
+        EMDGauss* eminput = new EMDGauss(PropVec(0.f), stdtf);
+        //EMDRect* eminput = new EMDRect(stdtf*-1.f, stdtf);
+        DMatrixf tfmat = backwards ? m_IPC : m_PC;
 #ifndef _PROPTF_NORMALIZE_SCALE_
-            DMatrixf mmmat = dmutil::makeIdentity<float>(tfmat.sizeX());
-            mmmat.at(PVEC_POSX,PVEC_POSX) = ppmm;
-            mmmat.at(PVEC_POSY,PVEC_POSY) = ppmm;
-            tfmat = tfmat.mulLeft(mmmat);
+        DMatrixf mmmat = dmutil::makeIdentity<float>(tfmat.sizeX());
+        mmmat.at(PVEC_POSX,PVEC_POSX) = ppmm;
+        mmmat.at(PVEC_POSY,PVEC_POSY) = ppmm;
+        tfmat = tfmat.mulLeft(mmmat);
 #endif
-            emdist = (EMDistribution*) new EMDXformer(eminput, wprop, tfmat);
-            ((EMDXformer*)emdist)->setMean(m_Mean);
-            ((EMDXformer*)emdist)->setStdev(m_Stdev);
-        }
-        break;
-        case EMD_RECT:
-        {
-            //generate a rectangular uniform distribution
-            PropVec propsd(m_Stdev);
-            //propsd*=sqrt(3.f);
-            PropVec lb(m_Mean-propsd);
-            PropVec ub(m_Mean+propsd);
+        emdist = (EMDistribution*) new EMDXformer(eminput, wprop, tfmat);
+        ((EMDXformer*)emdist)->setMean(m_Mean);
+        ((EMDXformer*)emdist)->setStdev(m_Stdev);
+    }
+    break;
+    case EMD_RECT:
+    {
+        //generate a rectangular uniform distribution
+        PropVec propsd(m_Stdev);
+        //propsd*=sqrt(3.f);
+        PropVec lb(m_Mean-propsd);
+        PropVec ub(m_Mean+propsd);
 #ifndef _PROPTF_NORMALIZE_SCALE_
-            setPropPos(lb, getPropPos(lb)*ppmm);
-            setPropPos(ub, getPropPos(ub)*ppmm);
+        setPropPos(lb, getPropPos(lb)*ppmm);
+        setPropPos(ub, getPropPos(ub)*ppmm);
 #endif
-            PropVec olb(wprop), oub(wprop);
-            if(backwards) { invPropTF(olb, ub); invPropTF(oub, lb); }
-            else { fwdPropTF(olb, lb); fwdPropTF(oub, ub); }
-            PropVec mean(m_Mean);
-            setPropPos(mean, getPropPos(mean)*ppmm);
-            PropVec a(wprop);
-            ExpectationMap::correctLBUB(olb, oub);
-            emdist = (EMDistribution*) new EMDRect(olb,oub);
-        }
-        break;
-        case EMD_RECTTF:
-        {
-            //generate a rectangular uniform distribution
-            PropVec propsd(m_Stdev);
-            propsd*=sqrt(3.f);
-            PropVec lb(m_Mean-propsd);
-            PropVec ub(m_Mean+propsd);
+        PropVec olb(wprop), oub(wprop);
+        if(backwards) { invPropTF(olb, ub); invPropTF(oub, lb); }
+        else { fwdPropTF(olb, lb); fwdPropTF(oub, ub); }
+        PropVec mean(m_Mean);
+        setPropPos(mean, getPropPos(mean)*ppmm);
+        PropVec a(wprop);
+        ExpectationMap::correctLBUB(olb, oub);
+        emdist = (EMDistribution*) new EMDRect(olb,oub);
+    }
+    break;
+    case EMD_RECTTF:
+    {
+        //generate a rectangular uniform distribution
+        PropVec propsd(m_Stdev);
+        propsd*=sqrt(3.f);
+        PropVec lb(m_Mean-propsd);
+        PropVec ub(m_Mean+propsd);
 #ifndef _PROPTF_NORMALIZE_SCALE_
-            setPropPos(lb, getPropPos(lb)*ppmm);
-            setPropPos(ub, getPropPos(ub)*ppmm);
+        setPropPos(lb, getPropPos(lb)*ppmm);
+        setPropPos(ub, getPropPos(ub)*ppmm);
 #endif
-            PropVec olb(getIdentityPropTF()), oub(getIdentityPropTF());
-            if(backwards) { invPropTF(olb, lb); invPropTF(oub, ub); }
-            else { fwdPropTF(olb, lb); fwdPropTF(oub, ub); }
-            ExpectationMap::correctLBUB(olb, oub);
-            EMDistribution* inpdist = (EMDistribution*) new EMDRect(olb,oub);
-            emdist = (EMDistribution*) new EMDXformer(inpdist, wprop);
-        }
-        break;
-        case EMD_GAUSS:
-        {
-            //generate a multidimensional axis-aligned gaussian distribution
-            PropVec sdevpv(m_Stdev);
-            sdevpv *= getSearchPara().m_ScaleStd;
-            PropVec meanpv(m_Mean);
+        PropVec olb(getIdentityPropTF()), oub(getIdentityPropTF());
+        if(backwards) { invPropTF(olb, lb); invPropTF(oub, ub); }
+        else { fwdPropTF(olb, lb); fwdPropTF(oub, ub); }
+        ExpectationMap::correctLBUB(olb, oub);
+        EMDistribution* inpdist = (EMDistribution*) new EMDRect(olb,oub);
+        emdist = (EMDistribution*) new EMDXformer(inpdist, wprop);
+    }
+    break;
+    case EMD_GAUSS:
+    {
+        //generate a multidimensional axis-aligned gaussian distribution
+        PropVec sdevpv(m_Stdev);
+        sdevpv *= getSearchPara().m_ScaleStd;
+        PropVec meanpv(m_Mean);
 #ifndef _PROPTF_NORMALIZE_SCALE_
-            setPropPos(sdevpv, getPropPos(sdevpv)*ppmm);
-            setPropPos(meanpv, getPropPos(meanpv)*ppmm);
+        setPropPos(sdevpv, getPropPos(sdevpv)*ppmm);
+        setPropPos(meanpv, getPropPos(meanpv)*ppmm);
 #endif
-            PropVec cprop(getIdentityPropTF());
-            if(backwards) invPropTF(cprop, meanpv);
-            else fwdPropTF(cprop, meanpv); //cool form of: cprop = meanpv
-            EMDistribution* inpdist = 
-                (EMDistribution*) new EMDGauss(PropVec(0.f), sdevpv);
-            emdist = (EMDistribution*) new EMDXformer(inpdist, wprop);
-            ((EMDXformer*)emdist)->setMean(cprop);
-        }
-        break;
+        PropVec cprop(getIdentityPropTF());
+        if(backwards) invPropTF(cprop, meanpv);
+        else fwdPropTF(cprop, meanpv); //cool form of: cprop = meanpv
+        EMDistribution* inpdist =
+            (EMDistribution*) new EMDGauss(PropVec(0.f), sdevpv);
+        emdist = (EMDistribution*) new EMDXformer(inpdist, wprop);
+        ((EMDXformer*)emdist)->setMean(cprop);
+    }
+    break;
     }
     return emdist;
 }
 
 void SubStructure::getLBUB(PropVec& lb, PropVec& ub,
-             const PropVec& wprop, float ppmm, float radius) const
+                           const PropVec& wprop, float ppmm, float radius) const
 {
     lb = ub = wprop;
     PropVec tflb(m_Mean);
@@ -819,11 +819,11 @@ void SubStructure::getLBUB(PropVec& lb, PropVec& ub,
     setPropDir(ub, 2*M_PI);
 }
 
-void SubStructure::clear() 
-{ 
-    m_SubStructName.clear(); 
-    m_SupStructName.clear(); 
-    m_Transform = 0.f; 
+void SubStructure::clear()
+{
+    m_SubStructName.clear();
+    m_SupStructName.clear();
+    m_Transform = 0.f;
     m_Pivot = -1;
     m_Polar = false;
     m_Mode = MODE_NONE;
@@ -831,7 +831,7 @@ void SubStructure::clear()
     m_RateTH = SUBSTRUCT_RATETH;
 }
 
-bool SubStructure::read(ParseFile& is) 
+bool SubStructure::read(ParseFile& is)
 {
     if(is.getKey() != "substruct") return false;
     clear();
@@ -871,13 +871,11 @@ ostream& operator<<(ostream& os, const SubStructure& ss)
     if(ss.m_RateWeight != SUBSTRUCT_RATEWEIGHT)
         os << "    rateweight " << ss.m_RateWeight << endl;
     if(ss.m_Mode != SubStructure::MODE_NONE) {
-        os << "    mode" 
+        os << "    mode"
            << (ss.m_Mode&SubStructure::MODE_NOSPAWN ? " nospawn" : "")
-           << (ss.m_Mode&SubStructure::MODE_SHOWSTATS ? " showstats" : "") 
+           << (ss.m_Mode&SubStructure::MODE_SHOWSTATS ? " showstats" : "")
            << endl;
     }
     os << "  end    # of substruct" << endl;
     return os;
 }
-
-

@@ -9,10 +9,10 @@
 #include <algorithm>
 #include <vector>
 
-#define DMLA_TAU	0.0000001f
+#define DMLA_TAU    0.0000001f
 
 namespace dmutil {
-    
+
     template<class T>
     typename DMatrix<T>::EMT convert(const DMatrix<T>& dmat)
     {
@@ -21,22 +21,22 @@ namespace dmutil {
         //for(int k=dmat.size(); k>0; k--, dat++)
         //    mat << *dat;
         //linalg::Matrix eth(mat);
-	// TODO: translate this code from LinAlg to Eigen
+        // TODO: translate this code from LinAlg to Eigen
         //for(register int i=eth.q_row_lwb(); i<=eth.q_row_upb(); i++)
         //    for(register int j=eth.q_col_lwb(); j<=eth.q_col_upb(); j++)
         //        eth(i,j) = dmat.at(j-1,i-1);
 
         return mat;
     }
-    
+
     template<class T>
     DMatrix<T> convert(const typename DMatrix<T>::EMT& mat)
     {
         typename DMatrix<T>::EMT cmat(mat);
         typename DMatrix<T>::EMT eth(cmat);
         DMatrix<T> dmat(mat.cols(), mat.rows(), &mat(0));
-                         // (eth.q_col_upb()-eth.q_col_lwb()+1, // TODO
-                         // eth.q_row_upb()-eth.q_row_lwb()+1);
+        // (eth.q_col_upb()-eth.q_col_lwb()+1, // TODO
+        // eth.q_row_upb()-eth.q_row_lwb()+1);
         //typename DMatrix<T>::iterator dat = dmat.getData().begin();
         //for(register int i=eth.q_row_lwb(); i<=eth.q_row_upb(); i++)
         //    for(register int j=eth.q_col_lwb(); j<=eth.q_col_upb(); j++)
@@ -45,7 +45,7 @@ namespace dmutil {
     }
 
     template<class T>
-    DMatrix<T>& invert(DMatrix<T>& dmat) 
+        DMatrix<T>& invert(DMatrix<T>& dmat)
     {
         bool m_Verbose = false;
         if(!dmat.empty()) {
@@ -55,30 +55,30 @@ namespace dmutil {
                 //dmat = convert<T>(linalg::inverse(mat)); // TODO
                 dmat = convert<T>(mat.inverse());
             } catch(void*)
-            {
-                //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
-            }
+              {
+                  //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
+              }
             //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
         }
         return dmat;
     }
-    
+
     template<class T>
-    DMatrix<T> inverse(const DMatrix<T>& dmat) 
+        DMatrix<T> inverse(const DMatrix<T>& dmat)
     {
         DMatrix<T> imat(dmat);
         return invert(imat);
     }
-    
+
     template<class T>
-    bool SVD(const DMatrix<T>& dmat, 
-             DMatrix<T>& mU, DMatrix<T>& mS, DMatrix<T>& mV) 
+        bool SVD(const DMatrix<T>& dmat,
+                 DMatrix<T>& mU, DMatrix<T>& mS, DMatrix<T>& mV)
     {
         using namespace Eigen;
         bool m_Verbose = false;
         try {
             //if(!m_Verbose) freopen("/dev/null","a+",stderr);
-            // zeropad matrix to make enough rows 
+            // zeropad matrix to make enough rows
             // (rank doesn't matter for the algorithm)
             int d = dmat.sizeX() - dmat.sizeY();
             if(d<0) d=0;
@@ -87,10 +87,10 @@ namespace dmutil {
                            .setRange(0,0,dmat));
             JacobiSVD<typename DMatrix<T>::EMT> svd( mat, ComputeThinU | ComputeThinV);
             //linalg::SVD svd(mat); // TODO
-            //if(m_Verbose) cout << "condition number of matrix A " << 
+            //if(m_Verbose) cout << "condition number of matrix A " <<
             //                  svd.q_cond_number() << endl;
             //if(m_Verbose) cout << svd.q_U().q_nrows() << " rows" << endl;
-            
+
             DMatrix<T> U = dmutil::convert<T>(svd.matrixU());
             DMatrix<T> V = dmutil::convert<T>(svd.matrixV());
             VectorXf sig(svd.singularValues());
@@ -119,27 +119,27 @@ namespace dmutil {
                 }
             }
         } catch(void*)
-        {
-            //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
-            return false;
-        }
+          {
+              //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
+              return false;
+          }
         //if(!m_Verbose) freopen("/dev/stdout","a+",stderr);
         return true;
     }
-    
-    template<class T> 
-    DMatrix<T> pseudoInv(const DMatrix<T>& dmat)
+
+    template<class T>
+        DMatrix<T> pseudoInv(const DMatrix<T>& dmat)
     {
         DMatrix<T> U,S,V;
         if(dmutil::SVD(dmat, U,S,V)) {
-            //create an inverted S and skip the nearly-zero elements 
+            //create an inverted S and skip the nearly-zero elements
             //on the diagonal
             dword sxy = std::min(S.sizeX(),S.sizeY());
             for(dword i=0; i<sxy; i++)
                 if(S.at(i,i)>T(DMLA_TAU)) S.at(i,i) = T(1)/S.at(i,i);
                 else S.at(i,i) = 0;
-             S.transpose();
-             U.transpose();
+            S.transpose();
+            U.transpose();
             DMatrix<T> P = V.mulRight(S.mulRight(U));  // actually V * S(+)*Ut
             return P;
         }

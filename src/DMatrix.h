@@ -11,7 +11,7 @@
     First index is colum number. Memory arrangement is row-wise. */
 template<class T>
 class DMatrix {
- public:
+public:
     typedef typename std::vector<T>::const_iterator     const_iterator;
     typedef typename std::vector<T>::iterator           iterator;
     typedef T*                                          TPtr;
@@ -19,9 +19,9 @@ class DMatrix {
     typedef DMatrix<T>                                  MT;
     typedef typename Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> EMT;
 
-    DMatrix(dword _sx=0, dword _sy=0, const T& inival = T()) 
+    DMatrix(dword _sx=0, dword _sy=0, const T& inival = T())
         : sx(_sx), sy(_sy), values(_sx*_sy, inival) {}
-    DMatrix(dword _sx, dword _sy, const T* data) 
+    DMatrix(dword _sx, dword _sy, const T* data)
         : sx(_sx), sy(_sy), values(_sx*_sy) {
         operator=(data);
     }
@@ -50,71 +50,71 @@ class DMatrix {
     bool empty() const { return values.empty(); }
 
     MT& operator=(const T& rhs) {
-        for(iterator vi = values.begin(); vi != values.end(); vi++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++)
             *vi += rhs;
         return *this;
     }
 
     MT& operator=(const T* rhs) {
-        for(iterator vi = values.begin(); vi != values.end(); vi++, rhs++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++, rhs++)
             *vi += *rhs;
         return *this;
     }
 
     MT& operator+=(const MT& rhs) {
         const_iterator ri = rhs.values.begin();
-        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++)
             *vi += *ri;
         return *this;
     }
     MT& operator-=(const MT& rhs) {
         const_iterator ri = rhs.values.begin();
-        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++)
             *vi -= *ri;
         return *this;
     }
     MT& operator*=(const MT& rhs) {
         const_iterator ri = rhs.values.begin();
-        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++)
             *vi *= *ri;
         return *this;
     }
     MT& operator/=(const MT& rhs) {
         const_iterator ri = rhs.values.begin();
-        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++)
             *vi /= *ri;
         return *this;
     }
 
     MT& operator+=(const T& rhs) {
-        for(iterator vi = values.begin(); vi != values.end(); vi++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++)
             *vi += rhs;
         return *this;
     }
     MT& operator-=(const T& rhs) {
-        for(iterator vi = values.begin(); vi != values.end(); vi++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++)
             *vi -= rhs;
         return *this;
     }
     MT& operator*=(const T& rhs) {
-        for(iterator vi = values.begin(); vi != values.end(); vi++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++)
             *vi *= rhs;
         return *this;
     }
     MT& operator/=(const T& rhs) {
-        for(iterator vi = values.begin(); vi != values.end(); vi++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++)
             *vi /= rhs;
         return *this;
     }
 
     MT& max(const MT& rhs) {
         const_iterator ri = rhs.values.begin();
-        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++)
             if(*vi < *ri) *vi = *ri;
         return *this;
     }
     MT& max(const T& rhs) {
-        for(iterator vi = values.begin(); vi != values.end(); vi++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++)
             if(*vi < rhs) *vi = rhs;
         return *this;
     }
@@ -122,18 +122,18 @@ class DMatrix {
         assert(sx>0 && sy>0);
         //T val = std::numeric_limits<T>::min();
         T val(values[0]);
-        for(const_iterator vi = values.begin(); vi != values.end(); vi++) 
+        for(const_iterator vi = values.begin(); vi != values.end(); vi++)
             if(*vi > val) val = *vi;
         return val;
     }
     MT& min(const MT& rhs) {
         const_iterator ri = rhs.values.begin();
-        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++, ri++)
             if(*vi > *ri) *vi = *ri;
         return *this;
     }
     MT& min(const T& rhs) {
-        for(iterator vi = values.begin(); vi != values.end(); vi++) 
+        for(iterator vi = values.begin(); vi != values.end(); vi++)
             if(*vi > rhs) *vi = rhs;
         return *this;
     }
@@ -141,7 +141,7 @@ class DMatrix {
         assert(sx>0 && sy>0);
         //T val = std::numeric_limits<T>::max();
         T val(values[0]);
-        for(const_iterator vi = values.begin(); vi != values.end(); vi++) 
+        for(const_iterator vi = values.begin(); vi != values.end(); vi++)
             if(*vi < val) val = *vi;
         return val;
     }
@@ -151,7 +151,7 @@ class DMatrix {
         MT res(rhs.sx, sy, T(0));
         for(dword rx=0; rx<rhs.sx; rx++)
             for( dword ly=0; ly<sy; ly++)
-                for(dword ry=0; ry<rhs.sy; ry++) 
+                for(dword ry=0; ry<rhs.sy; ry++)
                     res.at(rx, ly) += at(ry, ly)*rhs.at(rx, ry);
         return res;
     }
@@ -216,7 +216,7 @@ class DMatrix {
         int count = offset>=0 ? sx-offset : sy+offset;
         assert( count <= vec.getData().size() );
         iterator vi = values.begin() + ( offset>=0 ? offset : -offset*sx);
-        for(const_iterator ri = vec.getData().begin(); count>0; 
+        for(const_iterator ri = vec.getData().begin(); count>0;
             count--, ri++, vi+=sx+1)
             *vi = *ri;
         return *this;
@@ -232,7 +232,7 @@ class DMatrix {
         int count = offset>=0 ? sx-offset : sy+offset;
         MT res(1,count);
         const_iterator vi = values.begin()+( offset>=0 ? offset : -offset*sx);
-        for(iterator ri = res.getData().begin(); count>0; 
+        for(iterator ri = res.getData().begin(); count>0;
             count--, ri++, vi+=sx+1)
             *ri = *vi;
         return res;
@@ -240,7 +240,7 @@ class DMatrix {
 
     MT& setUpper(const T& val = 1, int offset=0) {
         int i=0,j=0;
-        for(iterator mi = values.begin(); 
+        for(iterator mi = values.begin();
             mi != values.end(); mi++, i++) {
             if(i==sx) { j++; i=0; }
             if(i-j>=offset) *mi = val;
@@ -249,7 +249,7 @@ class DMatrix {
     }
     MT& setLower(const T& val = 1, int offset=0) {
         int i=0,j=0;
-        for(iterator mi = values.begin(); 
+        for(iterator mi = values.begin();
             mi != values.end(); mi++, i++) {
             if(i==(int)sx) { j++; i=0; }
             if(i-j<=offset) *mi = val;
@@ -280,7 +280,7 @@ class DMatrix {
         }
         return *this;
     }
-    
+
     friend std::ostream& operator<<(std::ostream& os, const DMatrix<T>& rhs) {
         os << rhs.sx << " " << rhs.sy;
         dword cc=0;
@@ -297,12 +297,12 @@ class DMatrix {
         is >> rhs.sx; is >> rhs.sy;
         rhs.resize(rhs.sx, rhs.sy);
         for(iterator vi = rhs.values.begin();
-            vi != rhs.values.end(); vi++) 
+            vi != rhs.values.end(); vi++)
             is >> *vi;
         return is;
     }
 
- protected:
+protected:
     dword       sx,sy;
     std::vector<T>   values;
 };

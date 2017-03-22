@@ -10,7 +10,7 @@ using namespace std;
 //-----------------------------------------------------------------------------
 //SpeciesDB
 
-bool SpeciesDB::load(const char* filename) 
+bool SpeciesDB::load(const char* filename)
 {
     clear();
     ifstream ifs(filename);
@@ -20,7 +20,7 @@ bool SpeciesDB::load(const char* filename)
         try {
             operator>>(pf, *this);
         } catch (const IOException *e) {
-            cout << "Error loading " << filename << " message: " 
+            cout << "Error loading " << filename << " message: "
                  << e->getMessage() << endl;
             return false;
         }
@@ -75,8 +75,8 @@ dword SpeciesDB::getSelectionID(int dir, bool wrap)
     return *m_CSel;
 }
 
-dword SpeciesDB::loadSelection(const std::string& fname, 
-                                      std::list<dword>& sel)
+dword SpeciesDB::loadSelection(const std::string& fname,
+                               std::list<dword>& sel)
 {
     ifstream is(fname.c_str());
     if(is) {
@@ -92,7 +92,7 @@ dword SpeciesDB::loadSelection(const std::string& fname,
 }
 
 dword SpeciesDB::writeSelection(const std::string& fname,
-                                       const std::list<dword>& sel)
+                                const std::list<dword>& sel)
 {
     ofstream os(fname.c_str());
     if(os) {
@@ -208,18 +208,18 @@ bool Species::select(const Species& sp, enum SpCompare how) const
                 if(lv.find(*f)==lv.npos) return false;
         } else {
             switch(how) {
-                case CMP_EQUALS:
-                    if(lv != rv) return false;
-                    break;
-                case CMP_CONTAINS:
-                    if(lv.find(rv) == lv.npos) return false;
-                    break;
-                case CMP_LESSER:
-                    if(lv > rv) return false;
-                    break;
-                case CMP_GREATER:
-                    if(lv < rv) return false;
-                    break;
+            case CMP_EQUALS:
+                if(lv != rv) return false;
+                break;
+            case CMP_CONTAINS:
+                if(lv.find(rv) == lv.npos) return false;
+                break;
+            case CMP_LESSER:
+                if(lv > rv) return false;
+                break;
+            case CMP_GREATER:
+                if(lv < rv) return false;
+                break;
             }
         }
     }
@@ -291,7 +291,7 @@ bool DBSelector::nextSelection(int dir, bool wrap)
 bool DBSelector::nextSelector(int walkdir, bool wrap, dword mincount) {
     bool ret = true;
     list<Species>::iterator osel = m_Selectors.end();
-    while(m_CSel != osel) 
+    while(m_CSel != osel)
     {
         if(osel == m_Selectors.end()) osel = m_CSel;
         if(walkdir<0) {
@@ -309,7 +309,7 @@ bool DBSelector::nextSelector(int walkdir, bool wrap, dword mincount) {
         }
         dword nsel = m_DB.select(*m_CSel);
         if(nsel >= mincount) {
-            cout << nsel << " records found using selector:" << endl 
+            cout << nsel << " records found using selector:" << endl
                  << *m_CSel;
             nextSelection(0);
             osel = m_CSel;

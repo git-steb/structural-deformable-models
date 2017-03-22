@@ -3,22 +3,22 @@
 
 template<typename T>
 struct Traits{
-  T static zero() { return 0; };
-  T static one() { return 1; };
+    T static zero() { return 0; };
+    T static one() { return 1; };
 };
 template<> struct Traits<float>;
 template<> struct Traits<double>;
 
 /** a small numerical vector class */
 template<class T, unsigned int D>
-class VVector 
+    class VVector
 {
- public:
+public:
     typedef VVector<T, D> VT;
     typedef T*            TPtr;
     typedef const T*      CTPtr;
     typedef Traits<T>     TTrait;
-    
+
     VVector() {};
     VVector(const T &sval) {
         operator=(sval);
@@ -72,7 +72,7 @@ class VVector
             if(*pv < *sv) return false;
         return true;
     }
-        
+
     VT& operator=(const T &rhs) {
         for(TPtr pv=begin(); pv!=end(); pv++)
             *pv = rhs;
@@ -170,7 +170,7 @@ class VVector
             *pv *= *sv;
         return *this;
     }
-        
+
     T dot(const VT &rhs) const {
         T r= TTrait::zero();
         for(CTPtr pv=begin(), *sv=rhs.begin(); pv!=end(); pv++, sv++)
@@ -180,10 +180,10 @@ class VVector
 
     VVector<T, 3> cross(const VVector<T, 3>& rhs) const {
         VVector<T, 3> r;
-              r.val[0]= val[1]*rhs.val[2] - val[2]*rhs.val[1];
-              r.val[1]= val[2]*rhs.val[0] - val[0]*rhs.val[2];
-              r.val[2]= r.val[2] = val[0]*rhs.val[1] - val[1]*rhs.val[0];
-              return r;
+        r.val[0]= val[1]*rhs.val[2] - val[2]*rhs.val[1];
+        r.val[1]= val[2]*rhs.val[0] - val[0]*rhs.val[2];
+        r.val[2]= r.val[2] = val[0]*rhs.val[1] - val[1]*rhs.val[0];
+        return r;
     }
     T sum() const { //norm1
         T n= TTrait::zero();
@@ -204,9 +204,9 @@ class VVector
         return n;
     }
     T norm() const { return sqrt(norm2()); }
-    T normalize() { 
+    T normalize() {
         T n = norm();
-        operator*=(TTrait::one()/n); 
+        operator*=(TTrait::one()/n);
         return n;
     }
     T avg() const { return sum()/D; }
@@ -300,18 +300,18 @@ class VVector
         return is;
     }
 
- public:
+public:
     T val[D];
 };
 
 template<> struct Traits<float> {
-  float static zero() { return 0.f; };
-  float static one() { return 1.f; };
+    float static zero() { return 0.f; };
+    float static one() { return 1.f; };
 };
 
 template<> struct Traits<double> {
-  double static zero() { return 0.; };
-  double static one() { return 1.; };
+    double static zero() { return 0.; };
+    double static one() { return 1.; };
 };
 
 #endif // _VVECTOR_H_

@@ -15,34 +15,34 @@
 #include <sys/time.h>
 #include "common.h"
 
-#define MAKE_STRING( msg ) \
- ( ((std::ostringstream&)(std::ostringstream() << msg)).str() )
-#define MAKE_CSTRING( msg ) \
- ( ((std::ostringstream&)(std::ostringstream() << msg)).str().c_str() )
+#define MAKE_STRING( msg )                                          \
+    ( ((std::ostringstream&)(std::ostringstream() << msg)).str() )
+#define MAKE_CSTRING( msg )                                             \
+    ( ((std::ostringstream&)(std::ostringstream() << msg)).str().c_str() )
 
 #define COMMENT_CHAR '#'
 
 inline std::istream& comment(std::istream &s)
 {
-  char c;
-  while (s.get(c)) {
-    if (!isspace(c)) {
-      if (c == COMMENT_CHAR) {
-	while (s.get(c) && c != '\n');
-      } else {
-	s.putback(c);
-	break;
-      }
+    char c;
+    while (s.get(c)) {
+        if (!isspace(c)) {
+            if (c == COMMENT_CHAR) {
+                while (s.get(c) && c != '\n');
+            } else {
+                s.putback(c);
+                break;
+            }
+        }
     }
-  }
-  return s;
+    return s;
 }
 
 inline unsigned long getMilliSeconds() {
 #ifdef WIN32
 //     typedef unsigned long LONGLONG;
 //     typedef long LARGE_INTEGER;
-    
+
     static LONGLONG frequency=0;
     if(!frequency)
         QueryPerformanceFrequency((LARGE_INTEGER*)&frequency);
@@ -97,6 +97,6 @@ int findFiles(const std::string& fmask, T iter) {
     }
     return ffcount;
 }
-#endif 
+#endif
 
 #endif

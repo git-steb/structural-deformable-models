@@ -12,7 +12,7 @@
 using namespace std;
 
 static
-Image<double>& create2DGaussian(Image<double>& flt, double stdev, 
+Image<double>& create2DGaussian(Image<double>& flt, double stdev,
                                 float clampd, float cx, float cy);
 
 //-----------------------------------------------------------------------------
@@ -40,13 +40,13 @@ bool SmoothIntensitySensor::performUpdate() {
     return PPSensor::performUpdate();
 }
 
-void SmoothIntensitySensor::calcAllValues() 
+void SmoothIntensitySensor::calcAllValues()
 {
     PPSensor::calcAllValues();
     if(m_FFilter.initialized() && m_FData.initialized()) {
         m_SData.convertFrom(values);
         m_FT.transform();
-        m_FData *= m_FFilter; 
+        m_FData *= m_FFilter;
         m_FT.transformInv();
         values.convertFrom(m_SData);
         //values = values.convolve(m_SFilter);
@@ -61,18 +61,18 @@ void SmoothIntensitySensor::updateScale() {
         unsetModified(UPD_SCALE);
         if(nosizematch) {
             m_SFilter.setSize(source->getDim1Size(), source->getDim2Size());
-            m_FFilter.setSize(Fourier2D::complexX(m_SFilter.getSizeX())/2, 
+            m_FFilter.setSize(Fourier2D::complexX(m_SFilter.getSizeX())/2,
                               m_SFilter.getSizeY());
             m_FTflt.initTransform(m_SFilter.getSizeX(), m_SFilter.getSizeY(),
-                                  m_SFilter.getData(), 
+                                  m_SFilter.getData(),
                                   (double*)m_FFilter.getData());
         }
-	float ffltsize = pow(2,scale);
-	int fltsize = (int)ffltsize;
-	if(fltsize<1) fltsize=1;
+        float ffltsize = pow(2,scale);
+        int fltsize = (int)ffltsize;
+        if(fltsize<1) fltsize=1;
         m_AddSkip = fltsize/2+1;
-	double stdev = ffltsize*0.5*0.2;
-        create2DGaussian(m_SFilter, stdev, ffltsize, 
+        double stdev = ffltsize*0.5*0.2;
+        create2DGaussian(m_SFilter, stdev, ffltsize,
                          m_SFilter.getSizeX()/2.0f,m_SFilter.getSizeY()/2.0f);
         m_FTflt.transform();
 //normalize transform and perform shift
@@ -108,7 +108,7 @@ CombiSensor::~CombiSensor()
     }
 }
 
-void CombiSensor::clearSources() 
+void CombiSensor::clearSources()
 {
     vector<sensor_ptr>::iterator s=sources.begin();
     while(s!=sources.end()) {
@@ -120,13 +120,13 @@ void CombiSensor::clearSources()
     setModified(UPD_CWEIGHTS|UPD_DATA);
 }
 
-void CombiSensor::setNSources(int n) 
+void CombiSensor::setNSources(int n)
 {
     if(n != (int)sources.size()) {
         //clearSources();
         sources.resize(n,(sensor_ptr)getZeroSensor());
         cweights.resize(n, 1);
-	setModified(UPD_CWEIGHTS|UPD_DATA);
+        setModified(UPD_CWEIGHTS|UPD_DATA);
     }
 }
 
@@ -136,7 +136,7 @@ void CombiSensor::setSource(sensor_ptr _source, float weight, int id)
     if(id>=(int)sources.size()) {
         setNSources(id+1);
     }
-    else if (sources[id] != 0 && sources[id] != getZeroSensor()) 
+    else if (sources[id] != 0 && sources[id] != getZeroSensor())
     {
         sources[id]->unrefSuperSensor( shared_from_this() );
     }
@@ -174,20 +174,20 @@ void CombiSensor::changeSource(sensor_cptr _source)
 }
 
 /*
-void CombiSensor::calcMinMax() 
-{
-    minval = 0;
-    maxval = 0;
-    for(vector<float>::const_iterator w = cweights.begin();
-        w != cweights.end(); w++) {
-        maxval += *w;
-    }
-}
+  void CombiSensor::calcMinMax()
+  {
+  minval = 0;
+  maxval = 0;
+  for(vector<float>::const_iterator w = cweights.begin();
+  w != cweights.end(); w++) {
+  maxval += *w;
+  }
+  }
 */
 
 Sensor& CombiSensor::assign(const Sensor& rhs)
-{ 
-    if(&rhs != this) { 
+{
+    if(&rhs != this) {
         PPSensor::assign(rhs);
         if(typeid(&rhs) == typeid(CombiSensor*)) {
             const CombiSensor& crhs = (const CombiSensor&) rhs;
@@ -200,11 +200,11 @@ Sensor& CombiSensor::assign(const Sensor& rhs)
                     setSource(std::const_pointer_cast<Sensor>(*s), weights[sid], sid);
             }
         }
-    } 
+    }
     return *this;
 }
 
-ostream& CombiSensor::print(ostream& os) const 
+ostream& CombiSensor::print(ostream& os) const
 {
     os << "s " << getID() << " ";
     //Sensor::print(os); would print modified source
@@ -234,8 +234,8 @@ ostream& CombiSensor::hprint(ostream &os, SensorCollection *sc) const
 
 //----------------------------------------------------------------------------
 Sensor& MahalSensor::assign(const Sensor& rhs)
-{ 
-    if(&rhs != this) { 
+{
+    if(&rhs != this) {
         PPSensor::assign(rhs);
         if(typeid(&rhs) == typeid(MahalSensor*)) {
             const MahalSensor& crhs = (const MahalSensor&) rhs;
@@ -243,7 +243,7 @@ Sensor& MahalSensor::assign(const Sensor& rhs)
             icov = crhs.icov;
             m_Filename = crhs.m_Filename;
         }
-    } 
+    }
     return *this;
 }
 
@@ -277,20 +277,20 @@ bool MahalSensor::saveConfig(const string& fname) const
 
 //----------------------------------------------------------------------------
 //keep consistent with enum MappingTypes!
-const char* MappingSensor::s_MappingNames[] = 
+const char* MappingSensor::s_MappingNames[] =
 {"identity","clamplu","clampl","clampu","gaussnorm","mgaussnorm",
  "mclampu", "bias", 0};
 
 Sensor& MappingSensor::assign(const Sensor& rhs)
-{ 
-    if(&rhs != this) { 
+{
+    if(&rhs != this) {
         PPSensor::assign(rhs);
         if(typeid(&rhs) == typeid(MappingSensor*)) {
             const MappingSensor& crhs = (const MappingSensor&) rhs;
             m_MappingID = crhs.m_MappingID;
             m_Param = crhs.m_Param;
         }
-    } 
+    }
     return *this;
 }
 
@@ -329,7 +329,7 @@ bool MappingSensor::readParams(istream& is)
         is >> ws;
     }
     dword psize = m_Param.size();
-    if((m_MappingID == MS_CLAMPL || 
+    if((m_MappingID == MS_CLAMPL ||
         m_MappingID == MS_CLAMPU ||
         m_MappingID == MS_GAUSSNORM ||
         m_MappingID == MS_MGAUSSNORM ||
@@ -337,12 +337,12 @@ bool MappingSensor::readParams(istream& is)
         m_MappingID == MS_BIAS)
        && psize<1)
     {
-        m_MappingID = MS_IDENTITY; 
-        return false; 
+        m_MappingID = MS_IDENTITY;
+        return false;
     }
-    if(m_MappingID == MS_CLAMPLU && psize<2) 
-    { 
-        m_MappingID = MS_IDENTITY; return false; 
+    if(m_MappingID == MS_CLAMPLU && psize<2)
+    {
+        m_MappingID = MS_IDENTITY; return false;
     }
     return true;
 }
@@ -352,15 +352,15 @@ bool MappingSensor::performUpdate() {
     if(source->getDim1Size()>0) {
         bool doanalysis = true;
         switch(m_MappingID) {
-            case MS_MCLAMPU:
-            case MS_GAUSSNORM:
-            case MS_MGAUSSNORM:
-            case MS_BIAS:
-                if(m_Param.size() < 4) m_Param.resize(4);
-                m_Param[1] = m_Param[2] = m_Param[3] = 0.f;
-                break;
-            default:
-                doanalysis = false;
+        case MS_MCLAMPU:
+        case MS_GAUSSNORM:
+        case MS_MGAUSSNORM:
+        case MS_BIAS:
+            if(m_Param.size() < 4) m_Param.resize(4);
+            m_Param[1] = m_Param[2] = m_Param[3] = 0.f;
+            break;
+        default:
+            doanalysis = false;
         }
         if(doanalysis) {
             int i,j;
@@ -369,44 +369,44 @@ bool MappingSensor::performUpdate() {
                 {
                     float v = source->getValue(i,j);
                     switch(m_MappingID) {
-                        case MS_BIAS:
-                        case MS_GAUSSNORM:
+                    case MS_BIAS:
+                    case MS_GAUSSNORM:
+                        m_Param[1] += v;
+                        m_Param[2] += v*v;
+                        m_Param[3]++;
+                        break;
+                    case MS_MCLAMPU:
+                    case MS_MGAUSSNORM:
+                        if(v>0) {
                             m_Param[1] += v;
                             m_Param[2] += v*v;
                             m_Param[3]++;
-                            break;
-                        case MS_MCLAMPU:
-                        case MS_MGAUSSNORM:
-                            if(v>0) {
-                                m_Param[1] += v;
-                                m_Param[2] += v*v;
-                                m_Param[3]++;
-                            }
-                            break;
+                        }
+                        break;
                     }
                 }
             }
             switch(m_MappingID) {
-                case MS_MCLAMPU:
-                    m_Param[1] /= m_Param[3];
-                    m_Param[2] /= m_Param[3];
-                    m_Param[2] = sqrt(m_Param[2]-m_Param[1]*m_Param[1]);
-                    m_Param[1] = m_Param[1]+m_Param[2]*m_Param[0];
-                    break;
-                case MS_BIAS:
-                case MS_GAUSSNORM:
-                    m_Param[1] /= m_Param[3];
-                    m_Param[2] /= m_Param[3];
-                    m_Param[2] = sqrt(m_Param[2]-m_Param[1]*m_Param[1]);
-                    m_Param[2] = 1/(m_Param[2]*m_Param[0]);
-                    break;
-                case MS_MGAUSSNORM:
-                    m_Param[1] /= m_Param[3];
-                    m_Param[2] /= m_Param[3];
-                    m_Param[2] = sqrt(m_Param[2]-m_Param[1]*m_Param[1]);
-                    m_Param[2] = 1/(m_Param[2]*m_Param[0]);
-                    m_Param[1] = m_Param[1] - (m_Param[1]/m_Param[2]);
-                    break;
+            case MS_MCLAMPU:
+                m_Param[1] /= m_Param[3];
+                m_Param[2] /= m_Param[3];
+                m_Param[2] = sqrt(m_Param[2]-m_Param[1]*m_Param[1]);
+                m_Param[1] = m_Param[1]+m_Param[2]*m_Param[0];
+                break;
+            case MS_BIAS:
+            case MS_GAUSSNORM:
+                m_Param[1] /= m_Param[3];
+                m_Param[2] /= m_Param[3];
+                m_Param[2] = sqrt(m_Param[2]-m_Param[1]*m_Param[1]);
+                m_Param[2] = 1/(m_Param[2]*m_Param[0]);
+                break;
+            case MS_MGAUSSNORM:
+                m_Param[1] /= m_Param[3];
+                m_Param[2] /= m_Param[3];
+                m_Param[2] = sqrt(m_Param[2]-m_Param[1]*m_Param[1]);
+                m_Param[2] = 1/(m_Param[2]*m_Param[0]);
+                m_Param[1] = m_Param[1] - (m_Param[1]/m_Param[2]);
+                break;
             }
         }
     }
@@ -415,7 +415,7 @@ bool MappingSensor::performUpdate() {
 
 //----------------------------------------------------------------------------
 static
-Image<double>& create2DGaussian(Image<double>& flt, double stdev, 
+Image<double>& create2DGaussian(Image<double>& flt, double stdev,
                                 float clampd, float cx, float cy)
 {
     clampd = clampd*clampd;
@@ -438,4 +438,3 @@ Image<double>& create2DGaussian(Image<double>& flt, double stdev,
     flt *= (1.f/sum);
     return flt;
 }
-

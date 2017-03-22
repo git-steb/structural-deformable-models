@@ -13,14 +13,14 @@ using namespace std;
 #define SHOW(a)
 #endif
 
-SensorCollection::SensorCollection() 
+SensorCollection::SensorCollection()
 {
-    addSensor(getZeroSensor());	// this is our zeroth sensor
+    addSensor(getZeroSensor()); // this is our zeroth sensor
 }
 
 SensorCollection::~SensorCollection()
 { }
-    
+
 sensor_ptr SensorCollection::addSensor(const std::string& key, sensor_ptr s)
 {
     s->setID(key);
@@ -64,7 +64,7 @@ sensor_ptr SensorCollection::getSensor(const string& id) {
 }
 
 void SensorCollection::clearPrintList(bool skipdefaults)
-{ 
+{
     m_Printlist.clear();
     if(skipdefaults) {
         m_Printlist.insert("d0");
@@ -73,16 +73,16 @@ void SensorCollection::clearPrintList(bool skipdefaults)
 }
 
 bool SensorCollection::isPrinted( const string& id ) const
-{ 
-    return m_Printlist.find(id) != m_Printlist.end(); 
+{
+    return m_Printlist.find(id) != m_Printlist.end();
 }
 
-void SensorCollection::setPrinted( const string& id ) 
-{ 
-    m_Printlist.insert(id); 
+void SensorCollection::setPrinted( const string& id )
+{
+    m_Printlist.insert(id);
 }
 
-ostream& operator<<(ostream& os, const SensorCollection& sc) 
+ostream& operator<<(ostream& os, const SensorCollection& sc)
 {
     ((SensorCollection*)&sc)->m_Printlist.clear();
     for(map<string,sensor_ptr>::const_iterator s=sc.begin(); s!=sc.end(); s++) {
@@ -96,7 +96,7 @@ ostream& operator<<(ostream& os, const SensorCollection& sc)
         }
     }
     return os;
-}       
+}
 
 sensor_ptr SensorCollection::readSensor(ParseFile& is)
 {
@@ -106,11 +106,11 @@ sensor_ptr SensorCollection::readSensor(ParseFile& is)
         return NULL;
     }
     istringstream vs(is.getValue());
-    vs >> ws;		// read key
+    vs >> ws;       // read key
     string skey;
     //vs.width(2047);
     vs >> skey;
-    vs >> ws;		// read type
+    vs >> ws;       // read type
     string para1;
     vs >> para1;
     char stype;
@@ -134,116 +134,116 @@ sensor_ptr SensorCollection::readSensor(ParseFile& is)
     }
     sensor_ptr s = NULL;
     switch(stype) {
-	case 'i' : 
-	    s = makeSensor<IntensitySensor>(source);
-	    SHOW("created intensity sensor");
-	    break;
-	case 'g' : 
-	{
-	    float scale=0;
-	    vs >> scale;
-	    s = makeSensor<SmoothIntensitySensor>(source, scale);
-	    SHOW("created Gaussian sensor of scale " << scale);
-	    break;
-	}
-	case 'd' : 
-	{
-	    //float scale=0;
-	    //vs >> scale;
-	    s = makeSensor<GradMagSensor>(source);
-	    SHOW("created gm sensor");// of scale " << scale);
-	    break;
-	}
-	case 'c' :
-	{
-// 	    float scale=0;
-// 	    vs >> scale;
-	    s = makeSensor<CornerSensor>(source);
-	    SHOW("created corner sensor");// of scale " << scale);
-	    break;
-	}
-        case 'K' :
-            s = makeSensor<CombiSensor>();
-            std::dynamic_pointer_cast<CombiSensor>(s)->normalizeInput(false);
-            // is legally constructed in the next case 'k'
-	case 'k' :
-	{
-            int nsensors=0;
-	    //vs >> nsensors;
-            if(!s) s = makeSensor<CombiSensor>();       //normalized input
-            string sname;
-            while(vs >> sname) {
-                float weight=1;
-                vs >> weight;
-                sensor_ptr ss = getSensor(sname);
-                if(ss == getZeroSensor())
-                    cout << "added zero sensor" << endl;
-                std::dynamic_pointer_cast<CombiSensor>(s)->setSource(ss,weight);
-                nsensors++;
-            }
-            SHOW("created combi sensor with " << nsensors<<" sub-sensors.");
-	    break;
-	}
-	case 'm' :
-	{
-            int nc = source ? source->getNChannels() : 0;
-            vector<float> weights;
-            weights.reserve(nc);
+    case 'i' :
+        s = makeSensor<IntensitySensor>(source);
+        SHOW("created intensity sensor");
+        break;
+    case 'g' :
+    {
+        float scale=0;
+        vs >> scale;
+        s = makeSensor<SmoothIntensitySensor>(source, scale);
+        SHOW("created Gaussian sensor of scale " << scale);
+        break;
+    }
+    case 'd' :
+    {
+        //float scale=0;
+        //vs >> scale;
+        s = makeSensor<GradMagSensor>(source);
+        SHOW("created gm sensor");// of scale " << scale);
+        break;
+    }
+    case 'c' :
+    {
+//      float scale=0;
+//      vs >> scale;
+        s = makeSensor<CornerSensor>(source);
+        SHOW("created corner sensor");// of scale " << scale);
+        break;
+    }
+    case 'K' :
+        s = makeSensor<CombiSensor>();
+        std::dynamic_pointer_cast<CombiSensor>(s)->normalizeInput(false);
+        // is legally constructed in the next case 'k'
+    case 'k' :
+    {
+        int nsensors=0;
+        //vs >> nsensors;
+        if(!s) s = makeSensor<CombiSensor>();       //normalized input
+        string sname;
+        while(vs >> sname) {
             float weight=1;
-            while(vs >> weight) {
-                weights.push_back(weight);
-                cout << weight << " ";
+            vs >> weight;
+            sensor_ptr ss = getSensor(sname);
+            if(ss == getZeroSensor())
+                cout << "added zero sensor" << endl;
+            std::dynamic_pointer_cast<CombiSensor>(s)->setSource(ss,weight);
+            nsensors++;
+        }
+        SHOW("created combi sensor with " << nsensors<<" sub-sensors.");
+        break;
+    }
+    case 'm' :
+    {
+        int nc = source ? source->getNChannels() : 0;
+        vector<float> weights;
+        weights.reserve(nc);
+        float weight=1;
+        while(vs >> weight) {
+            weights.push_back(weight);
+            cout << weight << " ";
+        }
+        cout << endl;
+        s = makeSensor<MCIntensitySensor>(source);
+        s->setCWeights(weights);
+        SHOW("created multi-channel sensor.");
+        break;
+    }
+    case 'M' :
+    {
+        s = makeSensor<MCGSensor>(source);
+        SHOW("created multi-channel gradient sensor.");
+        break;
+    }
+    case 'r' :
+    {
+        s = makeSensor<CRSensor>(source);
+        SHOW("created multi-channel chrominance sensor.");
+        break;
+    }
+    case 'C' :
+    {
+        string fname;
+        vs >> fname;
+        if(!fname.empty()) {
+            s = makeSensor<MahalSensor>(source, fname);
+            if(!std::dynamic_pointer_cast<MahalSensor>(s)->getFilename().empty()) {
+                SHOW("created colour classification sensor");
+            } else {
+                SHOW("error loading configuration file for colour sensor "
+                     << fname);
+                s = sensor_ptr();
             }
-            cout << endl;
-            s = makeSensor<MCIntensitySensor>(source);
-            s->setCWeights(weights);
-            SHOW("created multi-channel sensor.");
-	    break;
-	}
-	case 'M' :
-	{
-            s = makeSensor<MCGSensor>(source);
-            SHOW("created multi-channel gradient sensor.");
-	    break;
-	}
-	case 'r' :
-	{
-            s = makeSensor<CRSensor>(source);
-            SHOW("created multi-channel chrominance sensor.");
-	    break;
-	}
-        case 'C' :
-        {
-            string fname;
-            vs >> fname;
-            if(!fname.empty()) {
-                s = makeSensor<MahalSensor>(source, fname);
-                if(!std::dynamic_pointer_cast<MahalSensor>(s)->getFilename().empty()) {
-                    SHOW("created colour classification sensor");
-                } else {
-                    SHOW("error loading configuration file for colour sensor "
-                         << fname);
-                    s = sensor_ptr();
-                }
-            }
-            break;
         }
-        case 'f' :
-        {
-                string mapping;
-                vs >> mapping;
-                s = makeSensor<MappingSensor>(source, mapping);
-                std::dynamic_pointer_cast<MappingSensor>(s)->readParams(vs);
-                SHOW("created mapping sensor of type " <<
-                std::dynamic_pointer_cast<MappingSensor>(s)->getMappingName());
-            break;
-        }
-        case 'o' :
-        {
-          s = makeSensor<ZeroSensor>();
-          SHOW("created zero sensor");
-          break;
-        }
+        break;
+    }
+    case 'f' :
+    {
+        string mapping;
+        vs >> mapping;
+        s = makeSensor<MappingSensor>(source, mapping);
+        std::dynamic_pointer_cast<MappingSensor>(s)->readParams(vs);
+        SHOW("created mapping sensor of type " <<
+             std::dynamic_pointer_cast<MappingSensor>(s)->getMappingName());
+        break;
+    }
+    case 'o' :
+    {
+        s = makeSensor<ZeroSensor>();
+        SHOW("created zero sensor");
+        break;
+    }
     }
     if(!s) {
         is.setParseError(string("unknown sensor type ")+stype);
@@ -289,10 +289,9 @@ void SensorCollection::unrefModel(Model* model) const
     m_Models.erase(model);
 }
 
-void SensorCollection::updateModels() const 
+void SensorCollection::updateModels() const
 {
     for(set<Model*>::iterator mo = m_Models.begin();
-	mo != m_Models.end(); mo++) 
+        mo != m_Models.end(); mo++)
         (*mo)->reattachSensors();
 }
-

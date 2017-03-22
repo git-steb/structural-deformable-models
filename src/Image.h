@@ -20,9 +20,9 @@ public:
     typedef typename std::vector<T>::const_iterator const_iterator;
 
     Image();
-    Image(int sx, int sy) 
+    Image(int sx, int sy)
         : std::vector<T>(sx*sy), sizeX(sx), sizeY(sy) {};
-    Image(int sx, int sy, const T &value) 
+    Image(int sx, int sy, const T &value)
         : std::vector<T>(sx*sy, value), sizeX(sx), sizeY(sy) {};
     Image(const Image<T> & rhs);
     virtual ~Image() {};
@@ -30,13 +30,13 @@ public:
 
     void setSize(int nx, int ny);
     void setSize(int nx, int ny, const T &value);
-    
+
     template<class S>
-    bool sameSize(const Image<S>& rhs) 
+    bool sameSize(const Image<S>& rhs)
         { return rhs.getSizeX()==sizeX && rhs.getSizeY()==sizeY; }
 
 
-  const T *getData() const {return &(*std::vector<T>::begin());}
+    const T *getData() const {return &(*std::vector<T>::begin());}
     T *getData() {return &(*std::vector<T>::begin());}
 
     int getSizeX() const { return sizeX;}
@@ -49,15 +49,15 @@ public:
     Image<T>& copy(const T* rhs);
 
     int getIndex(int x, int y) const { return sizeX*y+x; }
-    int getBoundedIndex(int x, int y) const { 
+    int getBoundedIndex(int x, int y) const {
         if((dword)x < (dword)sizeX && (dword)y < (dword)sizeY)
             return sizeX*y+x;
         else
             return -1;
     }
-    
+
     const T getPixel(int x, int y) const {
-      return std::vector<T>::at(getIndex(x,y));
+        return std::vector<T>::at(getIndex(x,y));
     }
     void setPixel(int x, int y, const T &value) {
         std::vector<T>::at(getIndex(x,y)) = value;
@@ -89,32 +89,32 @@ public:
 //template template member functions (still) have to be in the class definition
     template <class S>
     Image<T>& convertFrom(const Image<S>& rhs)
-	{
+        {
             setSize(rhs.getSizeX(),rhs.getSizeY());
             const S* sd = rhs.getData();
             T* dd = getData();
             for(int i=getSize();i>0;i--,dd++,sd++)
                 *dd = T(*sd);
             return *this;
-	}
+        }
 
     const Image<T> mirror(bool horiz=true, bool vert=true) const
-	{
-	    Image<T> dimg(getSizeX(),getSizeY());
-	    int i,j;
-	    for(j=0;j<getSizeY();j++)
-		for(i=0;i<getSizeX();i++)
-		{
-		    int si = horiz ? getSizeX()-i-1 : i;
-		    int sj = vert ? getSizeY()-j-1 : j;
-		    dimg.setPixel(i,j,getPixel(si,sj));
-		}
-	    return dimg;
-	}
+        {
+            Image<T> dimg(getSizeX(),getSizeY());
+            int i,j;
+            for(j=0;j<getSizeY();j++)
+                for(i=0;i<getSizeX();i++)
+                {
+                    int si = horiz ? getSizeX()-i-1 : i;
+                    int sj = vert ? getSizeY()-j-1 : j;
+                    dimg.setPixel(i,j,getPixel(si,sj));
+                }
+            return dimg;
+        }
 
     template <class S>
     const Image<T> convolve(const Image<S>& kernel) const
-	{
+        {
             Image<T> dst(sizeX,sizeY);
             int ksx = kernel.getSizeX()/2;
             int ksy = kernel.getSizeY()/2;
@@ -145,10 +145,10 @@ public:
                 srcdat+=ksx*2;
             }
             return dst;
-	}
+        }
 
-    Image<T>& interleave(const std::vector< Image<T> >& img, 
-                         dword ncomp=0) 
+    Image<T>& interleave(const std::vector< Image<T> >& img,
+                         dword ncomp=0)
         {
             if(!ncomp) ncomp = img.size();
             const int comp = img.size()>ncomp ? ncomp : img.size();
@@ -160,7 +160,7 @@ public:
             const int cvinc = ncomp-comp;
             for(int i=0; i<size; i++) {
                 for(int a=0; a<comp; a++) {
-                    *(cv++) = *bi[a]; 
+                    *(cv++) = *bi[a];
                     bi[a]++;
                 }
                 cv += cvinc;
@@ -169,7 +169,7 @@ public:
         }
 
     Image<T> scaleBy(float s) { return scaleBy(s,s); }
-    Image<T> scaleBy(float sx, float sy) 
+    Image<T> scaleBy(float sx, float sy)
         {
             //can only scale down by integral numbers
             int stepx = (int)round(1/sx); if(stepx<=0) stepx=1;
@@ -186,17 +186,17 @@ public:
             }
             return nimg;
         }
-    
+
     /*! \returns true if image has been initialized (data is not NULL)*/
     bool initialized() const { return !std::vector<T>::empty(); }
-    
+
     friend std::ostream& operator<<(std::ostream& os, const Image<T>& rhs) {
         os << rhs.sizeX << " " << rhs.sizeY << std::endl;
         int xc = rhs.sizeX;
         for(const_iterator pnt = rhs.begin(); pnt != rhs.end(); pnt++) {
             os<<*pnt;
             if(--xc == 0) {
-	        std::cout << std::endl;
+                std::cout << std::endl;
                 xc = rhs.sizeX;
             } else std::cout << " ";
         }
@@ -438,26 +438,26 @@ Image<T>& Image<T>::operator-=(const Image<T>& rhs)
 }
 
 template<class T>
-void Image<T>::addLine(int x0, int y0, int x1, int y1, const T& value) 
+void Image<T>::addLine(int x0, int y0, int x1, int y1, const T& value)
 {
     if(std::vector<T>::empty()) return;
     //left point first?
     if(x0>x1) {
-        x0 += x1; x1 = x0-x1; x0 -= x1;		//who needs a dummy?
+        x0 += x1; x1 = x0-x1; x0 -= x1;     //who needs a dummy?
         y0 += y1; y1 = y0-y1; y0 -= y1;
     }
     T* dpos = getData() + x0 + y0*sizeX;
     int pincY = sizeX;
     int xinc = 1;
     int yinc = 1;
-    int dy = y1 - y0; 
-    int dx = x1 - x0; 
+    int dy = y1 - y0;
+    int dx = x1 - x0;
 
-    int nx = dy;	//normal (negative reciprocal direction)
-    int ny = -dx; 
+    int nx = dy;    //normal (negative reciprocal direction)
+    int ny = -dx;
 
     int dir = dx>absint(dy) ? 1 : -1;
-    if(dy<0) 
+    if(dy<0)
     {
         yinc=-1;
         pincY = -pincY;
@@ -472,10 +472,10 @@ void Image<T>::addLine(int x0, int y0, int x1, int y1, const T& value)
         int y = y0;
 
         int d = 2*nx + ny*yinc;
-        while (x <= x1) 
+        while (x <= x1)
         {
             *dpos += value;
-            if (d*yinc >= 0) {						// move diagonally
+            if (d*yinc >= 0) {                      // move diagonally
                 y += yinc;
                 dpos += pincY;
                 d += diagInc;
@@ -492,10 +492,10 @@ void Image<T>::addLine(int x0, int y0, int x1, int y1, const T& value)
         int y = y0;
         int d = 2*ny*yinc + nx;
         int cnt = absint(dy);
-        while (cnt--) 
+        while (cnt--)
         {
             *dpos += value;
-            if (d*yinc <= 0) {						// move diagonally
+            if (d*yinc <= 0) {                      // move diagonally
                 x += xinc;
                 dpos += xinc;
                 d += diagInc;
@@ -524,7 +524,7 @@ Image<T>& Image<T>::unsetNAN(double val)
 {
     T* pnt = getData();
     for(int i=getSize(); i>0; i--, pnt++)
-	if(isnan(*pnt)) *pnt = val;
+        if(isnan(*pnt)) *pnt = val;
     return *this;
 }
 
@@ -554,7 +554,7 @@ Image<T>& Image<T>::findMaxima(int env)
                     if(*maxpnt<=*sdat &&
                        maxpnt != sdat) ismax=false;
                 }
-                sdat += winskip;	//jump to next line
+                sdat += winskip;    //jump to next line
             }
             if(!ismax) *maxpnt = 0;
         }
@@ -565,7 +565,7 @@ Image<T>& Image<T>::findMaxima(int env)
 }
 
 template <class T>
-void Image<T>::insert(const Image<T> &ii, const int x, const int y) 
+void Image<T>::insert(const Image<T> &ii, const int x, const int y)
 {
     const int iwidth = std::min(getSizeX() - x, ii.getSizeX());
     const int iheight = std::min(getSizeY() - y, ii.getSizeY());
@@ -599,6 +599,5 @@ Image<T>& Image<T>::zeroPad(int brd, const T& col, bool smoothbrd)
     }
     return *this;
 }
-
 
 #endif

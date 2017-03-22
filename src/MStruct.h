@@ -20,20 +20,20 @@ class MStructure;
 //----------------------------------------------------------------------------
 class SubStructure
 {
- public:
+public:
     enum DistrType {EMD_PCA=0, EMD_GAUSS, EMD_RECT, EMD_RECTTF};
     enum Modes     {MODE_NONE=0, MODE_NOSPAWN=2, MODE_SHOWSTATS=4 };
 
-    SubStructure(const std::string& subStructName="", 
+    SubStructure(const std::string& subStructName="",
                  const std::string& supStructName="",
-                 const PropTF& transform=PropTF(0.f), 
+                 const PropTF& transform=PropTF(0.f),
                  int pivot=-1);
     void clear();
     void analyseTF(const DMatrixf& tfmat);
     EMDistribution* generateEMDist(const PropVec& wprop, float ppmm,
                                    bool inverse = false,
                                    dword dtype = EMD_RECT) const;
-    void getLBUB(PropVec& lb, PropVec& ub, 
+    void getLBUB(PropVec& lb, PropVec& ub,
                  const PropVec& wprop, float ppmm, float radius = 3) const;
     bool read(ParseFile& is);
     friend std::ostream& operator<<(std::ostream& os, const SubStructure& ss);
@@ -52,7 +52,7 @@ class SubStructure
 class MStructure
 {
     friend class StructTable;
- public:
+public:
     MStructure(const std::string& name="", StructTable* psTable=NULL);
     MStructure(const MStructure& rhs);
     ~MStructure();
@@ -77,20 +77,20 @@ class MStructure
 
     void addSubStruct(const SubStructure& substruct);
     const SubStructure& getSubStruct(const std::string sname) const
-        { return m_SubStructures.find(sname)->second; }
+    { return m_SubStructures.find(sname)->second; }
     bool hasSubStruct(const std::string sname) const
-        { return m_SubStructures.find(sname) != m_SubStructures.end(); }
+    { return m_SubStructures.find(sname) != m_SubStructures.end(); }
     const SubStructure& getSupStruct(const std::string sname) const
-        { return *m_SupStructures.find(sname)->second; }
+    { return *m_SupStructures.find(sname)->second; }
     bool hasSupStruct(const std::string sname) const
-        { return m_SupStructures.find(sname) != m_SupStructures.end(); }
+    { return m_SupStructures.find(sname) != m_SupStructures.end(); }
 
     bool read(ParseFile &is);
     void write(std::ostream &os) const;
-    friend ParseFile& operator>>(ParseFile& is, MStructure& st) 
-        { st.read(is); return is; }
-    friend std::ostream& operator<<(std::ostream& os, const MStructure& st) 
-        { st.write(os); return os; }
+    friend ParseFile& operator>>(ParseFile& is, MStructure& st)
+    { st.read(is); return is; }
+    friend std::ostream& operator<<(std::ostream& os, const MStructure& st)
+    { st.write(os); return os; }
     void showStats(const SubStructure& subs, std::ostream& os=std::cout) const;
 
     std::string getInfoFilename(const std::string& suffix) const;
@@ -106,15 +106,15 @@ class MStructure
     bool buildMasterModel(float scscale=1.f);
     void rebuildExpMap();
     void verifyWinnerRating();
-    const ExpectationMap& getExpMap() const 
-        { return m_Searcher.getExpectationMap(); }
+    const ExpectationMap& getExpMap() const
+    { return m_Searcher.getExpectationMap(); }
     bool stepSearch(float dt);
 
- protected:
+protected:
     void refSubSuper(bool doclear=false);
-    bool addExpectation(const SubStructure& subs, 
+    bool addExpectation(const SubStructure& subs,
                         ExpectationMap& expmap, bool inverse=false) const;
- protected:
+protected:
     StructTable*        m_PStructTable;
     std::string         m_Name;
     Model               m_Model;

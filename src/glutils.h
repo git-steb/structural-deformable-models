@@ -4,23 +4,23 @@
 #define GLUT_DISABLE_ATEXIT_HACK
 #include <GL/glut.h>
 
-inline int sglBitmapString(const char* msg, int x, int y, 
+inline int sglBitmapString(const char* msg, int x, int y,
                            void* font = (void*)GLUT_BITMAP_8_BY_13)
 {
     int width = 0;
     const char *c = msg;
     while(*c != 0) {
-	glRasterPos2i(x+width,y);
-	glutBitmapCharacter(font, (int)*c);
-	int w = glutBitmapWidth(font, (int)*c);
-	width += w;
-	c++;
+        glRasterPos2i(x+width,y);
+        glutBitmapCharacter(font, (int)*c);
+        int w = glutBitmapWidth(font, (int)*c);
+        width += w;
+        c++;
     }
     return width;
 }
 
-inline int sglBitmapStringOutlined(const char* msg, int x, int y, 
-                               void* font = (void*)GLUT_BITMAP_8_BY_13)
+inline int sglBitmapStringOutlined(const char* msg, int x, int y,
+                                   void* font = (void*)GLUT_BITMAP_8_BY_13)
 {
     glColor3f(0,0,0);
     sglBitmapString(msg,x-1,y-1);

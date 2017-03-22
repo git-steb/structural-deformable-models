@@ -3,7 +3,8 @@
 
 namespace dmutil {
     template<class T>
-        DMatrix<T> makeDiag(const DMatrix<T>& diag) {
+        DMatrix<T> makeDiag(const DMatrix<T>& diag)
+    {
         dword sxy = diag.size();
         DMatrix<T> mat(sxy, sxy, T(0));
         typename DMatrix<T>::const_iterator di = diag.getData().begin();
@@ -36,105 +37,105 @@ namespace dmutil {
 
     template<class T>
         DMatrix<T> horizCat(const DMatrix<T>& lm, const DMatrix<T>& rm)
-        {
-            assert(lm.sizeY() == rm.sizeY());
-            DMatrix<T> res(lm.sizeX()+rm.sizeX(), lm.sizeY());
-            res.setRange(0,0, lm);
-            res.setRange(lm.sizeX(),0, rm);
-            return res;
-        }
+    {
+        assert(lm.sizeY() == rm.sizeY());
+        DMatrix<T> res(lm.sizeX()+rm.sizeX(), lm.sizeY());
+        res.setRange(0,0, lm);
+        res.setRange(lm.sizeX(),0, rm);
+        return res;
+    }
 
     template<class T>
         DMatrix<T> vertCat(const DMatrix<T>& um, const DMatrix<T>& lm)
-        {
-            assert(um.sizeX() == lm.sizeX());
-            DMatrix<T> res(um.sizeX(), lm.sizeY() + um.sizeY());
-            res.setRange(0,0, um);
-            res.setRange(0,um.sizeY(), lm);
-            return res;
-        }
+    {
+        assert(um.sizeX() == lm.sizeX());
+        DMatrix<T> res(um.sizeX(), lm.sizeY() + um.sizeY());
+        res.setRange(0,0, um);
+        res.setRange(0,um.sizeY(), lm);
+        return res;
+    }
 
     template<class T>
         DMatrix<T> sum(const DMatrix<T>& mat)
-        {
-            DMatrix<T> res(mat.sizeX(), 1);
-            typename DMatrix<T>::const_iterator mi = mat.getData().begin();
-            for(dword y=0; y<mat.sizeY(); y++) {
-                typename DMatrix<T>::iterator ri = res.getData().begin();
-                for(dword x=0; x<mat.sizeX(); x++, ri++, mi++)
-                    *ri += *mi;
-            }
-            return res;
+    {
+        DMatrix<T> res(mat.sizeX(), 1);
+        typename DMatrix<T>::const_iterator mi = mat.getData().begin();
+        for(dword y=0; y<mat.sizeY(); y++) {
+            typename DMatrix<T>::iterator ri = res.getData().begin();
+            for(dword x=0; x<mat.sizeX(); x++, ri++, mi++)
+                *ri += *mi;
         }
+        return res;
+    }
 
     template<class T>
         DMatrix<T>& sqr(DMatrix<T>& mat)
-        {
-            for(typename DMatrix<T>::iterator mi = mat.getData().begin();
-                mi != mat.getData().end(); mi++)
-                *mi = *mi**mi;
-            return mat;
-        }
+    {
+        for(typename DMatrix<T>::iterator mi = mat.getData().begin();
+            mi != mat.getData().end(); mi++)
+            *mi = *mi**mi;
+        return mat;
+    }
 
     template<class T>
         DMatrix<T>& sqrt(DMatrix<T>& mat)
-        {
-            for(typename DMatrix<T>::iterator mi = mat.getData().begin();
-                mi != mat.getData().end(); mi++)
-                *mi = (T)sqrtf((double)*mi);
-            return mat;
-        }
+    {
+        for(typename DMatrix<T>::iterator mi = mat.getData().begin();
+            mi != mat.getData().end(); mi++)
+            *mi = (T)sqrtf((double)*mi);
+        return mat;
+    }
 
     template<class T>
         DMatrix<T> avg(const DMatrix<T>& mat)
-        {
-            DMatrix<T> res(sum(mat));
-            return res/=T(mat.sizeY());
-        }
+    {
+        DMatrix<T> res(sum(mat));
+        return res/=T(mat.sizeY());
+    }
 
     template<class T>
         DMatrix<T> var(const DMatrix<T>& mat)
-        {
-            DMatrix<T> e(avg(mat));
-            DMatrix<T> x2(mat); sqr(x2);
-            DMatrix<T> e2(avg(x2));
-            return e2-=sqr(e);
-        }
+    {
+        DMatrix<T> e(avg(mat));
+        DMatrix<T> x2(mat); sqr(x2);
+        DMatrix<T> e2(avg(x2));
+        return e2-=sqr(e);
+    }
 
     template<class T>
         DMatrix<T> stdev(const DMatrix<T>& mat)
-        {
-            DMatrix<T> sd(var(mat));
-            return dmutil::sqrt(sd);
-        }
+    {
+        DMatrix<T> sd(var(mat));
+        return dmutil::sqrt(sd);
+    }
 
     template<class T>
         DMatrix<T> expand(const DMatrix<T>& mat, dword mx, dword my)
-        {
-            DMatrix<T> res(mat.sizeX()*mx, mat.sizeY()*my);
-            for(dword y=0; y<my; y++)
-                for(dword x=0; x<mx; x++)
-                    res.setRange(mat.sizeX()*x, mat.sizeY()*y, mat);
-            return res;
-        }
+    {
+        DMatrix<T> res(mat.sizeX()*mx, mat.sizeY()*my);
+        for(dword y=0; y<my; y++)
+            for(dword x=0; x<mx; x++)
+                res.setRange(mat.sizeX()*x, mat.sizeY()*y, mat);
+        return res;
+    }
 
     template<class T>
         DMatrix<T>& threshold(DMatrix<T>& mat, const T& th, const T& repl=T(0))
-        {
-            for(typename DMatrix<T>::iterator mi = mat.getData().begin();
-                mi != mat.getData().end(); mi++)
-                if(*mi<th) *mi = repl;
-            return mat;
-        }
+    {
+        for(typename DMatrix<T>::iterator mi = mat.getData().begin();
+            mi != mat.getData().end(); mi++)
+            if(*mi<th) *mi = repl;
+        return mat;
+    }
 
     template<class T>
         DMatrix<T>& abs(DMatrix<T>& mat)
-        {
-            for(typename DMatrix<T>::iterator mi = mat.getData().begin();
-                mi != mat.getData().end(); mi++)
-                if(*mi<T(0)) *mi = -*mi;
-            return mat;
-        }
+    {
+        for(typename DMatrix<T>::iterator mi = mat.getData().begin();
+            mi != mat.getData().end(); mi++)
+            if(*mi<T(0)) *mi = -*mi;
+        return mat;
+    }
 
 }; // namespace dmutil
 

@@ -44,7 +44,7 @@ Image<T>& makeNoiseImage(Image<T>& nimg, T mean, T sigma);
 //Data methods
 
 Dataset::Dataset() : data(1),
-                     m_Dim1(0), m_Dim2(0), m_Dim3(0), m_NChannels(0), 
+                     m_Dim1(0), m_Dim2(0), m_Dim3(0), m_NChannels(0),
                      m_CurrImage(0),m_ppmm(DEFAULT_PPMM),m_RefreshImage(false),
                      m_HalveBeyondSize(0xffffffff)
 {
@@ -71,7 +71,7 @@ bool Dataset::load(const char* filename, dword ppmm)
             ByteImage zimg(data[0].getSizeX()-2, data[0].getSizeY()-2,0);
             int brd = (1<<6);
             m_Origin = (float)brd;
-            for(vector< ByteImage >::iterator ii=data.begin(); 
+            for(vector< ByteImage >::iterator ii=data.begin();
                 ii!=data.end();ii++)
             {
                 if((dword)ii->getSize() > m_HalveBeyondSize) {
@@ -95,18 +95,18 @@ bool Dataset::load(const char* filename, dword ppmm)
 //                 if(ii->writePPM(fname.str())) cout << "ok." << endl;
             }
         }
-        m_OSize.x = (float)data[0].getSizeX(); 
+        m_OSize.x = (float)data[0].getSizeX();
         m_OSize.y = (float)data[0].getSizeY();
-	m_CurrImage = 0;
-	m_Dim1 = data[0].getSizeX();
-	m_Dim2 = data[0].getSizeY();
-	m_Dim3 = 1;
+        m_CurrImage = 0;
+        m_Dim1 = data[0].getSizeX();
+        m_Dim2 = data[0].getSizeY();
+        m_Dim3 = 1;
         m_RefreshImage = true;
-	m_NChannels = data.size();
+        m_NChannels = data.size();
         setPPMM(ppmm);
         setModified(UPD_DATA);
         performUpdate();
-	return true;
+        return true;
     } else return false;
 }
 
@@ -120,7 +120,7 @@ void Dataset::draw(float x, float y, float sx, float sy) const
             m_RefreshImage = false;
         }
         m_GLImage.draw(x, y, sx, sy);
-	//drawImage(data,x,y,sx,sy);
+        //drawImage(data,x,y,sx,sy);
     }
 }
 
@@ -157,61 +157,61 @@ void Dataset::clear()
 // Data static methods
 
 bool Dataset::loadImage(vector< Image<byte> > &image, const char* file){
-  FXString ext=FXPath::extension(file);
-  FXImage *img=NULL;
-  FXApp *app = FXApp::instance(); //getApp()
+    FXString ext=FXPath::extension(file);
+    FXImage *img=NULL;
+    FXApp *app = FXApp::instance(); //getApp()
 
-  if(comparecase(ext,"bmp")==0){
-    img=new FXBMPImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
+    if(comparecase(ext,"bmp")==0){
+        img=new FXBMPImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
     }
-  else if(comparecase(ext,"gif")==0){
-    img=new FXGIFImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
+    else if(comparecase(ext,"gif")==0){
+        img=new FXGIFImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
     }
-  else if(comparecase(ext,"tga")==0){
-    img=new FXTGAImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
+    else if(comparecase(ext,"tga")==0){
+        img=new FXTGAImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
     }
 #ifdef HAVE_PNG_H
-  else if(comparecase(ext,"png")==0){
-    img=new FXPNGImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
+    else if(comparecase(ext,"png")==0){
+        img=new FXPNGImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
     }
 #endif
 #ifdef HAVE_JPEG_H
-  else if(comparecase(ext,"jpg")==0){
-    img=new FXJPGImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
+    else if(comparecase(ext,"jpg")==0){
+        img=new FXJPGImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
     }
 #endif
 #ifdef HAVE_TIFF_H
-  else if(comparecase(ext,"tif")==0 || comparecase(ext,"tiff")==0){
-    img=new FXTIFImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
+    else if(comparecase(ext,"tif")==0 || comparecase(ext,"tiff")==0){
+        img=new FXTIFImage(app,NULL,IMAGE_KEEP|IMAGE_SHMI|IMAGE_SHMP);
     }
 #endif
-  bool load_ok = false;
-  if(img!=NULL) {
-      // Load it
-      FXFileStream stream;
-      if(stream.open(file,FXStreamLoad)){
-        //app->beginWaitCursor();
-        load_ok = img->loadPixels(stream);
-        if(load_ok) {
-            img->create();
-            //app->endWaitCursor();
-            //img->mirror(false, true);
-            copyFXImage2Image(image, *img);
+    bool load_ok = false;
+    if(img!=NULL) {
+        // Load it
+        FXFileStream stream;
+        if(stream.open(file,FXStreamLoad)){
+            //app->beginWaitCursor();
+            load_ok = img->loadPixels(stream);
+            if(load_ok) {
+                img->create();
+                //app->endWaitCursor();
+                //img->mirror(false, true);
+                copyFXImage2Image(image, *img);
+            }
+            stream.close();
         }
-        stream.close();
-      }
-      delete img;
-  }
-  //note: modal error message causes deadlock on Brain::m_DataMutex
-  //between Brain::loadData and Brain::drawAllModels
-  //if(!load_ok)
-  //    FXMessageBox::error(/*this app->getRootWindow()*/ app,MBOX_OK,"Error Loading Image","Unsupported type: %s",ext.text());
-  return load_ok;
+        delete img;
+    }
+    //note: modal error message causes deadlock on Brain::m_DataMutex
+    //between Brain::loadData and Brain::drawAllModels
+    //if(!load_ok)
+    //    FXMessageBox::error(/*this app->getRootWindow()*/ app,MBOX_OK,"Error Loading Image","Unsupported type: %s",ext.text());
+    return load_ok;
 }
 
 void Dataset::addNoise(float sigma)
 {
-    for(vector< ByteImage >::iterator ii=data.begin(); 
+    for(vector< ByteImage >::iterator ii=data.begin();
         ii!=data.end();ii++)
     {
         byte* data = ii->getData();
@@ -227,15 +227,15 @@ void Dataset::addNoise(float sigma)
 }
 
 void Dataset::drawImage(const Image<byte> &image, float x, float y,
-			  float sx, float sy)
+                        float sx, float sy)
 {
     glPixelZoom(sx, sy);
     glRasterPos3f(x,y,0.0f);
     glDrawPixels(image.getSizeX(),
-		 image.getSizeY(),
-		 GL_LUMINANCE,
-		 GL_UNSIGNED_BYTE,
-		 image.getData());
+                 image.getSizeY(),
+                 GL_LUMINANCE,
+                 GL_UNSIGNED_BYTE,
+                 image.getData());
 }
 
 byte* interleave(const vector< Image<byte> > &img) {
@@ -261,16 +261,16 @@ byte* interleave(const vector< Image<byte> > &img) {
 }
 
 void Dataset::drawImage(const vector< Image<byte> > &image, float x, float y,
-			  float sx, float sy)
+                        float sx, float sy)
 {
     byte *buf = interleave(image);
     glPixelZoom(sx, sy);
     glRasterPos3f(x,y,0.0f);
     glDrawPixels(image[0].getSizeX(),
-		 image[0].getSizeY(),
-		 GL_RGB,
-		 GL_UNSIGNED_BYTE,
-		 buf);
+                 image[0].getSizeY(),
+                 GL_RGB,
+                 GL_UNSIGNED_BYTE,
+                 buf);
     delete buf;
 }
 
@@ -279,13 +279,13 @@ void Dataset::drawImage(const vector< Image<byte> > &image, float x, float y,
 
 static void copyFXImage2Image(vector< Image<byte> > &dimg, const FXImage &img)
 {
-	//FXImage *img=imgv->getImage();
-	// copy to image buffer
-	int height = img.getHeight();
-	int width = img.getWidth();
-	int size = width*height;
-	byte *imgdat = (byte*)img.getData();
-	const int nchan = 4;
+    //FXImage *img=imgv->getImage();
+    // copy to image buffer
+    int height = img.getHeight();
+    int width = img.getWidth();
+    int size = width*height;
+    byte *imgdat = (byte*)img.getData();
+    const int nchan = 4;
     dimg.clear();
     dimg.resize(nchan);//, Image<byte>(width,height));
     for(vector< Image<byte> >::iterator ii = dimg.begin();
@@ -293,53 +293,53 @@ static void copyFXImage2Image(vector< Image<byte> > &dimg, const FXImage &img)
         ii->setSize(width, height);
     //dimg.setSize(width,height);
     int sind = 0;
-	for(int i=size;i>0;i--,imgdat+=nchan,sind++)
-	{
-            for(int c=0; c<nchan; c++) {
-            	dimg[c][sind] = imgdat[c];
-            }
-	}
+    for(int i=size;i>0;i--,imgdat+=nchan,sind++)
+    {
+        for(int c=0; c<nchan; c++) {
+            dimg[c][sind] = imgdat[c];
+        }
+    }
 }
 
 static void copyFXImage2Image(Image<byte> &dimg, const FXImage &img)
 {
-	//FXImage *img=imgv->getImage();
-	// copy to image buffer
-	int height = img.getHeight();
-	int width = img.getWidth();
-	int size = width*height;
-	byte *imgdat = (byte*)img.getData();
-        dimg.setSize(width,height);
-	byte *htimg = dimg.getData();
-	int nchan = 4;
-	for(int i=size;i>0;i--,imgdat+=nchan,htimg++)
-	{
-		//int val = int(0.299f*imgdat[0]+0.587f*imgdat[1]+0.114f*imgdat[2]);
-		//int val = (int(imgdat[0])+imgdat[1]+imgdat[2])/3;
-		int val = imgdat[0];
-		//*htimg = val > 255 ? 255 : val;
-		*htimg = byte(val);
-	}
+    //FXImage *img=imgv->getImage();
+    // copy to image buffer
+    int height = img.getHeight();
+    int width = img.getWidth();
+    int size = width*height;
+    byte *imgdat = (byte*)img.getData();
+    dimg.setSize(width,height);
+    byte *htimg = dimg.getData();
+    int nchan = 4;
+    for(int i=size;i>0;i--,imgdat+=nchan,htimg++)
+    {
+        //int val = int(0.299f*imgdat[0]+0.587f*imgdat[1]+0.114f*imgdat[2]);
+        //int val = (int(imgdat[0])+imgdat[1]+imgdat[2])/3;
+        int val = imgdat[0];
+        //*htimg = val > 255 ? 255 : val;
+        *htimg = byte(val);
+    }
 }
 
 // copy to image buffer
 static void copyImage2FXImage(FXImage &img, const Image<byte>& dimg)
 {
-	int height = img.getHeight();
-	int width = img.getWidth();
-	img.resize(dimg.getSizeX(), dimg.getSizeY());
-	int size = width*height;
-	byte *imgdat = (byte*)img.getData();
-	const byte *htimg = dimg.getData();
-	int nchan = 4;
-	for(int i=size;i>0;i--,imgdat+=nchan,htimg++)
-	{
-		imgdat[0] = *htimg;
-		imgdat[1] = *htimg;
-		imgdat[2] = *htimg;
-	}
-	
-	img.create();
+    int height = img.getHeight();
+    int width = img.getWidth();
+    img.resize(dimg.getSizeX(), dimg.getSizeY());
+    int size = width*height;
+    byte *imgdat = (byte*)img.getData();
+    const byte *htimg = dimg.getData();
+    int nchan = 4;
+    for(int i=size;i>0;i--,imgdat+=nchan,htimg++)
+    {
+        imgdat[0] = *htimg;
+        imgdat[1] = *htimg;
+        imgdat[2] = *htimg;
+    }
+
+    img.create();
 }
 
 template<class T>
@@ -353,4 +353,3 @@ Image<T>& makeNoiseImage(Image<T>& nimg, T mean, T sigma)
         }
     return nimg;
 }
-

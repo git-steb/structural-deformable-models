@@ -4,16 +4,16 @@
 
 using namespace std;
 
-Node::Node(const ParticleParam *phys) 
+Node::Node(const ParticleParam *phys)
     : Point(0,0), sensor(getZeroSensor()),
-      mass(phys->mass), index(-1), state(ST_NONE) 
+      mass(phys->mass), index(-1), state(ST_NONE)
 {
 }
 
 //! Constructor
-Node::Node(float _x, float _y, const ParticleParam *phys) 
-    : Point(_x, _y), sensor(getZeroSensor()), mass(phys->mass), 
-      index(-1), state(ST_NONE) 
+Node::Node(float _x, float _y, const ParticleParam *phys)
+    : Point(_x, _y), sensor(getZeroSensor()), mass(phys->mass),
+      index(-1), state(ST_NONE)
 {
 }
 

@@ -15,7 +15,7 @@ using namespace std;
 
 //---------------------------------------------------------------------------
 
-StructTable::StructTable(Brain& brain, const string& filename) 
+StructTable::StructTable(Brain& brain, const string& filename)
 {
     m_TMarks.clear();
     m_TMarks.resize(TM_LAST, 0.0f);
@@ -28,7 +28,7 @@ StructTable::~StructTable()
     clear();
 }
 
-void StructTable::clear() 
+void StructTable::clear()
 {
     m_Structs.clear();
     m_CurStruct.clear();
@@ -51,7 +51,7 @@ SensorCollection* StructTable::getSensors()
 void StructTable::reattachSensors()
 {
     for(map<string,MStructure>::iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
+        si != m_Structs.end(); si++)
     {
         si->second.getModel().reattachSensors();
     }
@@ -60,7 +60,7 @@ void StructTable::reattachSensors()
 void StructTable::adaptDataScale()
 {
     for(map<string,MStructure>::iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
+        si != m_Structs.end(); si++)
     {
         si->second.getModel().adaptDataScale();
     }
@@ -91,11 +91,11 @@ bool StructTable::read(ParseFile &is)
         }
         connectSubSuper();
         evalRelations();
-    } 
+    }
     if(is.error()) { cerr << is.getErrorMsg() << endl; return false; }
     return true;
 }
-    
+
 bool StructTable::readInterpreations(ParseFile& is)
 {
     m_Interpretations.clear();
@@ -114,7 +114,7 @@ bool StructTable::readInterpreations(ParseFile& is)
                 elements.insert(structure);
                 slist >> ws;
             }
-            if(elements.empty()) 
+            if(elements.empty())
                 is.setParseError("error reading structure interpretation");
         }
     }
@@ -124,13 +124,13 @@ bool StructTable::readInterpreations(ParseFile& is)
 void StructTable::write(ostream &os) const
 {
     for(map<string,MStructure>::const_iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
+        si != m_Structs.end(); si++)
     {
         si->second.write(os);
     }
     if(!m_Interpretations.empty()) {
         os << "interpretations" << endl;
-        for(map<string,set<string> >::const_iterator ip = 
+        for(map<string,set<string> >::const_iterator ip =
                 m_Interpretations.begin(); ip != m_Interpretations.end(); ip++)
         {
             os << "  " << ip->first;
@@ -143,14 +143,14 @@ void StructTable::write(ostream &os) const
     }
 }
 
-bool StructTable::hasStructure(const std::string& sname) const 
-{ 
-    return m_Structs.find(sname) != m_Structs.end(); 
+bool StructTable::hasStructure(const std::string& sname) const
+{
+    return m_Structs.find(sname) != m_Structs.end();
 }
 
 const MStructure& StructTable::getStructure(const std::string& sname) const
-{ 
-    return m_Structs.find(sname)->second; 
+{
+    return m_Structs.find(sname)->second;
 }
 
 MStructure& StructTable::getNextStruct(int dir, bool wrap)
@@ -189,7 +189,7 @@ void StructTable::evalRelations()
 //     int ret = matlabCall(string("addpath ")+m_Path + ", antpca");
 //     DUMP(ret);
     for(map<string,MStructure>::iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
+        si != m_Structs.end(); si++)
     {
         si->second.buildAllStats();
     }
@@ -199,17 +199,17 @@ void StructTable::evalRelations()
 void StructTable::rebuildExpMaps()
 {
     for(map<string,MStructure>::iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
+        si != m_Structs.end(); si++)
         si->second.rebuildExpMap();
 }
 
 void StructTable::connectSubSuper()
 {
     for(map<string,MStructure>::iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
+        si != m_Structs.end(); si++)
         si->second.refSubSuper(true);   // just clear super-list
     for(map<string,MStructure>::iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
+        si != m_Structs.end(); si++)
         si->second.refSubSuper();       // update super-list of substructs
 }
 
@@ -226,60 +226,60 @@ DMatrixf& StructTable::adjustByAvgDir(DMatrixf& mat)
     return mat;
 }
 
-bool StructTable::triggerTest(int mx, int my, int what) 
+bool StructTable::triggerTest(int mx, int my, int what)
 {
     switch(what)
     {
-        case KEY_t:
-            rebuildExpMaps();
-            break;
-        case KEY_g:
-            evalRelations();
-            break;
-        case KEY_n:
-        {
-            for(map<string,MStructure>::iterator si = m_Structs.begin();
-                si != m_Structs.end(); si++) 
-                si->second.buildMasterModel();
-        }
+    case KEY_t:
+        rebuildExpMaps();
         break;
-        case KEY_v:
-        {
-            findBestConnection();
+    case KEY_g:
+        evalRelations();
+        break;
+    case KEY_n:
+    {
+        for(map<string,MStructure>::iterator si = m_Structs.begin();
+            si != m_Structs.end(); si++)
+            si->second.buildMasterModel();
+    }
+    break;
+    case KEY_v:
+    {
+        findBestConnection();
 //             for(map<string,MStructure>::iterator si = m_Structs.begin();
-//                 si != m_Structs.end(); si++) 
+//                 si != m_Structs.end(); si++)
 //                 si->second.verifyWinnerRating();
-        }
+    }
+    break;
+    case KEY_c:
+        //m_TMarks[TM_TIMEOUT] = m_Time + 10;
+        m_State = m_State ^ ST_RESULT;
         break;
-        case KEY_c:
-            //m_TMarks[TM_TIMEOUT] = m_Time + 10;
-            m_State = m_State ^ ST_RESULT;
-            break;
-        case KEY_u:
-            cout << "starting structure search" << endl;
-            startSearch();
-            break;
-        case KEY_i:
-            cout << "stopping structure search" << endl;
-            startSearch(false);
-            break;
-        default:
-        {
-            if(what == KEY_h) {
-                m_State&=~ST_RUN;
-            } if(what == KEY_s) {
-                m_State^=ST_RUN;
-            } else if(what == KEY_r) {
-                m_Time=0;
-                m_TMarks[TM_UPDEM] = m_TMarks[TM_TIMEOUT] = 0;
-                m_BestPath.clear();
-            }
-            bool ret=false;
-            for(map<string,MStructure>::iterator si = m_Structs.begin();
-                si != m_Structs.end(); si++) 
-                ret = si->second.m_Searcher.triggerTest(mx,my,what);
-            return ret;
+    case KEY_u:
+        cout << "starting structure search" << endl;
+        startSearch();
+        break;
+    case KEY_i:
+        cout << "stopping structure search" << endl;
+        startSearch(false);
+        break;
+    default:
+    {
+        if(what == KEY_h) {
+            m_State&=~ST_RUN;
+        } if(what == KEY_s) {
+            m_State^=ST_RUN;
+        } else if(what == KEY_r) {
+            m_Time=0;
+            m_TMarks[TM_UPDEM] = m_TMarks[TM_TIMEOUT] = 0;
+            m_BestPath.clear();
         }
+        bool ret=false;
+        for(map<string,MStructure>::iterator si = m_Structs.begin();
+            si != m_Structs.end(); si++)
+            ret = si->second.m_Searcher.triggerTest(mx,my,what);
+        return ret;
+    }
     }
     return true;
 }
@@ -295,7 +295,7 @@ void StructTable::startSearch(bool dostart)
         m_IPaths.clear();
     } else m_State &= ~ST_RUN;
     for(map<string,MStructure>::iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
+        si != m_Structs.end(); si++)
     {
         if(dostart) si->second.m_Searcher.clear();
         si->second.m_Searcher.startSearch(dostart);
@@ -311,7 +311,7 @@ bool StructTable::stepSearch(float dt)
     if(m_Time == 0) {
 //initialize
         for(map<string,MStructure>::iterator si = m_Structs.begin();
-            si != m_Structs.end(); si++) 
+            si != m_Structs.end(); si++)
             si->second.buildMasterModel();
         m_TMarks[TM_TIMEOUT] = m_Time + getSearchPara().m_EvolveCycle*3000;
     }
@@ -327,7 +327,7 @@ bool StructTable::stepSearch(float dt)
             m_TMarks[TM_UPDEM] = m_Time + getSearchPara().m_EvolveCycle;
         }
         for(map<string,MStructure>::iterator si = m_Structs.begin();
-            si != m_Structs.end(); si++) 
+            si != m_Structs.end(); si++)
         {
             if(doupdate) si->second.m_Searcher.evolve();
             ret &= si->second.stepSearch(dt);
@@ -379,7 +379,7 @@ void StructTable::draw() const
     const string& ipname = getShownIP();
     map<string,StructPath>::const_iterator spath = m_IPaths.find(ipname);
     for(map<string,MStructure>::const_iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
+        si != m_Structs.end(); si++)
     {
         if((m_State & ST_RESULT) == 0) si->second.m_Searcher.draw();
         if(spath != m_IPaths.end()) {
@@ -397,14 +397,14 @@ void StructTable::draw() const
 }
 
 
-float StructTable::findBestConnection() 
+float StructTable::findBestConnection()
 {
     if(m_Structs.empty()) return m_BestPath.m_Goodness;
     m_BestPath.unprotectWinners(*this);
     m_BestPath.clear();
     for(map<string,MStructure>::iterator si = m_Structs.begin();
-        si != m_Structs.end(); si++) 
-    { 
+        si != m_Structs.end(); si++)
+    {
         si->second.verifyWinnerRating();
     }
 
@@ -415,7 +415,7 @@ float StructTable::findBestConnection()
         cout << "scanning interpretation " << ip->first << endl;
         m_NodePaths.clear();
         for(map<string,MStructure>::iterator si = m_Structs.begin();
-            si != m_Structs.end(); si++) 
+            si != m_Structs.end(); si++)
         { // for each structure
             MStructure& st = si->second;
             StructPath bestpath;
@@ -427,21 +427,21 @@ float StructTable::findBestConnection()
                 path.blockOtherPaths(ip->second, *this);
                 findBestConnection(path, wi->second);
                 if(path.m_Goodness > bestpath.m_Goodness)
-                {   
-                    bestpath = path; 
+                {
+                    bestpath = path;
                 }
             }
             if(bestpath.m_Goodness > m_IPaths[ip->first].m_Goodness)
-            {   
+            {
                 m_IPaths[ip->first] = bestpath;
             }
             cout << "  best cost for " << si->first << ": "
-                 << bestpath.m_Goodness 
+                 << bestpath.m_Goodness
                  << " (" << bestpath.getRelGoodness() << ") " << endl;
             //<< " length: "<<bestpath.size()<<endl;
         }
         if(m_IPaths[ip->first].getRelGoodness() > m_BestPath.getRelGoodness())
-        {   
+        {
             m_BestPath = m_IPaths[ip->first];
             m_BestIP = ip->first;
         }
@@ -460,7 +460,7 @@ float StructTable::findBestConnection()
     return m_BestPath.getRelGoodness();
 }
 
-bool StructTable::findBestConnection(StructPath& path, 
+bool StructTable::findBestConnection(StructPath& path,
                                      const Winner& winner) const
 {
     if(winner.m_WinnerID == Winner::WID_EMPTY) { TRACE0; return false; }
@@ -486,17 +486,17 @@ bool StructTable::findBestConnection(StructPath& path,
     bestpath[csname] = winner.m_WinnerID;
     bestpath.m_Goodness += cstruct.getWeight()
         *winner.m_Model->getQualityOfFit();
-        //* cstruct.m_Searcher.relativeQOF(winner.m_Model->getQualityOfFit());
+    //* cstruct.m_Searcher.relativeQOF(winner.m_Model->getQualityOfFit());
     bestpath.m_Maxness  += cstruct.getWeight();
-    
+
     for(Winner::Ratings::const_iterator wr = winner.m_Ratings.begin();
         wr != winner.m_Ratings.end(); wr++)
     {  // for each rating structure
-        map<string,MStructure>::const_iterator sti = 
+        map<string,MStructure>::const_iterator sti =
             m_Structs.find(wr->first);
-        if(sti != m_Structs.end()) { 
+        if(sti != m_Structs.end()) {
             const MStructure& refstruct = sti->second;
-            const SubStructure& subs = 
+            const SubStructure& subs =
                 refstruct.m_SubStructures.find(csname)->second;
             StructPath spath = bestpath;
             for(map<dword,float>::const_iterator wi = wr->second.begin();
@@ -521,10 +521,10 @@ bool StructTable::findBestConnection(StructPath& path,
 
 //----------------------------------------------------------------------------
 StructPath::StructPath() : m_Goodness(0.f), m_Maxness(0.f),
-                           m_WinnersProtected(false) 
+                           m_WinnersProtected(false)
 {}
 
-StructPath::StructPath(const StructPath& rhs) 
+StructPath::StructPath(const StructPath& rhs)
 {
     operator=(rhs);
 }
@@ -545,7 +545,7 @@ StructPath& StructPath::operator=(const StructPath& rhs)
     return *this;
 }
 
-void StructPath::clear() 
+void StructPath::clear()
 {
     map<string,dword>::clear();
     m_Goodness = 0.0f;
@@ -574,12 +574,12 @@ const Winner* StructPath::getWinner(const MStructure& struc) const
     } else return NULL;
 }
 
-void StructPath::protectWinners(StructTable& structs) 
+void StructPath::protectWinners(StructTable& structs)
 {
     if(m_WinnersProtected) return;
     for(iterator wi = begin(); wi != end(); wi++)
     {
-        if(wi->second>=Winner::WID_FIRST && 
+        if(wi->second>=Winner::WID_FIRST &&
            wi->second<=Winner::WID_LAST) {
             Winner* winner = (Winner*)structs.getStructs()[wi->first]
                 .getWinner(wi->second);
@@ -596,7 +596,7 @@ void StructPath::unprotectWinners(StructTable& structs)
     if(!m_WinnersProtected) return;
     for(iterator wi = begin(); wi != end(); wi++)
     {
-        if(wi->second>=Winner::WID_FIRST && 
+        if(wi->second>=Winner::WID_FIRST &&
            wi->second<=Winner::WID_LAST) {
             Winner* winner = (Winner*)structs.getStructs()[wi->first]
                 .getWinner(wi->second);
@@ -608,11 +608,11 @@ void StructPath::unprotectWinners(StructTable& structs)
     m_WinnersProtected = false;
 }
 
-void StructPath::blockOtherPaths(const set<string>& freepath, 
+void StructPath::blockOtherPaths(const set<string>& freepath,
                                  const StructTable& structs)
 {
-    for(map<string,MStructure>::const_iterator 
-            st = structs.getStructs().begin(); 
+    for(map<string,MStructure>::const_iterator
+            st = structs.getStructs().begin();
         st != structs.getStructs().end(); st++)
     {
         if(freepath.find(st->second.getName()) == freepath.end())
@@ -624,30 +624,30 @@ void StructPath::blockOtherPaths(const set<string>& freepath,
 ostream& StructPath::print(ostream& os, const StructTable& structs) const
 {
     os << setw(10);
-    os << "path goodness: " << m_Goodness << " (" 
+    os << "path goodness: " << m_Goodness << " ("
        << getRelGoodness() << ")" << endl;
     for(const_iterator wi = begin(); wi != end(); wi++)
     {
-        if(wi->second != Winner::WID_EMPTY && 
+        if(wi->second != Winner::WID_EMPTY &&
            wi->second != Winner::WID_BLOCKED)
         {
             os << "  " << wi->first;
             const MStructure& st = structs.getStructure(wi->first);
             const Winner* winner = st.getWinner(wi->second);
             if(winner) {
-                if(winner->m_Model) 
-                    os << "\t ("<< st.getWeight() <<") * " 
+                if(winner->m_Model)
+                    os << "\t ("<< st.getWeight() <<") * "
                        << winner->m_Model->getQualityOfFit() << endl;
                 else os << "\t (no model)"<<endl;
                 for(const_iterator ri = begin(); ri != end(); ri++)
                 {
-                    float rating = winner->getConnection(ri->first, 
+                    float rating = winner->getConnection(ri->first,
                                                          ri->second);
                     if(rating>=0.f) {
                         if(st.hasSupStruct(ri->first)) {
-                            const SubStructure& subs = 
+                            const SubStructure& subs =
                                 st.getSupStruct(ri->first);
-                            os << "    <--[" << ri->first 
+                            os << "    <--[" << ri->first
                                << "\t] = ("<<subs.m_RateWeight<<") * "
                                << rating << endl;
                         }
@@ -673,9 +673,8 @@ StructPath StructPath::branch() const
 void StructPath::merge(const StructPath& mp)
 {
     for(const_iterator wi = mp.begin(); wi != mp.end(); wi++)
-        if(wi->second != Winner::WID_EMPTY && 
+        if(wi->second != Winner::WID_EMPTY &&
            wi->second != Winner::WID_BLOCKED)
             operator[](wi->first) = wi->second;
     m_Goodness += mp.m_Goodness; m_Maxness += mp.m_Maxness;
 }
-

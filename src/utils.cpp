@@ -15,14 +15,14 @@ static string __fnmatchpattern;
 const string& __set_fnmatchpattern(const string& pattern)
 { return __fnmatchpattern = pattern; }
 #ifdef LINUX
-int __fixed_fnmatch(const struct dirent* dent) 
+int __fixed_fnmatch(const struct dirent* dent)
 { return !fnmatch(__fnmatchpattern.c_str(), dent->d_name,0); }
 #else
 int __fixed_fnmatch(const struct dirent* dent)
 { return 0; }
 #endif
 
-const char* getTemp() 
+const char* getTemp()
 {
     const char* tc = getenv("TEMP");
     if(!tc) tc = getenv("TMP");
@@ -44,31 +44,31 @@ int matlabCall(const std::string& cmd)
 }
 
 /*
-int matlabCall(const std::string& cmd)
-{
-    string temp = getTemp();
-    string tmpfile = temp+"/matlabscript.m";
-    string wintmpfile = tmpfile;
-    replaceAll(wintmpfile,'/','\\');
-    ofstream mf(tmpfile.c_str());
-    if(mf) {
-        mf << "% This is an automatically generated matlab script file"<<endl;
-        mf << cmd << endl;
-        mf << "exit" << endl;
-        mf.close();
-        int ret = system((matlabprog+wintmpfile).c_str());
-        remove(tmpfile.c_str());
-        return ret;
-    } else cerr << "could not create tempfile " << tmpfile << endl;
-    return -1;
-}
+  int matlabCall(const std::string& cmd)
+  {
+  string temp = getTemp();
+  string tmpfile = temp+"/matlabscript.m";
+  string wintmpfile = tmpfile;
+  replaceAll(wintmpfile,'/','\\');
+  ofstream mf(tmpfile.c_str());
+  if(mf) {
+  mf << "% This is an automatically generated matlab script file"<<endl;
+  mf << cmd << endl;
+  mf << "exit" << endl;
+  mf.close();
+  int ret = system((matlabprog+wintmpfile).c_str());
+  remove(tmpfile.c_str());
+  return ret;
+  } else cerr << "could not create tempfile " << tmpfile << endl;
+  return -1;
+  }
 */
 
 #ifdef NOGLUT
 extern "C" {
-void glutBitmapCharacter(void *font, int character)
-{}
-int glutBitmapWidth(void *font, int character)
-{ return 0; }
+    void glutBitmapCharacter(void *font, int character)
+    {}
+    int glutBitmapWidth(void *font, int character)
+    { return 0; }
 }
 #endif

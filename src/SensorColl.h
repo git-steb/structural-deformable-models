@@ -9,10 +9,10 @@
 class Sensor;
 
 class SensorCollection : public std::map<std::string,sensor_ptr> {
- public:
+public:
     SensorCollection();
     ~SensorCollection();
-    
+
     sensor_ptr addSensor(const std::string& key, sensor_ptr s);
     sensor_ptr addSensor(sensor_ptr s);
     sensor_ptr readSensor(ParseFile& is);
@@ -27,11 +27,11 @@ class SensorCollection : public std::map<std::string,sensor_ptr> {
     void unrefModel(Model* model) const;
     void updateModels() const;
 
-    void selectSensor(const std::string& name) 
-        { m_SelSensor = name; }
-    const std::string& getSelectedSensor() const 
-        { return m_SelSensor; }
- protected:
+    void selectSensor(const std::string& name)
+    { m_SelSensor = name; }
+    const std::string& getSelectedSensor() const
+    { return m_SelSensor; }
+protected:
     std::set<std::string>       m_Printlist;
     mutable std::set<Model*>    m_Models; //!< references to attached geometry
     std::string                 m_SelSensor;

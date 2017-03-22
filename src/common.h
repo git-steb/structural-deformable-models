@@ -17,7 +17,7 @@
 #define MARK(msg)   std::cout << ">>>> " << msg << std::endl;
 #define LINE()      std::cout << "-----------------------" << std::endl
 #else
-#define TRACE(msg) 
+#define TRACE(msg)
 #define MSG(msg)
 #define DUMP(expr)
 #define MARK(msg)

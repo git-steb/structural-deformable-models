@@ -25,7 +25,7 @@
 #define TIMESTEP 0.02
 
 class Brain : public vuThread {
- public:
+public:
     Brain();
     ~Brain();
 
@@ -52,11 +52,11 @@ class Brain : public vuThread {
     enum RunWhat { DO_ANIMATE, DO_NOTHING, DO_ANALYSIS, DO_LAST};
     //! virtual from vuThread
     void run(int whatsup, void* data);
-    
+
     //! duplicate state of current model
     //! \returns ID of copy
     dword duplicateState(const Model *model = NULL);
-    
+
     bool switchState(dword newstate);
     void killState(dword state);
     void killAllStates();
@@ -71,7 +71,7 @@ class Brain : public vuThread {
     SensorCollection& getSensors() { return m_Sensors; }
 
     void getQualityRange(float &lqof, float &hqof, float shapeweight=-1) const;
-    int distributeModel(const Model &model, 
+    int distributeModel(const Model &model,
                         int n=-1, float qth=0, bool count=false);
     /** change container to prototype of name mname */
     bool changeModel(const std::string &mname);
@@ -83,28 +83,28 @@ class Brain : public vuThread {
 protected:
     int getBindex(int bx, int by, bool &culled=*((bool*)NULL));
     enum SearchWhat {SW_UB, SW_LB, SW_RESET, SW_SET, SW_SPREAD };
-    void setupSearch(enum SearchWhat what=SW_RESET, 
+    void setupSearch(enum SearchWhat what=SW_RESET,
                      const PropVec& prop=PropVec());
 protected:
     dataset_ptr         m_Data;
     dataset_ptr         m_BrowseData;
-    SensorCollection	m_Sensors;
-    Model		*m_Geom;
+    SensorCollection    m_Sensors;
+    Model       *m_Geom;
     std::vector<Model*>                         *m_CStates;
     std::map<std::string,Model*>                m_Prototypes;
     std::map<std::string, std::vector<Model*> > m_Instances;
     std::string         m_CurPrototype;
-    dword		m_CurState;
+    dword       m_CurState;
     SpeciesDB           m_DB;
     DBSelector          m_DBSelector;
     Species             m_CSpecies;
-    float		m_TimeStep;
-    float		m_TimeScale;
-    bool		m_UpdateAllModels;
-    vuMutex		m_GeomMutex, m_DataMutex, m_RunMutex[DO_LAST];
+    float       m_TimeStep;
+    float       m_TimeScale;
+    bool        m_UpdateAllModels;
+    vuMutex     m_GeomMutex, m_DataMutex, m_RunMutex[DO_LAST];
     bool                m_ThreadActive[DO_LAST];
-    bool		m_Done;
-    bool		m_DesignMode;
+    bool        m_Done;
+    bool        m_DesignMode;
     bool                m_ImmediateData;
     bool                m_DrawOwnState;
     Searcher            m_Search;
@@ -123,7 +123,7 @@ inline dword Brain::getAllModels( Iter iter )
             *iter++ = *mi;
             nm++;
         }
-//     for(std::map<std::string, std::vector<Model*> >::iterator 
+//     for(std::map<std::string, std::vector<Model*> >::iterator
 //         ti=m_Instances.begin(); ti != m_Instances.end(); ti++) {
 //         for(std::vector<Model*>::iterator gi=ti->second.begin();
 //             gi!=ti->second.end(); gi++)

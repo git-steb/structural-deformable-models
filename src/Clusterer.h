@@ -5,10 +5,10 @@
 #include <string>
 #include "common.h"
 
-template<int D> 
+template<int D>
 class CElement {
- public:
-    CElement() : id(0), multiv(0) {};
+public:
+    CElement() : id(0), multiv(0) {}
     CElement(float v) : id(0), multiv(0) {
         operator=(v);
     }
@@ -60,11 +60,11 @@ class CElement {
     float dist(const CElement<D> &rhs) const {
         return sqrt(dist2(rhs));
     }
-    
+
     dword getNMembers() const { return multiv; }
     dword& getNMembers() { return multiv; }
     dword getClassID() const { return multiv; }
-    void setClassID(dword cid) { multiv = cid; }        
+    void setClassID(dword cid) { multiv = cid; }
     friend ostream& operator<<(ostream& os, const CElement<D> &rhs) {
         for(int i=0; i<D; i++) {
             if(i) os << " ";
@@ -72,8 +72,8 @@ class CElement {
         }
         return os;
     }
-        
- public:
+
+public:
     float val[D];
     dword id;
     dword multiv; // class ID or number of members
@@ -81,7 +81,7 @@ class CElement {
 
 template<int D>
 class Clusterer {
- public:
+public:
     typedef typename vector< CElement<D> >::iterator eiterator;
     typedef typename vector< CElement<D> >::const_iterator const_eiterator;
 
@@ -92,7 +92,7 @@ class Clusterer {
     void clearAccumulation() {
         dword cid=0;
         for(eiterator cv = m_ElemAcc.begin();
-            cv != m_ElemAcc.end(); cv++, cid++) 
+            cv != m_ElemAcc.end(); cv++, cid++)
         {
             *cv = 0;
             cv->id = cid;
@@ -105,7 +105,7 @@ class Clusterer {
         m_ElemAcc.resize(nclasses);
         dword cid=0;
         for(eiterator cv = m_Classes.begin();
-            cv != m_Classes.end(); cv++, cid++) 
+            cv != m_Classes.end(); cv++, cid++)
         {
             cv->id = cid;
             cv->getNMembers() = 0;
@@ -120,7 +120,7 @@ class Clusterer {
         dword minid=0;
         dword cid=0;
         for(eiterator cv = m_Classes.begin();
-            cv != m_Classes.end(); cv++, cid++) 
+            cv != m_Classes.end(); cv++, cid++)
         {
             float d = elem.dist2(*cv);
             if(d<mind) {
@@ -134,7 +134,7 @@ class Clusterer {
         elem.setClassID(minid);
         return minid;
     }
-    
+
     dword classifyAll() {
         dword reclass = 0;
         clearAccumulation();
@@ -157,7 +157,7 @@ class Clusterer {
         cout << reclass << " re-classifications" << endl; //DEBUG
         return reclass;
     }
-    
+
     void iterateClassification( dword maxit=10) {
         int counter=0; //DEBUG
         while(maxit>0) {
@@ -171,7 +171,7 @@ class Clusterer {
         cout << "number of classes used: " << cu << endl;
     }
 
- public:
+public:
     vector< CElement<D> >       m_Elements;
     vector< CElement<D> >       m_Classes;
     vector< CElement<D> >       m_ElemAcc;

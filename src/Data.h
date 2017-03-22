@@ -20,7 +20,7 @@ typedef Image<float> FloatImage;
     preprocessed results for sensor evaluation. */
 class Dataset : public Sensor {
 //    friend class Sensor;
- public:
+public:
     /** Default constructor */
     Dataset();
     /** Constructor */
@@ -39,13 +39,13 @@ class Dataset : public Sensor {
 
     /** Draw data set (using OpenGL) */
     void draw(float x=0, float y=0,
-	      float sx = 1.0f, float sy = 1.0f) const;
+              float sx = 1.0f, float sy = 1.0f) const;
 
     int getDim1Size() const { return m_Dim1; }
     int getDim2Size() const { return m_Dim2; }
     int getDim3Size() const { return m_Dim3; }
     int getNChannels() const { return m_NChannels; }
-    std::ostream& print(std::ostream &os) const 
+    std::ostream& print(std::ostream &os) const
         { return os; } //don't print to model file
 
     void clear();
@@ -57,14 +57,14 @@ class Dataset : public Sensor {
     ByteImage& getImage(int index) { return data.at(index); }
 
     /** Load an Image<byte> */
-    static bool loadImage(std::vector<Image<byte> > &image, 
+    static bool loadImage(std::vector<Image<byte> > &image,
                           const char *filename);
     /** Draw Image using glDrawPixels() */
-    static void drawImage(const std::vector<Image<byte> > &image, 
+    static void drawImage(const std::vector<Image<byte> > &image,
                           float x=0, float y=0,
-			  float sx = 1.0f, float sy = 1.0f);
+                          float sx = 1.0f, float sy = 1.0f);
     static void drawImage(const Image<byte> &image, float x=0, float y=0,
-			  float sx = 1.0f, float sy = 1.0f);
+                          float sx = 1.0f, float sy = 1.0f);
     vuMutex writeMutex;
 
     dword getPPMM() const { return m_ppmm; }
@@ -73,30 +73,30 @@ class Dataset : public Sensor {
     const Point2D& getOSize() const { return m_OSize; }
 
     const std::string& getFilename() const { return m_Filename; }
-    PropVec getPropVec() const 
+    PropVec getPropVec() const
         { PropVec pv(0.f); return setPropScale(pv, (float)m_Dim1); }
-    PropVec getPropVecMM() const 
+    PropVec getPropVecMM() const
         { PropVec pv(getPropVec()); return scalePropVec(pv, 1.f/m_ppmm); }
     void setHalveBeyondSize(dword hbs=0xffffffff) { m_HalveBeyondSize = hbs; }
     dword getHalveBeyondSize() const { return m_HalveBeyondSize; }
     void addNoise(float sigma);
- protected:
+protected:
     /** implementing virtual from class Sensor **/
     float calcValue(int x, int y) const {
-	//vuLock l(*((vuMutex*)&writeMutex));
-	if((dword)x < (dword)m_Dim1 && (dword)y < (dword)m_Dim2)
-	    return data[m_CurrImage].getPixel(x,y);
-	else return 0.0f;
+        //vuLock l(*((vuMutex*)&writeMutex));
+        if((dword)x < (dword)m_Dim1 && (dword)y < (dword)m_Dim2)
+            return data[m_CurrImage].getPixel(x,y);
+        else return 0.0f;
     }
     /** implementing virtual from class Sensor **/
     std::vector<float> calcMValue(int x, int y) const {
-	//vuLock l(*((vuMutex*)&writeMutex));
-	std::vector<float> mv(m_NChannels);
-	int cc = 0;
-	for(std::vector<float>::iterator cv = mv.begin();
-	    cv != mv.end(); cv++, cc++) {
-	    *cv = (float)data[cc].getPixel(x,y);
-	}
+        //vuLock l(*((vuMutex*)&writeMutex));
+        std::vector<float> mv(m_NChannels);
+        int cc = 0;
+        for(std::vector<float>::iterator cv = mv.begin();
+            cv != mv.end(); cv++, cc++) {
+            *cv = (float)data[cc].getPixel(x,y);
+        }
         return mv;
     }
     void calcMinMax() {
@@ -104,7 +104,7 @@ class Dataset : public Sensor {
         minval = 0;
     }
     /** The data as one dimensional array.  If more than one channel
-     is used data will be organized as vector<ByteImage>. */
+        is used data will be organized as vector<ByteImage>. */
     std::vector<ByteImage>   data;
 
     /** Dimensions in X, Y, and Z direction + number of channels */

@@ -83,7 +83,7 @@ dword ExpectationMap::getShootCount(dword wid) const
     else return ed->getShootCount();
 }
 
-PropVec ExpectationMap::getPropVec() const 
+PropVec ExpectationMap::getPropVec() const
 {
     if(m_SortDist.empty() || m_Integral==0.0) {
         if(!m_Distributions.empty()) {
@@ -93,18 +93,18 @@ PropVec ExpectationMap::getPropVec() const
         } else return getIdentityPropTF();
     }
     float rint = frand(m_Integral);
-    std::map<float, EMDistribution*>::const_iterator 
+    std::map<float, EMDistribution*>::const_iterator
         ed = m_SortDist.lower_bound(rint);
     if(ed == m_SortDist.end()) ed = m_SortDist.begin();
     ed->second->m_ShootCount++;
     PropVec prop = ed->second->getPropVec();
-    setPropDir(prop, mapAngle2PI(getPropDir(prop), 
+    setPropDir(prop, mapAngle2PI(getPropDir(prop),
                                  getPropDir(m_LB)));
     return prop.clamp(m_LB,m_UB);
     //return m_Distributions.begin()->getPropVec(); // is this fair?
 }
 
-float ExpectationMap::ratePropVec(const PropVec& prop, Winner* winner) const 
+float ExpectationMap::ratePropVec(const PropVec& prop, Winner* winner) const
 {
     if(m_Distributions.empty()) return 0;
     PropVec pv(prop);
@@ -164,7 +164,7 @@ void ExpectationMap::markAllOld() {
     }
 }
 
-float ExpectationMap::updateIntegral() 
+float ExpectationMap::updateIntegral()
 {
     m_Integral = 0.f;
     m_SortDist.clear();
@@ -181,7 +181,7 @@ float ExpectationMap::updateIntegral()
     return m_Integral;
 }
 
-Model* ExpectationMap::generateInstance() const 
+Model* ExpectationMap::generateInstance() const
 {
     Model *model = new Model(m_Representative);
     PropVec v = getPropVec();
@@ -202,7 +202,7 @@ void ExpectationMap::correctLBUB(PropVec& lb, PropVec& ub)
 }
 
 //----------------------------------------------------------------------------
-PropVec EMDRect::getPropVec() const 
+PropVec EMDRect::getPropVec() const
 {
     PropVec pv;
     for(unsigned int i=0; i<PropVec::size(); i++)
@@ -210,7 +210,7 @@ PropVec EMDRect::getPropVec() const
     return pv;
 }
 
-float EMDRect::ratePropVec(const PropVec& prop, Winner* winner) const 
+float EMDRect::ratePropVec(const PropVec& prop, Winner* winner) const
 {
     PropVec clampvec(prop);
     clampvec.clamp(m_LB, m_UB);
@@ -219,7 +219,7 @@ float EMDRect::ratePropVec(const PropVec& prop, Winner* winner) const
 }
 
 //----------------------------------------------------------------------------
-PropVec EMDGauss::getPropVec() const 
+PropVec EMDGauss::getPropVec() const
 {
     PropVec pv;
     for(unsigned int i=0; i<PropVec::size(); i++)
@@ -228,8 +228,8 @@ PropVec EMDGauss::getPropVec() const
 }
 
 float EMDGauss::ratePropVec(const PropVec& prop, Winner* winner) const
-{ 
-    return gauss2(((prop-m_Avg)/=m_StdevRate).norm2(),1)*M_SQRT2PI; 
+{
+    return gauss2(((prop-m_Avg)/=m_StdevRate).norm2(),1)*M_SQRT2PI;
 }
 
 void EMDGauss::setStdev(const PropVec& stdev)
@@ -253,7 +253,7 @@ PropVec EMDXformer::getPropVec() const
     return pv;
 }
 
-float EMDXformer::ratePropVec(const PropVec& prop, Winner* winner) const 
+float EMDXformer::ratePropVec(const PropVec& prop, Winner* winner) const
 {
 //inverse transform
     PropVec tfprop(getPropTF(m_Origin, prop));
@@ -278,14 +278,14 @@ void EMDXformer::setTFMat(const DMatrixf& mat)
 }
 
 //----------------------------------------------------------------------------
-void Winner::setModel(Model* m) 
+void Winner::setModel(Model* m)
 {
     m_Model = m;
     m_WinnerID = m ? m->getID() : Winner::WID_EMPTY;
     m_StructName = m ? m->getName() : "";
 }
 
-void Winner::clearRatings() 
+void Winner::clearRatings()
 {
     m_BestRating = 0.0f;
     m_BestRatings.clear();
@@ -303,8 +303,8 @@ float Winner::rateBy(const std::string& creatorname, dword creatorid, float rati
     return m_BestRating;
 }
 
-const std::pair<dword,float> Winner::getBest(const std::string& sname) const 
-{ 
+const std::pair<dword,float> Winner::getBest(const std::string& sname) const
+{
     const std::map<dword,float>& rl = getRatingList(sname);
     dword bid = getBestRatingID(sname);
     return *rl.find(bid);
@@ -324,7 +324,7 @@ float Winner::updateBestRating()
     m_BestRating = 0.f;
     m_BestRatings.clear();
     for(Ratings::const_iterator refstruct = m_Ratings.begin();
-        refstruct != m_Ratings.end(); refstruct++) 
+        refstruct != m_Ratings.end(); refstruct++)
     {
         dword& brid = m_BestRatings[refstruct->first];
         float bestrating = 0.f; //m_Ratings[refstruct->first][brid];
@@ -340,4 +340,3 @@ float Winner::updateBestRating()
     }
     return m_BestRating;
 }
-
