@@ -154,7 +154,7 @@ public:
             const int comp = img.size()>ncomp ? ncomp : img.size();
             const int size = img[0].size();
             setSize(img[0].getSizeX()*ncomp, img[0].getSizeY());
-            Image<byte>::const_iterator bi[comp];
+            std::vector<Image<byte>::const_iterator> bi(comp);
             for(int a=0; a<comp; a++) bi[a] = img[a].begin();
             T *cv = getData();
             const int cvinc = ncomp-comp;

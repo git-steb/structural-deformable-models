@@ -120,7 +120,7 @@ vuMutex::vuMutex(bool recursive)
     if(recursive) {
         pthread_mutexattr_t attr;
         pthread_mutexattr_init(&attr);
-        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
+        pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
         // other: PTHREAD_MUTEX_FAST_NP (default), PTHREAD_MUTEX_ERRORCHECK_NP
         pthread_mutex_init((pthread_mutex_t*)mutex, &attr);
         pthread_mutexattr_destroy(&attr);

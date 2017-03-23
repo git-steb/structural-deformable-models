@@ -80,7 +80,7 @@ const char* getTemp();
 const std::string& __set_fnmatchpattern(const std::string& pattern);
 int __fixed_fnmatch(const struct dirent* dent);
 
-#ifdef LINUX
+#if defined(LINUX) || defined(DARWIN)
 template<class T>
 int findFiles(const std::string& fmask, T iter) { return 0; }
 #else

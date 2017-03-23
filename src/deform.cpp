@@ -5,6 +5,7 @@
  ******************************************************************************/
 //-- fox system setup
 #include "deform.h"
+#include <fx.h>
 #include <fx3d.h>
 #include <fxkeys.h>
 #include <string.h>

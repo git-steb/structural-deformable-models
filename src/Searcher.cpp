@@ -61,7 +61,7 @@ public:
         if(lhs && rhs) {
             if(lhs == rhs) return true;
             else {
-                register float dist = lhs->distance(*rhs, m_DType);
+                float dist = lhs->distance(*rhs, m_DType);
 //                 cout << lhs << " merge " << rhs << " dist = " << dist
 //                      << " > " << m_MaxD << endl;
                 return dist > m_MaxD;

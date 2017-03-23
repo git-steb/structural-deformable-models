@@ -984,11 +984,11 @@ float Model::getLengthRatio() const {
 float Model::getLengthVariation() const {
     float vlengths=0,restlengths=0;
     for(EdgeArray::const_iterator e = edges.begin(); e != edges.end(); e++) {
-        register float dl = e->restlength-e->length();
+        float dl = e->restlength-e->length();
         vlengths+=dl*dl;
         restlengths+=e->restlength;
     }
-    register float n = edges.size();
+    float n = edges.size();
     return sqrt(vlengths*n)/(restlengths);
 }
 
@@ -998,12 +998,12 @@ float Model::getDeformation() const {
     float scale = 1/getLengthRatio();
     float scscale = 1/ParticleParam::global.springconst;
     for(EdgeArray::const_iterator e = edges.begin(); e != edges.end(); e++) {
-        register float dl = e->restlength-e->length()*scale;
+        float dl = e->restlength-e->length()*scale;
         //dl *= e->springconstant*scscale; // weight by relative springconst
         vlengths+=dl*dl;
         restlengths+=e->restlength;
     }
-    register float n = edges.size();
+    float n = edges.size();
     return sqrt(vlengths*n)/(restlengths);
 }
 
@@ -1033,7 +1033,7 @@ float Model::getMaxRadius(const Point& center) const {
     if(nodes.empty()) return 0;
     float dist = 0;
     for(NodeArray::const_iterator n = nodes.begin(); n != nodes.end(); n++) {
-        register float td = (*n-center).norm2();
+        float td = (*n-center).norm2();
         if(dist<td) dist=td;
     }
     return sqrt(dist);
@@ -1091,7 +1091,7 @@ float Model::distance(const Model& rhs, enum Model::DistType kind) const
             for(NodeArray::const_iterator rhsn = rhs.nodes.begin();
                 rhsn != rhs.nodes.end(); rhsn++)
             {
-                register float d = (*thisn-*rhsn).norm2();
+                float d = (*thisn-*rhsn).norm2();
                 if(d<mindist) mindist = d;
             }
             if(kind == DIST_HPOINTS && mindist>dist) dist=(double)mindist;
@@ -1110,13 +1110,13 @@ int Model::nearestNode(const Point& pos, float& dist) const
     if(nodes.empty()) return -1;
     int rid=0, cid=0;
     float tdist;
-    float& mindist = &dist ? dist : tdist;
+    float& mindist = (&dist!=NULL) ? dist : tdist;
     rid = 0;
     mindist = std::numeric_limits<float>::max();
     for(NodeArray::const_iterator ni = nodes.begin();
         ni != nodes.end(); ni++, cid++)
     {
-        register float d = (pos-*ni).norm2();
+        float d = (pos-*ni).norm2();
         if(d<mindist) { mindist = d; rid = cid; }
     }
     mindist = sqrt(mindist);
@@ -1212,7 +1212,7 @@ float Model::getQualityOfFit() const
         float es = getEdgeSensorFit(&nes);       // edge sensors
         m_QOF = (es*nes+ns*nns)/float(nns+nes);
         //DEBUG: use deformation*10?
-        register float lv = getDeformation(); //getLengthVariation();
+        float lv = getDeformation(); //getLengthVariation();
         m_QOF = (1-m_ShapeWeight)*m_QOF + (m_ShapeWeight)*exp(-5*abs(lv));
     }
     m_PCFlags|=PC_QOF;

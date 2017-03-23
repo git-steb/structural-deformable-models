@@ -5,6 +5,8 @@
 #include <vector>
 #include <math.h>
 #include "common.h"
+
+using namespace std;
 #include <Eigen/Core>
 
 /** Small matrix class.

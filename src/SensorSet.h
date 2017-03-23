@@ -87,9 +87,9 @@ protected:
         Point2D g(0,0);
         for(int i=0; i<source->getNChannels(); i++)
         {
-            register float dx = r[i]-c[i];
+            float dx = r[i]-c[i];
             g.x += dx*dx;
-            register float dy = b[i]-c[i];
+            float dy = b[i]-c[i];
             g.y += dy*dy;
         }
         g.x = sqrt(g.x);
@@ -124,7 +124,7 @@ protected:
         for(std::vector<float>::const_iterator v=mv.begin();
             v != mv.end(); v++)
         {
-            register float d = g-*v;
+            float d = g-*v;
             result += d*d;
         }
         return sqrt(result);

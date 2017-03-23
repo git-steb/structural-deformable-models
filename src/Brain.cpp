@@ -868,7 +868,7 @@ bool Brain::triggerTest(int mx, int my, int what) {
         vuLock glock(m_GeomMutex);
         switchState(mind);
         cout << "quality of fit "<<(m_Geom->getQualityOfFit()) << endl;
-        register float lv = m_Geom->getDeformation();
+        float lv = m_Geom->getDeformation();
         cout << "deformation: " << lv << " mapped: "<<exp(-5*abs(lv))<<endl;
         cout << "sensors: "<< m_Geom->getSensorFit() << endl;
         dword nes = 0;

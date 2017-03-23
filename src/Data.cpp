@@ -248,7 +248,7 @@ byte* interleave(const vector< Image<byte> > &img) {
         for(int i=0; i!=size; i++, cv++, bi++)
             *cv = *bi;
     } else { // comp == 3
-        Image<byte>::const_iterator bi[comp];
+      std::vector<Image<byte>::const_iterator> bi(comp);
         for(int a=0; a<comp; a++) bi[a] = img[a].begin();
         byte *cv = b;
         for(int i=0; i<size; i++) {

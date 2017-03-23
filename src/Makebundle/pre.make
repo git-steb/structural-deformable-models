@@ -25,6 +25,9 @@ endif
 ifeq ($(OS_TYPE), WINDOWS)
   OS = WINDOWS
 endif
+ifeq ($(OS_TYPE), Darwin)
+  OS = DARWIN
+endif
 
 ifeq ($(OS),undefined)
 $(error OS is unknown! Please check your environment varibale OS_TYPE [valid types are: Linux, IRIX64, WINDOWS])
