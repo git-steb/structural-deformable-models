@@ -13,7 +13,7 @@ inline int sglBitmapString(const char* msg, int x, int y,
         glRasterPos2i(x+width,y);
         glutBitmapCharacter(font, (int)*c);
         int w = glutBitmapWidth(font, (int)*c);
-        width += w;
+        width += ceil(1.1*w);
         c++;
     }
     return width;

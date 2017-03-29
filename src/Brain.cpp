@@ -1419,7 +1419,7 @@ void Brain::drawAllModels() const {
     }
     if(m_Data->getFilename() != m_BrowseData->getFilename()) {
         glColor3f(1,1,0);
-        sglBitmapString("SENSORS NOT ATTACHED!",10,40);
+        sglBitmapString("Press [Enter] to attach sensors to image.",10,40);
     }
 }
 

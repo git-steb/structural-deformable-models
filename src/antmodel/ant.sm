@@ -24,7 +24,7 @@ struct frame
   end
 
   substruct cerapachys-head
-    mode nospawn
+    # mode nospawn
     rateweight 0.2
   end
 
