@@ -1214,6 +1214,9 @@ float Model::getQualityOfFit() const
         //DEBUG: use deformation*10?
         float lv = getDeformation(); //getLengthVariation();
         m_QOF = (1-m_ShapeWeight)*m_QOF + (m_ShapeWeight)*exp(-5*abs(lv));
+        if(m_QOF<0) {
+            m_QOF = 0;
+        }
     }
     m_PCFlags|=PC_QOF;
     return m_QOF;

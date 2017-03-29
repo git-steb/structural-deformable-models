@@ -5,7 +5,7 @@
 #include <string>
 #include <list>
 
-#ifdef LINUX
+#if defined(LINUX) || defined(DARWIN)
 #include <libgen.h>
 #include <dirent.h>
 #endif
@@ -19,7 +19,7 @@ public:
     FFind(const std::string& pattern) { setPattern(pattern); }
     void setPattern(const std::string& pattern) {
         char *dname=NULL,*bname=NULL;
-#ifdef LINUX
+#if defined(LINUX) || defined(DARWIN)
         char *p1 = strdup(pattern.c_str());
         char *p2 = strdup(pattern.c_str());
         dname = dirname(p1);
@@ -35,7 +35,7 @@ public:
         int find(const std::string& fmask, T iter) {
         setPattern(fmask);
         int n,nn;
-#ifdef LINUX
+#if defined(LINUX) || defined(DARWIN)
         struct dirent **namelist;
         // THIS IS NOT THREADSAFE :-(
         __set_fnmatchpattern(m_Pattern);

@@ -1,9 +1,3 @@
-/*  Modified March 2002
-    By Christopher Steinbach
-    Modified to make the threads detachable so that
-    my program will stop crashing on my animations...
-*/
-
 #ifndef _VUTHREAD_H_
 #define _VUTHREAD_H_
 
@@ -31,7 +25,7 @@ class vuMutex
 public:
     /** Default constructor.
         Calls pthread_mutex_init() */
-    vuMutex(bool recursive=false);
+    vuMutex(bool recursive=true);
     /** Destructor.
         Calls pthread_mutex_destroy() */
     ~vuMutex();

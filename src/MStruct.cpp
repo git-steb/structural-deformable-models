@@ -53,6 +53,7 @@ MStructure& MStructure::operator=(const MStructure& rhs)
         m_SupStructures = rhs.m_SupStructures;
         m_RefProp = rhs.m_RefProp;
         m_Weight = rhs.m_Weight;
+        m_Searcher = rhs.m_Searcher;
         m_FrameWinner = rhs.m_FrameWinner;
     }
     return *this;

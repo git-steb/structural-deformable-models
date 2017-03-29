@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <fstream>
 #include <string>
-#ifdef LINUX
+#if defined(LINUX) || defined(DARWIN)
 #include <fnmatch.h>
+#include <dirent.h>
 #endif
 #include "utils.h"
 
@@ -14,7 +15,7 @@ static string matpath = "./";
 static string __fnmatchpattern;
 const string& __set_fnmatchpattern(const string& pattern)
 { return __fnmatchpattern = pattern; }
-#ifdef LINUX
+#if defined(LINUX) || defined(DARWIN)
 int __fixed_fnmatch(const struct dirent* dent)
 { return !fnmatch(__fnmatchpattern.c_str(), dent->d_name,0); }
 #else
