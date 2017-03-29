@@ -55,14 +55,24 @@ Posterior probability iso-surface of combined Gaussian model for ant body color 
 INSTALLATION 
 ------------
 
-If you are lucky, you can install dependencies and just build using
+If you are lucky, you can [install dependencies](.travis.yml) and just build
+
+Linux:
+
+    sudo apt install freeglut3-dev mesa-common-dev libfox-1.6-dev libfftw3-dev libgl1-mesa-glx
+
+OSX (using [homebrew](https://brew.sh/)):
+
+    brew install fox fftw freeglut
+
+Then:
 
     ./download-externals.sh
     cd src
-    make -j4
+    make -j4 release <OR> make -j4
 
 This builds the ``deform`` binary in a architecture and build
-variant specific subfolder, e.g. ``src/obj/LINUX_debug`` or ``src/obj/DARWIN``.
+variant specific subfolder, e.g. ``src/obj/LINUX``, ``src/obj/LINUX_debug``, or ``src/obj/DARWIN``.
 
 If that does not work, you may have to adjust build paths and compiler options in
 ``src/Makebundle/<PLATFORM>.config.make`` or the remaining Makebundle infrastructure.
@@ -75,8 +85,10 @@ Libraries and external sources required to build and run the application:
 * System installation of OpenGL - to see the algorithm in action
 * (optional) Camgraph  - for EPS vector graphics export (deactivated)
 
-Have a look at ``./travis.yml`` to see how dependencies are installed
-automatically on Travis-CI Ubuntu 14.04 (precise).
+Have a look at [``.travis.yml``](.travis.yml) to see how dependencies are installed
+automatically on the [Travis-CI build-bot](https://travis-ci.org/git-steb/structural-deformable-models) running [Ubuntu](https://www.ubuntu.com/download) 14.04 (precise).
+
+Compilation under Windows 10 [using its new Bash](http://www.windowscentral.com/how-install-bash-shell-command-line-windows-10) should also be possible (TODO update instructions here).
 
 INSTALLATION - Data
 -------------------

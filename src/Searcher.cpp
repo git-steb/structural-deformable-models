@@ -550,52 +550,37 @@ void Searcher::cleanFlags()
     int wincount = 0;
     int mergekill=0;
     int lowkill=0;
-    TRACE0;
     Model *prep = *m_Population.begin();
-    TRACE0;
     m_AvgWinner = 0.f;
     m_StdWinner = 0.f;
     m_MinModel = m_MaxModel = prep->getProperties();
-    TRACE0;
     list<Model*>::iterator model = m_Population.begin();
-    TRACE0;
     while(model != m_Population.end())
     {
-        TRACE0;
         list<Model*>::iterator nm = model; nm++;
-        TRACE0;
         if((*model)->hasFlags(Model::ST_NODEL)) {
             (*model)->setFlags(Model::ST_WINNER|Model::ST_MEMBER);
             (*model)->unsetFlags(Model::ST_LOOSER|Model::ST_OLDSTATE
                                  |Model::ST_DEL);
         }
-        TRACE0;
         if(!(*model)->hasFlags(Model::ST_MEMBER)) {
-            TRACE0;
             remove(model);
-            TRACE0;
             lowkill++;
         } else if((*model)->hasFlags(Model::ST_DEL)) {
             //(*model)->unsetFlags(Model::ST_DEL);
-            TRACE0;
             remove(model);
-            TRACE0;
             mergekill++;
         } else {
-            TRACE0;
             m_MinModel.clampUB((*model)->getProperties());
             m_MaxModel.clampLB((*model)->getProperties());
-            TRACE0;
             if((*model)->isOldState()) {
                 (*model)->unsetFlags(Model::ST_WINNER|Model::ST_LOOSER
                                      |Model::ST_OLDSTATE);
                 //(*model)->m_TimeStamp[Model::TS_WIN] = 0.0;
             } else if((*model)->isWinner()) {
-                TRACE0;
                 if(prep->getQualityOfFit() < (*model)->getQualityOfFit())
                     prep = *model;
                 PropVec winprop = (*model)->getProperties();
-                TRACE0;
                 m_AvgWinner += winprop;
                 m_StdWinner += (winprop *= winprop);
                 wincount++;
@@ -606,35 +591,17 @@ void Searcher::cleanFlags()
                 killcount++;
             }
         }
-        TRACE0;
         model = nm;
     }
-    TRACE0;
     m_Representative = *prep;
     if(!wincount) {
-        TRACE0;
         m_AvgWinner = m_Representative.getProperties();
-        TRACE0;
         m_StdWinner = 0.f;
     } else {
-        TRACE0;
         m_AvgWinner /= (float)(wincount);
         m_StdWinner /= (float)(wincount);
-        TRACE0;
-        DUMP(m_AvgWinner);
-        DUMP(m_StdWinner);
-        PropVec tmp;
-        TRACE0;
-        tmp = m_AvgWinner;
-        TRACE0;
-        tmp *= m_AvgWinner;
-        DUMP(tmp);
-        //DUMP(m_AvgWinner*m_AvgWinner);
-        //m_StdWinner -= (m_AvgWinner*m_AvgWinner);
-        m_StdWinner -= tmp;
-        TRACE0;
+        m_StdWinner -= (m_AvgWinner*m_AvgWinner);
         m_StdWinner.sqrtEach();
-        TRACE0;
     }
     DUMP(mergekill);
     DUMP(lowkill);

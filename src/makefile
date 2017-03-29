@@ -56,4 +56,4 @@ endif
 include $(MAKEBUNDLE)/tool.make
 
 release:
-	make debug=no
+	+make debug=no

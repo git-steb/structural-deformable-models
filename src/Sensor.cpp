@@ -33,21 +33,30 @@ Sensor::Sensor()
 
 Sensor::~Sensor()
 {
-    if(source && source != getZeroSensor())
-        std::const_pointer_cast<Sensor>(source)->unrefSuperSensor( shared_from_this() );
+    if(source) // && source != getZeroSensor())
+        try {
+            std::const_pointer_cast<Sensor>(source)->unrefSuperSensor( shared_from_this() );
+        } catch(std::bad_weak_ptr) { }
     for(set<sensor_ptr>::iterator ss = superSensors.begin();
         ss != superSensors.end();
         ss++)
+    {
         (*ss)->invalidateSource();
+    }
 }
 
 void Sensor::replaceBy(sensor_ptr target) {
+    if(source) // && source != getZeroSensor())
+        std::const_pointer_cast<Sensor>(source)->unrefSuperSensor( shared_from_this() );
     for(set<sensor_ptr>::iterator ss = superSensors.begin();
         ss != superSensors.end();)
     {
         set<sensor_ptr>::iterator last = ss;
         ss++;
-        (*last)->changeSource(target);
+        if(target)
+            (*last)->changeSource(target);
+        else
+            (*last)->invalidateSource();
     }
 }
 
@@ -180,18 +189,22 @@ void Sensor::calcMinMax() {
 }
 
 void Sensor::refSuperSensor(sensor_ptr super) {
-    if(super != getZeroSensor())
+    if(super != getZeroSensor() &&
+       super != shared_from_this())
         superSensors.insert(super);
 }
 void Sensor::unrefSuperSensor(sensor_ptr super) {
-    if(super != getZeroSensor())
+    if(super != getZeroSensor() &&
+       super != shared_from_this())
         superSensors.erase(super);
 }
 void Sensor::invalidateSource() {
-    if(source && source != getZeroSensor()) {
-        std::const_pointer_cast<Sensor>(source)->unrefSuperSensor( shared_from_this() );
-        source = getZeroSensor();
-    }
+    source = getZeroSensor();
+    std::const_pointer_cast<Sensor>(source)->refSuperSensor( shared_from_this() );
+    //if(source) { // && source != getZeroSensor()) {
+    //    std::const_pointer_cast<Sensor>(source)->unrefSuperSensor( shared_from_this() );
+    //    source = getZeroSensor();
+    // }
 }
 
 bool Sensor::isValid(int x, int y) const
@@ -233,7 +246,11 @@ ostream& Sensor::hprint(ostream &os, SensorCollection *sc) const
 
 sensor_ptr getZeroSensor()
 {
-    static sensor_ptr zeros = std::make_shared<ZeroSensor>();
+    static sensor_ptr zeros = []{
+        sensor_ptr z = std::make_shared<ZeroSensor>();
+        z->changeSource(z);
+        return z;
+    }();
     return zeros;
 }
 

@@ -14,7 +14,9 @@ typedef std::shared_ptr<const Model> model_cptr;
 
 class Sensor;
 typedef std::shared_ptr<Sensor> sensor_ptr;
+typedef std::weak_ptr<Sensor> sensor_wptr;
 typedef std::shared_ptr<const Sensor> sensor_cptr;
+typedef std::weak_ptr<const Sensor> sensor_wcptr;
 
 class Dataset;
 typedef std::shared_ptr<Dataset> dataset_ptr;

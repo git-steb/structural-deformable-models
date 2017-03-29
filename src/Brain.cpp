@@ -29,7 +29,9 @@ Brain::Brain() : m_DBSelector(m_DB), m_TimeStep(TIMESTEP), m_TimeScale(1),
                  m_SModel(*this)
 {
     m_Data = std::make_shared<Dataset>();
+    m_Data->changeSource(m_Data);
     m_BrowseData = std::make_shared<Dataset>();
+    m_BrowseData->changeSource(m_BrowseData);
     m_Done = false;
     m_Sensors.addSensor("d0", m_Data);
     m_Geom = new Model(m_Data, &m_Sensors);
