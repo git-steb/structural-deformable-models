@@ -99,7 +99,7 @@ public:
     bool showNextIP(int dir=1) const;
 protected:
     void connectSubSuper();
-    bool readInterpreations(ParseFile& is);
+    bool readInterpretations(ParseFile& is);
 
 protected:
     enum TimeMarks { TM_UPDEM, TM_TIMEOUT, TM_LAST };

@@ -1,0 +1,12 @@
+struct frame
+  substruct maple-kaggle
+    mode nospawn
+    rateweight 0
+  end
+end
+
+struct maple-kaggle
+  model ahorn-kaggle.dm
+  weight 1
+  size 1.0                  # stdradius in mm
+end # struct

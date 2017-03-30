@@ -84,7 +84,7 @@ bool StructTable::read(ParseFile &is)
         while(is) {
             if(cstructure.read(is)) {
                 if(cstructure) m_Structs[cstructure.getName()] = cstructure;
-            } else if(!readInterpreations(is))
+            } else if(!readInterpretations(is))
                 is.setParseError(
                     string("error reading structure table. ") +
                     "(A structure has to begin with struct <name>)");
@@ -96,7 +96,7 @@ bool StructTable::read(ParseFile &is)
     return true;
 }
 
-bool StructTable::readInterpreations(ParseFile& is)
+bool StructTable::readInterpretations(ParseFile& is)
 {
     m_Interpretations.clear();
     bool readon = true, allright = false;

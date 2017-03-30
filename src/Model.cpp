@@ -393,7 +393,10 @@ bool Model::writeFile(const char *filename) const
         }
         os.close();
         return true;
-    } else return false;
+    } else {
+        cerr << "Error writing file: " << filename << endl;
+        return false;
+    }
 }
 
 void Model::setName(const string &name)
