@@ -52,7 +52,6 @@ protected:
     inline int getBindex(const Model &model, bool &culled=*((bool*)NULL))const;
     //getQualityRange - min,max or avg,stdev?
     void getQualityRange(float &lqof, float &hqof, float shapeweight=-1) const;
-    void findWinners();
     bool buildBins(float bindist=0.f);
     int buildClusters();
     void selectWinners();

@@ -27,7 +27,9 @@ typedef struct {
 
 //---
 
+#ifndef SWIG
 class CAMgraphicsProcess;
+#endif
 class SensorCollection;
 
 class Model {
@@ -86,7 +88,7 @@ public:
     //! Draw using OpenGL
     void draw(bool drawPoints=false) const;
     //! Draw to postscrip output
-    void drawPS(CAMgraphicsProcess& gp, dword mode=0) const;
+    //void drawPS(CAMgraphicsProcess& gp, dword mode=0) const;
 
     // stream operation
     //! read edge from stream

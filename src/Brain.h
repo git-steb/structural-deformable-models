@@ -65,8 +65,6 @@ public:
 
     void evolve(float dt);
 
-    void findWinners();
-
     const SensorCollection& getSensors() const { return m_Sensors; }
     SensorCollection& getSensors() { return m_Sensors; }
 

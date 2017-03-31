@@ -180,7 +180,6 @@ void Searcher::evolve()
         DUMP(slowlive);
     }
 
-    //findWinners();
     if(buildClusters()) {
         selectWinners();
         cleanFlags();

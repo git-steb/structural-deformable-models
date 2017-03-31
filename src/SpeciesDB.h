@@ -11,8 +11,10 @@
 
 class Species : public std::map<std::string, std::string> {
 public:
+#ifndef SWIG
     static const char* SFIELDS[];
     const static char s_SPFLAGS[];
+#endif
     enum SpFlags {
         FLIPPED=0x01, QUALITY=0x02, SCALE=0x04, SEL1=0x08, DEL=0x10,
         SEL2=0x20, SEL3=0x04, SEL4=0x80, SEL5=0x100

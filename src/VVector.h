@@ -1,6 +1,7 @@
 #ifndef _VVECTOR_H_
 #define _VVECTOR_H_
 
+#ifndef SWIG
 template<typename T>
 struct Traits{
     T static zero() { return 0; };
@@ -8,6 +9,7 @@ struct Traits{
 };
 template<> struct Traits<float>;
 template<> struct Traits<double>;
+#endif
 
 /** a small numerical vector class */
 template<class T, unsigned int D>
@@ -304,6 +306,7 @@ public:
     T val[D];
 };
 
+#ifndef SWIG
 template<> struct Traits<float> {
     float static zero() { return 0.f; };
     float static one() { return 1.f; };
@@ -313,5 +316,6 @@ template<> struct Traits<double> {
     double static zero() { return 0.; };
     double static one() { return 1.; };
 };
+#endif
 
 #endif // _VVECTOR_H_

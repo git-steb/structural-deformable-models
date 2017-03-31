@@ -12,8 +12,8 @@ class ImageWindow;
 
 class SensorDialog : public FXDialogBox {
     // Macro for class hierarchy declarations
-    FXDECLARE(SensorDialog)
-        public:
+    FXDECLARE(SensorDialog);
+ public:
     SensorDialog(FXApp *a, ImageWindow* iw, SensorCollection& sc);
     virtual ~SensorDialog();
 

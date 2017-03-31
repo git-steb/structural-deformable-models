@@ -6,7 +6,7 @@ before_install:
 - echo $LANG
 - echo $TRAVIS_OS_NAME
 - sudo apt-get -qq update
-- sudo apt-get install -y freeglut3-dev mesa-common-dev libfox-1.6-dev libfftw3-dev libgl1-mesa-glx
+- sudo apt-get install -y freeglut3-dev mesa-common-dev libfox-1.6-dev libfftw3-dev libgl1-mesa-glx liblua5.1-0-dev swig
 - bash download-externals.sh
 install: true
 script:

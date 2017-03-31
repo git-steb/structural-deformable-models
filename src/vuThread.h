@@ -99,10 +99,12 @@ protected:
 
 private:
 
+#ifndef SWIG
 #ifdef WIN32
     friend void _kickoff(void *ptr);
 #else
     friend void* _kickoff(void *ptr);
+#endif
 #endif
     //friend void* _ret_kickoff(void *ptr);
 

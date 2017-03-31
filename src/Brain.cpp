@@ -974,6 +974,7 @@ bool Brain::triggerTest(int mx, int my, int what) {
         }
         break;
     }
+#ifndef SWIG
 /*
   case KEY_o: // postscript output
   {
@@ -997,6 +998,7 @@ bool Brain::triggerTest(int mx, int my, int what) {
   break;
   }
 */
+#endif
     case KEY_period: //.
         m_DesignMode = !m_DesignMode;
 //            *m_Prototypes[m_Geom->getName()] = *m_Geom;

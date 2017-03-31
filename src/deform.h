@@ -13,7 +13,7 @@
 class ImageWindow : public FXMainWindow {
 
     // Macro for class hierarchy declarations
-    FXDECLARE(ImageWindow)
+    FXDECLARE(ImageWindow);
 
 private:
 
@@ -49,7 +49,6 @@ public:
     long onMouseMove(FXObject*,FXSelector,void*);
     long onKeyPress(FXObject*,FXSelector,void* ptr);
     long onKeyRelease(FXObject*,FXSelector,void* ptr);
-    long onCmdRestore(FXObject*,FXSelector,void*);
     long onLoadImage(FXObject*,FXSelector,void*);
     long onExpose(FXObject*,FXSelector,void*);
     long onConfigure(FXObject*,FXSelector,void*);
@@ -77,21 +76,30 @@ public:
 
 public:
 
-    // ImageWindow constructor
+    //! ImageWindow constructor
     ImageWindow(FXApp* a);
 
-    // Initialize
+    //! Initialize
     virtual void create();
 
-    // Read command line
+    //! Read command line
     FXbool cmdline(int argc, char ** argv);
 
-    // ImageWindow destructor
+    //! ImageWindow destructor
     virtual ~ImageWindow();
 
+    //! Direct brain access for experimental Lua interface
+    Brain& brain() { return m_Brain; }
 };
 
 extern bool setTitle(const std::string& title);
 extern bool setStatusText(const std::string& stext);
+class AppThread : public vuThread {
+ public:
+    void run(int whatsup, void* data);
+    Brain* brain() { return &win->brain(); }
+ protected:
+    ImageWindow *win;
+};
 
 #endif

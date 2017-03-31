@@ -1,0 +1,12 @@
+require("deform")
+t = deform.AppThread()
+t:startThread(1)
+deform.vuThread.usleep(1000000)
+b = t:brain()
+
+b:load("models/ahorn.brain")
+print("loading")
+deform.vuThread.usleep(10000)
+print("waiting")
+deform.vuThread.usleep(10000)
+print("done")

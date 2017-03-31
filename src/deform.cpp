@@ -13,6 +13,11 @@
 #include <time.h>
 #include "glutils.h"
 
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
+extern int luaopen_deform(lua_State* L); // declare the wrapped module
+
 using namespace std;
 
 #ifdef WIN32
@@ -474,6 +479,41 @@ FXbool ImageWindow::cmdline(int argc, char ** argv){
     if(argc >= 3) savefilename=argv[2];
 
     return TRUE;
+}
+
+
+void AppThread::run(int whatsup, void* data) {
+        //#define REDIRECT_STDOUT
+#ifdef REDIRECT_STDOUT
+        ofstream logfile("output.log");
+        cout.rdbuf(logfile.rdbuf());
+        cerr.rdbuf(logfile.rdbuf());
+#endif
+        // Make application
+        FXApp application("Deformable Model Segmentation","FoxText");
+
+        //static const char* const argv[] = {"deform",NULL};
+        char **argv = new char*[3];
+        const char *base = "deform";
+        argv[0] = (char*)base;
+        argv[1] = NULL;
+        int argc = 1;
+
+        // Start app
+        application.init(argc,argv);
+
+        // Make window
+        win = new ImageWindow(&application);
+        win->cmdline(argc,argv);
+
+        glutInit(&argc,argv);
+
+        // Create the application's windows
+        application.create();
+
+        // Run the application
+        application.run();
+        delete argv;
 }
 
 // Here we begin
