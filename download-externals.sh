@@ -42,7 +42,8 @@ if [[ "$unamestr" == 'Darwin' ]]; then
     echo
     echo "Installing fox-toolkit, FFTW, and freeglut using homebrew"
     confirm
-    brew install fox fftw freeglut
+    brew install fox fftw freeglut lua
+    # brew install swing
 
     openglinc=/System/Library/Frameworks/OpenGL.framework/Versions/A/Headers
     if [ -d $openglinc ]; then

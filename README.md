@@ -63,7 +63,7 @@ Linux:
 
 OSX (using [homebrew](https://brew.sh/)):
 
-    brew install fox fftw freeglut
+    brew install fox fftw freeglut lua
 
 Then:
 
